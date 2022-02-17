@@ -10,6 +10,7 @@ Add your own name (do not add the names for others!) to the section below.
 
 | Profile Picture | Name | Email |
 |---|---|---|
+|![](https://gitlab.ewi.tudelft.nl/uploads/-/system/user/avatar/4765/avatar.png?width=50)| Mert Bora İnevi | M.B.Inevi@student.tudelft.nl |
 | ![](https://cdn.vox-cdn.com/thumbor/HWPOwK-35K4Zkh3_t5Djz8od-jE=/0x86:1192x710/fit-in/1200x630/cdn.vox-cdn.com/uploads/chorus_asset/file/22312759/rickroll_4k.jpg)| Stefan Creasta | Creasta@student.tudelft.nl |
 
 <!-- Instructions (remove once assignment has been completed -->
