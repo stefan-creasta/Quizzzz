@@ -1,0 +1,77 @@
+- stand up meeting
+- review: got the job done -> inefficient( could have been more efficient)
+- should distribute the work (continue at home).
+
+-(THIS FRIDAY) more detail COD (very strict) -> feedback:
+assignment: more specific, ( if i dont know what it is -> know what it is after reading)
++  say: great expectation, yourself achievement
++ products: developing application(giving some docs), having a person submiting the work. (missing some docs)
++ planning: say how wew are devide the work (clear deadline -> how?) have a meeting, deadlines already set?
+specific deadlines for certain features: the team comes up with.
++ everything could be for the final week -> yes?
++ use all the features? have to have an early plan. week by week basis (recommended).
++ stick on the things you have on gitlab.(unwritten rule).
++ behavior: more on how you are fonna treat each other in the group, expections for every member ( to which extend each member can contribute to tasks ).(docs)
++COD: tentative to changes each week
++ every friday -> incorporate into COD deadline. (subjected to changes every week) -> all have to agree.
++ let nata knows about changes.
++ being late -> didnt say what happen (mark as absent then what?) bring something  sweet next time?
++ commitment: specific measurement quality (work, chairman, notetaker)
++ notetaker: ticks ( requirements - accuracy, quality, specificity(scales) (do we understand everything from the notes) (make it yes/no) (does it contain all items for the agenda?, meeting the deadlines)
++ meetings: prep? why? tuesday? -> what happens when someone miss? finish? the project?. think of various scenarios -> find solutions (maybe need an extra meeting)
++ decision making -> more specific.
++ doesnt agree? dealing with conflict?
++ consequences? report, resolve conflict internally -> someone falling behind -> solution: depends on the reason -> options: concrete examples and how to deal with them.
++ dream team: more elaborate, examples.
++ if changes -> submit every week
++ make mistakes  -> ok -> feedback.
++ plan things one or 2 weeks before the deadline? -> strongly encourage ahead ex( what tasks are done every week.) go with the plans with the meeting. plan 1 week ahead, when you plan them. -> impede grades -> cant leave everything before the last 2 weeks.
++ one line of commits? -> sunday -> scripts show nata each member's contributions -> leave out oneliner
++ minimum? -> implement something once a week (one merge request, working piece a code).
+
+
+
+-(THIS FRIDAY) HCI: do the assignments and review others ( before the draft).
++ TA give feedback on the docs, design?
++ when? by friday? thursday not enough -> submit after feedback from the other team -> do it ASAP.
++ other team: reliable they did the template.
++ start HCI assignment -> today 6pm on campus EMCSS (finish by today). -> split work well 4-5 hours.
+
+
+-(THIS FRIDAY) assignment 3B: pretty easy?
+
+API endpoints 4 types like HTTP
+GET PUT POST DELETE 
+ex: client -> http request -> server recognizes header -> knows what to return -> websocket? (not recommended).
+
+
+- (THIS FRIDAY): one endpoint in application (simple): GET (min), strongly recommended to have one of each methods
+GET -> get info
+PUT -> change
+POST -> post new thing
+DELETE -> delete somthing
+add spring security (no extra points)?
+POST -> add entire new obj (comments)
+PUT -> edit the comments (for stuffs thats already there).
+
+
+- gitlab:
++ one issue per feature (make issue as small as possible, one or two per issue)
++ desc: add detailed desc of completion( checkbox for every issue)
++ exp: powerup -> what steps to check if its done? there is an icon that you can click on? (checklist add)
++ add estimated weight and deadlines for all the issues (due date + weight) maybe use milestones?, priority doesnt work as milestone
++ make sure its in the docs (backlog.pdf)
++ delete mistake issues?
++ use the gitlab issue board (recommended) (see others if they have already working on a feature) (labeled and statuses) (change started not started or closed) -> move it?
++ try to make as many comments as possible (everyone has to approve something). (merge approval -> nice).
++ pull the changes branches and test locally before approving
++ pipeline -> always green when posting changes. fails -> fix ASAP.
++ discuss merge requests during the meetings.
++ responsible for changes when approving.
++ dont agree with comments -> discuss it ASAP.
+
++ look at the rubric , easy to miss stuffs
+
+
+
+
