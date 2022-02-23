@@ -38,14 +38,16 @@ public class QuestionController {
 //        return ResponseEntity.ok(saved);
 //    }
 
-    private static boolean isNullOrEmpty(String s) {
+    static boolean isNullOrEmpty(String s) {
         return s == null || s.isEmpty();
     }
 
-    private static boolean isQuestionValid(Question q) {
+    static boolean isQuestionValid(Question q) {
         if (isNullOrEmpty(q.question) || isNullOrEmpty(q.answer) ||
                 isNullOrEmpty(q.wrongAnswer1) || isNullOrEmpty(q.wrongAnswer2))
             return false;
         return true;
     }
+
+
 }
