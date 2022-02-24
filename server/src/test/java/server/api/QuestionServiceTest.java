@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import server.database.QuestionRepository;
 import server.service.QuestionService;
 
-import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
