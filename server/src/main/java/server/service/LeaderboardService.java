@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import server.database.LeaderboardRepository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**the service class to manage the global leaderboard and its database
  */
