@@ -8,9 +8,9 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface LeaderboardRepository extends JpaRepository<LeaderboardEntry, String> {
-    @Query ("SELECT lb.username, lb.score FROM LeaderboardEntry lb ORDER BY lb.score DESC, lb.date ASC NULLS LAST")
+    @Query ("SELECT lb FROM LeaderboardEntry lb ORDER BY lb.score DESC, lb.date ASC NULLS LAST")
     List<LeaderboardEntry> findTopN(Pageable pageable);
 
-    @Query ("SELECT lb.username, lb.score FROM LeaderboardEntry lb ORDER BY lb.score DESC, lb.date ASC NULLS LAST")
+    @Query ("SELECT lb FROM LeaderboardEntry lb ORDER BY lb.score DESC, lb.date ASC NULLS LAST")
     List<LeaderboardEntry> findAllSorted();
 }
