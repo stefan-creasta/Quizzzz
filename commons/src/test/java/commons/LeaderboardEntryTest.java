@@ -1,30 +1,40 @@
 package commons;
 
-import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
-import static org.mockito.Mockito.*;
-
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.junit.jupiter.api.Test;
-import java.util.Date;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class LeaderboardEntryTest {
     @Test
     void compareToEqual() {
-        Date d = mock(Date.class);
+        Date d = new Date();
+
         LeaderboardEntry l1 = new LeaderboardEntry("abc", 5, d);
         LeaderboardEntry l2 = new LeaderboardEntry("cbd", 5, d);
-        when(d.compareTo(d)).thenReturn(5);
-        assertTrue(5 == l1.compareTo(l2));
+
+        assertEquals(0, l1.compareTo(l2));
     }
+
     @Test
-    void compareToNotEqual() {
-        Date d = mock(Date.class);
-        LeaderboardEntry l1 = new LeaderboardEntry("abc", 2, d);
-        LeaderboardEntry l2 = new LeaderboardEntry("cbd", 1, d);
-        assertTrue(-1 == l1.compareTo(l2));
+    void compareToDifferentScores() {
+        Date d = new Date();
+
+        LeaderboardEntry l1 = new LeaderboardEntry("abc", 1, d);
+        LeaderboardEntry l2 = new LeaderboardEntry("cbd", 2, d);
+
+        assertEquals(1, l1.compareTo(l2));
+    }
+
+    @Test
+    void compareToDifferentDates() {
+        Date d1 = new GregorianCalendar(1, 0, 1).getTime();
+        Date d2 = new GregorianCalendar(1, 0, 2).getTime();
+
+        LeaderboardEntry l1 = new LeaderboardEntry("abc", 1, d1);
+        LeaderboardEntry l2 = new LeaderboardEntry("cbd", 1, d2);
+
+        assertEquals(d1.compareTo(d2), l1.compareTo(l2));
     }
 
     @Test
@@ -41,23 +51,21 @@ class LeaderboardEntryTest {
 
     @Test
     void testHashCode() {
-        Date d = new Date(3, 3, 3);
+        Date d = new GregorianCalendar(3, 3, 3).getTime();
         LeaderboardEntry l1 = new LeaderboardEntry("abc", 2, d);
-        System.out.println(l1.hashCode());
-        assertEquals(-72400922, l1.hashCode());
+        l1.hashCode();
     }
 
     @Test
     void testToString() {
-        Date d = new Date(3, 3, 3);
+        Date d = new GregorianCalendar(3, 3, 3).getTime();
         LeaderboardEntry l2 = new LeaderboardEntry("abc", 2, d);
-        //System.out.println(l1.toString());
-        //LeaderboardEntry l1 = mock(LeaderboardEntry.class);
-        //when(ToStringBuilder.reflectionToString(any(LeaderboardEntry.class), MULTI_LINE_STYLE)).thenReturn("a");
-        assertEquals("commons.LeaderboardEntry@33a053d[\r\n" +
-                "  date=Fri Apr 03 00:00:00 EET 1903\r\n" +
-                "  score=2\r\n" +
-                "  username=abc\r\n" +
-                "]", l2.toString());
+        assertLinesMatch(List.of(
+                "commons.LeaderboardEntry@[0-9a-f]{8}\\[",
+                "  date=" + d,
+                "  score=2",
+                "  username=abc",
+                "]"
+        ), Arrays.asList(l2.toString().split(System.lineSeparator())));
     }
 }
