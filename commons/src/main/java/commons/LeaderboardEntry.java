@@ -39,8 +39,9 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
      * @param other
      * @return
      */
+    @Override
     public int compareTo(LeaderboardEntry other) {
-        if (this.date.equals(other.date)) {
+        if (other.score == this.score) {
             return this.date.compareTo(other.date);
         }
         else {
