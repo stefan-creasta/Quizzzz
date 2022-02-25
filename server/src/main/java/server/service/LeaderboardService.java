@@ -1,6 +1,7 @@
 package server.service;
 
 import commons.LeaderboardEntry;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import server.database.LeaderboardRepository;
 
@@ -23,12 +24,10 @@ public class LeaderboardService {
      * @return the current leaderboard
      */
     public List<LeaderboardEntry> getLeaderboard(int maxRank) {
-        if (maxRank < 0) {
-            return repo.findAll().stream().sorted().collect(Collectors.toList());
-        }
-        else {
-            return repo.findAll().stream().sorted().limit(maxRank).collect(Collectors.toList());
-        }
+        if (maxRank < 0)
+            return repo.findAllSorted();
+        else
+            return repo.findTopN(PageRequest.of(0, maxRank));
     }
 
     /**adds/updates the leaderboard item corresponding to the new leaderboard entry
@@ -43,11 +42,12 @@ public class LeaderboardService {
      * @param maxRank the maximum rank
      */
     public synchronized void orderAndCutLeaderboard(int maxRank) {
+        repo.deleteAll();
         if (maxRank < 0) {
-            repo.saveAll(repo.findAll().stream().sorted().collect(Collectors.toList()));
+            repo.saveAll(repo.findAllSorted());
         }
         else {
-            repo.saveAll(repo.findAll().stream().sorted().limit(maxRank).collect(Collectors.toList()));
+            repo.saveAll(repo.findTopN(PageRequest.of(0, maxRank)));
         }
     }
 }
