@@ -3,6 +3,7 @@ package commons;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class TimerTest {
     @Test
     public void isElapsedTest() {
         Timer timer = new Timer(3, 0);
-        timer.synchronize(Duration.ofMinutes(3).dividedBy(ChronoUnit.MICROS.getDuration()));
+        timer.synchronize(Duration.ofSeconds(181).dividedBy(ChronoUnit.MICROS.getDuration()));
         assertTrue(timer.isElapsed());
     }
 
@@ -75,9 +76,13 @@ public class TimerTest {
 
     @Test
     public void equalsTest() {
-        Timer timer1 = new Timer(3, 0);
-        Timer timer2 = new Timer(3, 0);
-        Timer timer3 = new Timer(4, 0);
+        Instant i1 = Instant.now();
+        Instant i2 = Instant.now().plus(1, ChronoUnit.MINUTES);
+        Instant i3 = Instant.now().plus(1, ChronoUnit.MINUTES);
+        Instant i4 = Instant.now().plus(2, ChronoUnit.MINUTES);
+        Timer timer1 = new Timer(i1, i2);
+        Timer timer2 = new Timer(i1, i3);
+        Timer timer3 = new Timer(i1, i4);
 
         assertEquals(timer1, timer2);
         assertNotEquals(timer1, timer3);

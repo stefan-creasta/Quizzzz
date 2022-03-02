@@ -28,6 +28,11 @@ public class Timer {
         setDuration(minutes, seconds);
     }
 
+    public Timer(Instant startTime, Instant endTime) {
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
+
     /**Synchronize this Timer with another
      * @param elapsed the output from other.getSynchronizationLong()
      * @return the time from old to new startTime
@@ -88,7 +93,7 @@ public class Timer {
      * @return
      */
     public boolean isElapsed() {
-        return Instant.now().compareTo(endTime) <= 0;
+        return Instant.now().compareTo(endTime) >= 0;
     }
 
     /**Get the remaining time in m:ss format
