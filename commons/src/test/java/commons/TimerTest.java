@@ -76,10 +76,10 @@ public class TimerTest {
 
     @Test
     public void equalsTest() {
-        Instant i1 = Instant.now();
-        Instant i2 = Instant.now().plus(1, ChronoUnit.MINUTES);
-        Instant i3 = Instant.now().plus(1, ChronoUnit.MINUTES);
-        Instant i4 = Instant.now().plus(2, ChronoUnit.MINUTES);
+        Instant i1 = Instant.ofEpochMilli(0);
+        Instant i2 = i1.plus(1, ChronoUnit.MINUTES);
+        Instant i3 = i1.plus(1, ChronoUnit.MINUTES);
+        Instant i4 = i1.plus(2, ChronoUnit.MINUTES);
         Timer timer1 = new Timer(i1, i2);
         Timer timer2 = new Timer(i1, i3);
         Timer timer3 = new Timer(i1, i4);
