@@ -15,7 +15,9 @@
  */
 package client;
 
-import static client.scenes.ChooseAnswerCtrl.*;
+
+
+
 import static com.google.inject.Guice.createInjector;
 
 import java.io.IOException;
