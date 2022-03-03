@@ -2,14 +2,12 @@ package client.scenes;
 
 import client.Communication.AnswerCommunication;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
-import javax.inject.Inject;
 import java.io.IOException;
 
 public class ChooseAnswerCtrl<Button1> {
