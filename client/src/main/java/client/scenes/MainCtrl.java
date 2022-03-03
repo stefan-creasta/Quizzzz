@@ -30,8 +30,11 @@ public class MainCtrl {
     private AddQuoteCtrl addCtrl;
     private Scene add;
 
+    private ChooseAnswerCtrl chooseCtrl;
+    private Scene choose;
+
     public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
-            Pair<AddQuoteCtrl, Parent> add) {
+            Pair<AddQuoteCtrl, Parent> add, Pair<ChooseAnswerCtrl, Parent> chooseAnswerPair) {
         this.primaryStage = primaryStage;
         this.overviewCtrl = overview.getKey();
         this.overview = new Scene(overview.getValue());
@@ -39,7 +42,11 @@ public class MainCtrl {
         this.addCtrl = add.getKey();
         this.add = new Scene(add.getValue());
 
-        showOverview();
+        this.chooseCtrl = chooseAnswerPair.getKey();
+        this.choose = new Scene(chooseAnswerPair.getValue());
+
+        //showOverview();
+        showChooseAnswer();
         primaryStage.show();
     }
 
@@ -53,5 +60,15 @@ public class MainCtrl {
         primaryStage.setTitle("Quotes: Adding Quote");
         primaryStage.setScene(add);
         add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
+    }
+    public void showChooseAnswer() {
+        primaryStage.setTitle("Choose Answer");
+        primaryStage.setScene(choose);
+//        choose.set(e -> chooseCtrl.Button1Pressed(e));
+
+
+//        Scene scene = new Scene(ChooseAnswerCtrl.AnchorPane1, 640, 480);
+//        primaryStage.setScene(scene);
+//        primaryStage.show();
     }
 }
