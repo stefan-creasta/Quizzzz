@@ -1,9 +1,11 @@
 package commons;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 class QuestionTest {
 
@@ -28,11 +30,13 @@ class QuestionTest {
     @Test
     void testToString() {
         Question q1 = new Question("a","a","a","a");
-        //System.out.println(ToStringBuilder.reflectionToString(q1, MULTI_LINE_STYLE));
-        assertEquals(0, q1.id);
-        assertEquals("a", q1.question);
-        assertEquals("a",q1.answer);
-        assertEquals("a",q1.wrongAnswer1);
-        assertEquals("a",q1.wrongAnswer2);
+        System.out.println(ToStringBuilder.reflectionToString(q1, MULTI_LINE_STYLE));
+        assertEquals(q1.toString(), "commons.Question@[0-9a-f]*\\\\[\r\n" +
+                "  answer=a\r\n" +
+                "  id=0\r\n" +
+                "  question=a\r\n" +
+                "  wrongAnswer1=a\r\n" +
+                "  wrongAnswer2=a\r\n" +
+                "]");
     }
 }
