@@ -19,6 +19,12 @@ public class ChooseAnswerCtrl<Button1> {
     public static Button Button1;
 
     @FXML
+    public static Button Button2;
+
+    @FXML
+    public static Button Button3;
+
+    @FXML
     private static MenuBar MenuBar1;
 
     @FXML
@@ -30,11 +36,25 @@ public class ChooseAnswerCtrl<Button1> {
         AnswerCommunication.sendAnswer(Button1.getText());
     }
 
+    @FXML
+    void Button2Pressed(ActionEvent event) throws IOException, InterruptedException {
+        AnswerCommunication.sendAnswer(Button2.getText());
+    }
+
+    @FXML
+    void Button3Pressed(ActionEvent event) throws IOException, InterruptedException {
+        AnswerCommunication.sendAnswer(Button3.getText());
+    }
+
 
     //presetting the text inside the button TODO - FIX
     public void initialize(){
         Button1 = new Button();
-        Button1.setText("Ans");
+        Button1.setText("Ans1");
+        Button2 = new Button();
+        Button2.setText("Ans2");
+        Button3 = new Button();
+        Button3.setText("Ans3");
     }
 }
 
