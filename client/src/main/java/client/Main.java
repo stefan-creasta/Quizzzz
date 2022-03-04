@@ -15,11 +15,15 @@
  */
 package client;
 
+
+
+
 import static com.google.inject.Guice.createInjector;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+import client.scenes.ChooseAnswerCtrl;
 import com.google.inject.Injector;
 
 import client.scenes.AddQuoteCtrl;
@@ -27,6 +31,7 @@ import client.scenes.MainCtrl;
 import client.scenes.QuoteOverviewCtrl;
 import javafx.application.Application;
 import javafx.stage.Stage;
+
 
 public class Main extends Application {
 
@@ -42,8 +47,9 @@ public class Main extends Application {
 
         var overview = FXML.load(QuoteOverviewCtrl.class, "client", "scenes", "QuoteOverview.fxml");
         var add = FXML.load(AddQuoteCtrl.class, "client", "scenes", "AddQuote.fxml");
-
+        var chooseAnswer = FXML.load(ChooseAnswerCtrl.class, "client", "scenes", "ChooseAnswer.fxml");
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        mainCtrl.initialize(primaryStage, overview, add);
+        mainCtrl.initialize(primaryStage, overview, add, chooseAnswer);
+
     }
 }
