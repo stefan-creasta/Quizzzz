@@ -19,7 +19,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
-
 public class MainCtrl {
 
     private Stage primaryStage;
@@ -30,16 +29,23 @@ public class MainCtrl {
     private AddQuoteCtrl addCtrl;
     private Scene add;
 
+    private CountdownTimer timerCtrl;
+    private Scene timer;
+
     public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
-            Pair<AddQuoteCtrl, Parent> add) {
+            Pair<AddQuoteCtrl, Parent> add, Pair<CountdownTimer,Parent> timer) {
         this.primaryStage = primaryStage;
+
         this.overviewCtrl = overview.getKey();
         this.overview = new Scene(overview.getValue());
 
         this.addCtrl = add.getKey();
         this.add = new Scene(add.getValue());
 
-        showOverview();
+        this.timerCtrl  = timer.getKey();
+        this.timer = new Scene(timer.getValue());
+
+        showTits();
         primaryStage.show();
     }
 
@@ -53,5 +59,11 @@ public class MainCtrl {
         primaryStage.setTitle("Quotes: Adding Quote");
         primaryStage.setScene(add);
         add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
+    }
+    public void showTits(){
+        primaryStage.setTitle("USELESS TIMER");
+        primaryStage.setScene(timer);
+
+
     }
 }
