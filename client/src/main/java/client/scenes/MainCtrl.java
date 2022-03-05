@@ -45,7 +45,7 @@ public class MainCtrl {
         this.timerCtrl  = timer.getKey();
         this.timer = new Scene(timer.getValue());
 
-        showTits();
+        showTimer();
         primaryStage.show();
     }
 
@@ -60,7 +60,7 @@ public class MainCtrl {
         primaryStage.setScene(add);
         add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
     }
-    public void showTits(){
+    public void showTimer(){
         primaryStage.setTitle("USELESS TIMER");
         primaryStage.setScene(timer);
 
