@@ -43,7 +43,7 @@
     <AnchorPane fx:id="AnchorPane1" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <children>
             <Button fx:id="Button1" layoutX="130.0" layoutY="258.0" mnemonicParsing="false" onAction="#Button1Pressed" text="Answer 1" />
-            <Button fx:id="Button2" layoutX="255.0" layoutY="258.0" mnemonicParsing="false" onAction="#Button2Pressed" text="Answer2" />
+            <Button fx:id="Button2" layoutX="255.0" layoutY="258.0" mnemonicParsing="false" onAction="#Button2Pressed" text="Answer 2" />
             <Button fx:id="Button3" layoutX="404.0" layoutY="258.0" mnemonicParsing="false" onAction="#Button3Pressed" text="Answer 3" />
       </children>
     </AnchorPane>
