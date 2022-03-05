@@ -1,14 +1,10 @@
 package server.service;
 
 import commons.Game;
-import commons.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import server.database.GameRepository;
-import server.database.QuestionRepository;
-
-import java.util.List;
 
 @Service
 public class GameService {
