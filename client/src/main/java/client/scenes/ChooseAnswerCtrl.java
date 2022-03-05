@@ -1,35 +1,34 @@
 package client.scenes;
 
 import client.Communication.AnswerCommunication;
+import client.utils.ServerUtils;
+import com.google.inject.Inject;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.MenuBar;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
-public class ChooseAnswerCtrl<Button1> {
+public class ChooseAnswerCtrl {
+
+    private final ServerUtils server;
+    private final MainCtrl mainCtrl;
 
     @FXML
-    public static AnchorPane AnchorPane1;
+    public Button Button1;
 
     @FXML
-    public static Button Button1;
+    public Button Button2;
 
     @FXML
-    public static Button Button2;
+    public Button Button3;
 
-    @FXML
-    public static Button Button3;
+    @Inject
+    public ChooseAnswerCtrl(ServerUtils server, MainCtrl mainCtrl) {
+        this.mainCtrl = mainCtrl;
+        this.server = server;
 
-    @FXML
-    private static MenuBar MenuBar1;
-
-    @FXML
-    private static VBox VBox1;
-
+    }
 
     @FXML
     void Button1Pressed(ActionEvent event) throws IOException, InterruptedException {
@@ -44,17 +43,6 @@ public class ChooseAnswerCtrl<Button1> {
     @FXML
     void Button3Pressed(ActionEvent event) throws IOException, InterruptedException {
         AnswerCommunication.sendAnswer(Button3.getText());
-    }
-
-
-    //presetting the text inside the button TODO - FIX
-    public void initialize(){
-        Button1 = new Button();
-        Button1.setText("Ans1");
-        Button2 = new Button();
-        Button2.setText("Ans2");
-        Button3 = new Button();
-        Button3.setText("Ans3");
     }
 }
 
