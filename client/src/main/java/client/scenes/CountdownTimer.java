@@ -1,9 +1,6 @@
 package client.scenes;
-import java.awt.event.ActionListener;
 import java.net.URL;
 import java.util.*;
-
-import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
