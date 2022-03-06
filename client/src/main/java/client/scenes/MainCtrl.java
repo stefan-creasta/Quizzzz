@@ -32,8 +32,11 @@ public class MainCtrl {
     private CountdownTimer timerCtrl;
     private Scene timer;
 
+    private ChooseAnswerCtrl chooseCtrl;
+    private Scene choose;
+
     public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
-            Pair<AddQuoteCtrl, Parent> add, Pair<CountdownTimer,Parent> timer) {
+            Pair<AddQuoteCtrl, Parent> add, Pair<ChooseAnswerCtrl, Parent> chooseAnswerPair, Pair<CountdownTimer,Parent> timer) {
         this.primaryStage = primaryStage;
 
         this.overviewCtrl = overview.getKey();
@@ -45,6 +48,10 @@ public class MainCtrl {
         this.timerCtrl  = timer.getKey();
         this.timer = new Scene(timer.getValue());
 
+        this.chooseCtrl = chooseAnswerPair.getKey();
+        this.choose = new Scene(chooseAnswerPair.getValue());
+
+        //showOverview();
         showTimer();
         primaryStage.show();
     }
@@ -60,10 +67,19 @@ public class MainCtrl {
         primaryStage.setScene(add);
         add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
     }
-    public void showTimer(){
-        primaryStage.setTitle("USELESS TIMER");
-        primaryStage.setScene(timer);
+    public void showTimer() {
+            primaryStage.setTitle("Countdown Timer");
+            primaryStage.setScene(timer);
+    }
+
+    public void showChooseAnswer() {
+        primaryStage.setTitle("Choose Answer");
+        primaryStage.setScene(choose);
+//        choose.set(e -> chooseCtrl.Button1Pressed(e));
 
 
+//        Scene scene = new Scene(ChooseAnswerCtrl.AnchorPane1, 640, 480);
+//        primaryStage.setScene(scene);
+//        primaryStage.show();
     }
 }

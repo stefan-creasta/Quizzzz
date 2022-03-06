@@ -6,14 +6,14 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CountdownTimer">
    <children>
-      <Text layoutX="14.0" layoutY="216.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time Left:" textAlignment="CENTER" wrappingWidth="287.73675537109375">
+      <Text layoutX="14.0" layoutY="372.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time Left:" textAlignment="CENTER" wrappingWidth="287.73675537109375">
          <font>
-            <Font size="40.0" />
+            <Font size="20.0" />
          </font>
       </Text>
-      <Text fx:id="questionTime" layoutX="300.0" layoutY="220.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+      <Text fx:id="questionTime" layoutX="300.0" layoutY="375.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="92.236328125">
          <font>
-            <Font size="50.0" />
+            <Font size="25.0" />
          </font>
       </Text>
    </children>
