@@ -54,7 +54,7 @@ public class MainCtrl {
         this.choose = new Scene(chooseAnswerPair.getValue());
 
         //showOverview();
-        showChooseAnswer();
+        showTimer();
         primaryStage.show();
     }
 
