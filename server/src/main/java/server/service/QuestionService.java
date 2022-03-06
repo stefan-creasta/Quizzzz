@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import server.database.QuestionRepository;
 
+import java.util.Random;
+
 
 @Service
 public class QuestionService {
@@ -29,6 +31,18 @@ public class QuestionService {
     public Question getId(long id){
         Question q = questionRepository.getId(id);
         return q;
+    }
+
+    public String quizList(){
+        String l = "";
+        Random random = new Random();
+        for(int i=0; i<20 && i<questionRepository.count(); i++) {
+            int idx = random.nextInt((int) questionRepository.count()) + 1;
+            while(l.contains(String.valueOf(idx)))
+                idx = random.nextInt((int) questionRepository.count());
+            l += (char) idx;
+        }
+        return l;
     }
 
 }
