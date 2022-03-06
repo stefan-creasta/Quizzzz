@@ -52,7 +52,7 @@ public class MainCtrl {
         this.choose = new Scene(chooseAnswerPair.getValue());
 
         //showOverview();
-        showTimer();
+        showChooseAnswer();
         primaryStage.show();
     }
 
