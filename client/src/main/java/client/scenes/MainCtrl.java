@@ -19,7 +19,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
-
 public class MainCtrl {
 
     private Stage primaryStage;
@@ -30,17 +29,26 @@ public class MainCtrl {
     private AddQuoteCtrl addCtrl;
     private Scene add;
 
+    private CountdownTimer timerCtrl;
+    private Scene timer;
+
     private ChooseAnswerCtrl chooseCtrl;
     private Scene choose;
 
     public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
-            Pair<AddQuoteCtrl, Parent> add, Pair<ChooseAnswerCtrl, Parent> chooseAnswerPair) {
+
+            Pair<AddQuoteCtrl, Parent> add, Pair<ChooseAnswerCtrl, Parent> chooseAnswerPair, Pair<CountdownTimer,Parent> timer) {
+
         this.primaryStage = primaryStage;
+
         this.overviewCtrl = overview.getKey();
         this.overview = new Scene(overview.getValue());
 
         this.addCtrl = add.getKey();
         this.add = new Scene(add.getValue());
+
+        this.timerCtrl  = timer.getKey();
+        this.timer = new Scene(timer.getValue());
 
         this.chooseCtrl = chooseAnswerPair.getKey();
         this.choose = new Scene(chooseAnswerPair.getValue());
@@ -61,6 +69,12 @@ public class MainCtrl {
         primaryStage.setScene(add);
         add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
     }
+
+    public void showTimer() {
+            primaryStage.setTitle("Countdown Timer");
+            primaryStage.setScene(timer);
+    }
+
     public void showChooseAnswer() {
         primaryStage.setTitle("Choose Answer");
         primaryStage.setScene(choose);
