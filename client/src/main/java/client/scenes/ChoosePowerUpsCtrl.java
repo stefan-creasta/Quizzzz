@@ -1,6 +1,5 @@
 package client.scenes;
 
-import client.Communication.AnswerCommunication;
 import client.Communication.PowerUpsCommunication;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
