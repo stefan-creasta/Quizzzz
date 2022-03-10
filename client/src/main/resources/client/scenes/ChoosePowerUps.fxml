@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.ChoosePowerUpsCtrl">
+   <children>
+      <MenuBar />
+      <AnchorPane prefHeight="212.0" prefWidth="596.0">
+         <children>
+            <Button fx:id="DoublePointsButton" layoutX="495.0" layoutY="14.0" mnemonicParsing="false" onAction="#DoublePointsButtonPressed" prefHeight="26.0" prefWidth="90.0" text="Double Points" textAlignment="CENTER" />
+            <Button fx:id="EliminateWrongAnswerButton" layoutX="495.0" layoutY="53.0" mnemonicParsing="false" onAction="#EliminateWrongAnswerButtonPressed" prefHeight="26.0" prefWidth="90.0" text="50/50" textAlignment="CENTER" />
+            <Button fx:id="HalfTimeButton" layoutX="495.0" layoutY="93.0" mnemonicParsing="false" onAction="#HalfTimeButtonPressed" prefHeight="26.0" prefWidth="90.0" text="Half Time" textAlignment="CENTER" />
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>
