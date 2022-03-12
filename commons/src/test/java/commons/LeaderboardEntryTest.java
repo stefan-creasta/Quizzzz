@@ -61,7 +61,7 @@ class LeaderboardEntryTest {
         Date d = new GregorianCalendar(3, 3, 3).getTime();
         LeaderboardEntry l2 = new LeaderboardEntry("abc", 2, d);
         assertLinesMatch(List.of(
-                "commons.LeaderboardEntry@[0-9a-f]{8}\\[",
+                "commons.LeaderboardEntry@[0-9a-f]*\\[",
                 "  date=" + d,
                 "  score=2",
                 "  username=abc",
