@@ -2,17 +2,17 @@ package client.Communication;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-//import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 
 import java.io.InputStream;
+import java.io.File;
 
-import commons.Question;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
@@ -20,19 +20,59 @@ import javafx.scene.image.WritableImage;
 import javax.imageio.ImageIO;
 
 public class ImageCommunication {
-    private static HttpClient client = HttpClient.newBuilder().build();
+    public static HttpClient client = HttpClient.newBuilder().build();
+    public static String fallbackImageURI = new File("src/main/resources/images/image-fallback.png").toURI().toString();
 
-    public static Image getImage(Question question) throws IOException, InterruptedException {
+    public static Image getImage(String path) throws IOException, IllegalArgumentException {
+        //null path means that the caller is likely trying to fetch the image for a question that doesn't have one.
+        if (path == null) throw new IllegalArgumentException();
+
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://br-tomassen.com/wp-content/uploads/2018/05/DUCK-7.png%22"))
+                .uri(URI.create(path))
                         .GET()
                         .build();
-        InputStream is = client.send(request, HttpResponse.BodyHandlers.ofInputStream()).body();
 
+        Image image = null;
+
+        try {
+        //client.send(...) may throw a ConnectException if connection fails
+        HttpResponse<InputStream> response = client.send(request, HttpResponse.BodyHandlers.ofInputStream());
+        //the status may be 404 which in case we would still need the fallback image
+        if (response.statusCode() == 200) {
+        InputStream is = response.body();
+
+        //ImageIO may throw an IOException
         BufferedImage bufferedImage = ImageIO.read(is);
+        //ImageIO doesn't close the stream by itself
+        is.close();
+
         //Image image = SwingFXUtils.toFXImage(bufferedImage, null);
         //Image image = new Image("https://br-tomassen.com/wp-content/uploads/2018/05/DUCK-7.png%22");
-        Image image = convertToFxImage(bufferedImage);
+        image = convertToFxImage(bufferedImage);
+        }
+        }
+        catch (ConnectException e) {
+            System.out.println("A connection error has occurred while getting an image!");
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            System.out.println("An IO Exception has occurred while getting an image!");
+            e.printStackTrace();
+        }
+        catch (InterruptedException e) {
+            System.out.println("Interrupted!");
+            e.printStackTrace();
+        }
+
+        if (image == null) {
+            try {
+                image = new Image(fallbackImageURI);
+            }
+            catch (IllegalArgumentException e) {
+                throw new IOException("Fallback image is likely missing!");
+            }
+        }
+        //if there was an error getting the image, return the fallback image instead
         return image;
     }
     private static Image convertToFxImage(BufferedImage image) {

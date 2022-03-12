@@ -32,7 +32,15 @@ public class ChooseAnswerCtrl {
     public ChooseAnswerCtrl(ServerUtils server, MainCtrl mainCtrl) throws IOException, InterruptedException {
         this.mainCtrl = mainCtrl;
         this.server = server;
-        this.imageview.setImage(ImageCommunication.getImage(null));
+    }
+
+    public void initialize() {
+        try {
+            this.imageview.setImage(ImageCommunication.getImage("http://localhost:8080/images/image%202.png"));
+        }
+        catch (IOException e) {
+            System.out.println("Failed to set the question image.");
+        }
     }
 
     @FXML
