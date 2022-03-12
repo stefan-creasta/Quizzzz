@@ -35,7 +35,12 @@ public class ChooseAnswerCtrl {
     }
 
     public void initialize() {
-        this.imageview.setImage(ImageCommunication.getImage("http://localhost:8080/images/image%202.png"));
+        try {
+            this.imageview.setImage(ImageCommunication.getImage("http://localhost:8080/images/image%202.png"));
+        }
+        catch (IOException e) {
+            System.out.println("Failed to set the question image.");
+        }
     }
 
     @FXML

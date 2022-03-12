@@ -22,6 +22,7 @@ class ImageCommunicationTest {
         HttpResponse<InputStream> response = mock(HttpResponse.class);
         ImageCommunication.client = mock(HttpClient.class);
 
+        when(response.statusCode()).thenReturn(200);
         when(response.body()).thenReturn(is);
         when(ImageCommunication.client.send(any(HttpRequest.class), any(HttpResponse.BodyHandler.class))).thenReturn(response);
 
