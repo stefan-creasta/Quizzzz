@@ -25,7 +25,7 @@ class QuestionTest {
     @Test
     void testHashCode() {
         Question q1 = new Question("a","a","a","a");
-        assertEquals(1360777365, HashCodeBuilder.reflectionHashCode(q1));
+        assertEquals(-1190977743, HashCodeBuilder.reflectionHashCode(q1));
     }
 
     @Test
@@ -36,6 +36,7 @@ class QuestionTest {
                 "  answer=a",
                 "  id=0",
                 "  question=a",
+                "  questionImage=<null>",
                 "  wrongAnswer1=a",
                 "  wrongAnswer2=a",
         "]"

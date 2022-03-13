@@ -1,11 +1,13 @@
 package client.scenes;
 
 import client.Communication.AnswerCommunication;
+import client.Communication.ImageCommunication;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 
 import java.io.IOException;
 
@@ -23,11 +25,22 @@ public class ChooseAnswerCtrl {
     @FXML
     public Button Button3;
 
+    @FXML
+    public ImageView imageview;
+
     @Inject
-    public ChooseAnswerCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    public ChooseAnswerCtrl(ServerUtils server, MainCtrl mainCtrl) throws IOException, InterruptedException {
         this.mainCtrl = mainCtrl;
         this.server = server;
+    }
 
+    public void initialize() {
+        try {
+            this.imageview.setImage(ImageCommunication.getImage("http://localhost:8080/images/image%202.png"));
+        }
+        catch (IOException e) {
+            System.out.println("Failed to set the question image.");
+        }
     }
 
     @FXML
