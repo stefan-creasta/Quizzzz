@@ -1,12 +1,10 @@
 package server.api;
 
 
-import commons.LeaderboardEntry;
 import commons.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import server.database.QuestionRepository;
-import server.service.QuestionService;
 
 
 @RestController
