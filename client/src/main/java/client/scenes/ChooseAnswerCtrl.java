@@ -52,7 +52,6 @@ public class ChooseAnswerCtrl {
         catch (IOException e) {
             System.out.println("Failed to set the question image.");
         }
-        AnswerCommunication.getQuestion(sessionid);
         sessionid = 1;
     }
 
