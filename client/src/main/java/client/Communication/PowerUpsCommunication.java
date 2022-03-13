@@ -17,7 +17,7 @@ public class PowerUpsCommunication {
         System.out.println("\nPower ups sent to server: \n" + message);
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/api/powerups"))
+                .uri(URI.create("http://localhost:8080/api/powerup"))
                 .POST(HttpRequest.BodyPublishers.ofString(message))
                 .build();
         client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -26,3 +26,4 @@ public class PowerUpsCommunication {
 
 
 }
+

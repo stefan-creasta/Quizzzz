@@ -1,18 +1,22 @@
 package server.api;
 
+import commons.PowerUp;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import server.service.PowerUpService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/powerup")
 public class PowerUpController {
-    public PowerUpController(){
-
+    public PowerUpService service;
+    public PowerUpController(PowerUpService service){
+            this.service = service;
     }
     @PostMapping("")
-    public void postPowerUp(@RequestBody String item) {
-        System.out.println(item + " server");
+    public List<PowerUp> getPowerUp() {
+        return service.getPowerUpList();
     }
 }
