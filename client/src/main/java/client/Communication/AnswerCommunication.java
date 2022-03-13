@@ -18,7 +18,8 @@ public class AnswerCommunication {
 
     private static Gson gson = new Gson();
 
-    public static void sendAnswer(String message) throws IOException, InterruptedException {
+    public static void sendAnswer(String message, long id) throws IOException, InterruptedException {
+        message = id + "_" + message;
         System.out.println("\nAnswer sent to server:\n" + message);
 
         HttpRequest request = HttpRequest.newBuilder()

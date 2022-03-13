@@ -18,6 +18,8 @@ public class ChooseAnswerCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private Question question;
+    private long sessionid;
+    private long questionid;
 
     @FXML
     public Button Button1;
@@ -50,30 +52,35 @@ public class ChooseAnswerCtrl {
         catch (IOException e) {
             System.out.println("Failed to set the question image.");
         }
+        AnswerCommunication.getQuestion(sessionid);
+        sessionid = 1;
     }
 
     @FXML
     void Button1Pressed(ActionEvent event) throws IOException, InterruptedException {
-        AnswerCommunication.sendAnswer(Button1.getText());
+        AnswerCommunication.sendAnswer(Button1.getText(), questionid);
     }
 
     @FXML
     void Button2Pressed(ActionEvent event) throws IOException, InterruptedException {
-        AnswerCommunication.sendAnswer(Button2.getText());
+        AnswerCommunication.sendAnswer(Button2.getText(), questionid);
     }
 
     @FXML
     void Button3Pressed(ActionEvent event) throws IOException, InterruptedException {
-        AnswerCommunication.sendAnswer(Button3.getText());
+        AnswerCommunication.sendAnswer(Button3.getText(), questionid);
     }
 
     @FXML
     void GetQuestionButton(ActionEvent event) throws IOException, InterruptedException {
-        Question q = AnswerCommunication.getQuestion(16);
+        Question q = AnswerCommunication.getQuestion(sessionid);
+        questionid = q.id;
         QuestionText.setText(q.question);
         Button1.setText(q.answer);
         Button2.setText(q.wrongAnswer1);
         Button3.setText(q.wrongAnswer2);
     }
+
+
 }
 
