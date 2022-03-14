@@ -35,18 +35,15 @@ public class MainCtrl {
     private ChooseAnswerCtrl chooseCtrl;
     private Scene choose;
 
+    private ChoosePowerUpsCtrl choosePowerUpCtrl;
+    private Scene choosePower;
 
     private QuestionCtrl questionCtrl;
     private Scene question;
 
-    public void initialize(
-            Stage primaryStage,
-            Pair<QuoteOverviewCtrl, Parent> overview,
-            Pair<AddQuoteCtrl, Parent> add,
-            Pair<ChooseAnswerCtrl, Parent> chooseAnswerPair,
-            Pair<QuestionCtrl, Parent> question,
-            Pair<CountdownTimer,Parent> timer)
-    {
+    public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
+
+            Pair<AddQuoteCtrl, Parent> add, Pair<ChooseAnswerCtrl, Parent> chooseAnswerPair, Pair<CountdownTimer,Parent> timer) {
 
         this.primaryStage = primaryStage;
 
@@ -65,9 +62,11 @@ public class MainCtrl {
         this.questionCtrl = question.getKey();
         this.question = new Scene(question.getValue());
 
+        this.choosePowerUpCtrl = choosePower.getKey();
+        this.choosePower = new Scene(choosePower.getValue());
+
         //showOverview();
-        //showChooseAnswer();
-        showQuestion();
+        showChooseAnswer();
         primaryStage.show();
     }
 
@@ -91,6 +90,11 @@ public class MainCtrl {
     public void showQuestion() {
         primaryStage.setTitle("Question");
         primaryStage.setScene(question);
+    }
+
+    public void showPowerUps() {
+        primaryStage.setTitle("Power Ups");
+        primaryStage.setScene(choosePower);
     }
 
     public void showChooseAnswer() {

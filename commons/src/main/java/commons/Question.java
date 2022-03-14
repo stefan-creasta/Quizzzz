@@ -24,10 +24,26 @@ public class Question {
     public String wrongAnswer1;
     @Column(name = "WRONG_ANSWER2")
     public String wrongAnswer2;
+    @Column(name = "QUESTION_IMAGE")
+    public String questionImage;
 
     private Question(){}
 
-    public Question(String q, String a, String w1, String w2){
+    public Question(String q, String a, String w1, String w2) {
+        this.question = q;
+        this.answer = a;
+        this.wrongAnswer1 = w1;
+        this.wrongAnswer2 = w2;
+        this.questionImage = null;
+    }
+
+    public Question(String q, String a, String w1, String w2, String qi) {
+        this(q, a, w1, w2);
+        this.questionImage = qi;
+    }
+
+    public Question(long id, String q, String a, String w1, String w2){
+        this.id = id;
         this.question = q;
         this.answer = a;
         this.wrongAnswer1 = w1;
