@@ -38,12 +38,16 @@ public class MainCtrl {
     private ChoosePowerUpsCtrl choosePowerUpCtrl;
     private Scene choosePower;
 
-    public void initialize(Stage primaryStage,
-                           Pair<QuoteOverviewCtrl, Parent> overview,
-                           Pair<AddQuoteCtrl, Parent> add,
-                           Pair<ChooseAnswerCtrl, Parent> chooseAnswerPair,
-                           Pair<CountdownTimer,Parent> timer,
-                           Pair<ChoosePowerUpsCtrl,Parent> choosePower) {
+    private QuestionCtrl questionCtrl;
+    private Scene question;
+
+    public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
+
+            Pair<AddQuoteCtrl, Parent> add, Pair<ChooseAnswerCtrl, Parent> chooseAnswerPair,
+                           Pair<QuestionCtrl, Parent> question,
+                           Pair<ChoosePowerUpsCtrl, Parent> choosePower,
+
+                           Pair<CountdownTimer,Parent> timer) {
 
         this.primaryStage = primaryStage;
 
@@ -59,11 +63,15 @@ public class MainCtrl {
         this.chooseCtrl = chooseAnswerPair.getKey();
         this.choose = new Scene(chooseAnswerPair.getValue());
 
+        this.questionCtrl = question.getKey();
+        this.question = new Scene(question.getValue());
+
         this.choosePowerUpCtrl = choosePower.getKey();
         this.choosePower = new Scene(choosePower.getValue());
 
         //showOverview();
-        showPowerUps();
+        //showChooseAnswer();
+        showQuestion();
         primaryStage.show();
     }
 
@@ -84,6 +92,16 @@ public class MainCtrl {
             primaryStage.setScene(timer);
     }
 
+    public void showQuestion() {
+        primaryStage.setTitle("Question");
+        primaryStage.setScene(question);
+    }
+
+    public void showPowerUps() {
+        primaryStage.setTitle("Power Ups");
+        primaryStage.setScene(choosePower);
+    }
+
     public void showChooseAnswer() {
         primaryStage.setTitle("Choose Answer");
         primaryStage.setScene(choose);
@@ -93,9 +111,5 @@ public class MainCtrl {
 //        Scene scene = new Scene(ChooseAnswerCtrl.AnchorPane1, 640, 480);
 //        primaryStage.setScene(scene);
 //        primaryStage.show();
-    }
-    public void showPowerUps() {
-        primaryStage.setTitle("Power Ups");
-        primaryStage.setScene(choosePower);
     }
 }
