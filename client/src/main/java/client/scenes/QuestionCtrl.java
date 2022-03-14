@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import client.Communication.AnswerCommunication;
+import client.Communication.PowerUpsCommunication;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -32,7 +33,7 @@ public class QuestionCtrl {
     private Button doublePoints;
 
     @FXML
-    private Button fiftyFifty;
+    private Button eliminateWrongAnswer;
 
     @FXML
     private Button halfTime;
@@ -47,19 +48,37 @@ public class QuestionCtrl {
     @FXML
     private Label questionTitle;
 
+    //TODO: Send correct Game ID
     @FXML
     void Answer1Pressed(ActionEvent event) throws IOException, InterruptedException {
-        AnswerCommunication.sendAnswer(answer1.getText());
+        AnswerCommunication.sendAnswer(answer1.getText(), 0);
     }
-
+    //TODO: Send correct Game ID
     @FXML
     void Answer2Pressed(ActionEvent event) throws IOException, InterruptedException {
-        AnswerCommunication.sendAnswer(answer2.getText());
+        AnswerCommunication.sendAnswer(answer2.getText(), 0);
+    }
+
+    //TODO: Send correct Game ID
+    @FXML
+    void Answer3Pressed(ActionEvent event) throws IOException, InterruptedException {
+        AnswerCommunication.sendAnswer(answer3.getText(), 0);
+    }
+
+
+    @FXML
+    void DoublePointsButtonPressed(ActionEvent event) throws IOException, InterruptedException {
+        PowerUpsCommunication.sendPowerUps(doublePoints.getText() + " WAS USED!");
     }
 
     @FXML
-    void Answer3Pressed(ActionEvent event) throws IOException, InterruptedException {
-        AnswerCommunication.sendAnswer(answer3.getText());
+    void EliminateWrongAnswerButtonPressed(ActionEvent event) throws IOException, InterruptedException {
+        PowerUpsCommunication.sendPowerUps(eliminateWrongAnswer.getText()+ " WAS USED!");
+    }
+
+    @FXML
+    void HalfTimeButtonPressed(ActionEvent event) throws IOException, InterruptedException {
+        PowerUpsCommunication.sendPowerUps(halfTime.getText() +" WAS USED!");
     }
 
     @FXML

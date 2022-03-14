@@ -43,7 +43,11 @@ public class MainCtrl {
 
     public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
 
-            Pair<AddQuoteCtrl, Parent> add, Pair<ChooseAnswerCtrl, Parent> chooseAnswerPair, Pair<CountdownTimer,Parent> timer) {
+            Pair<AddQuoteCtrl, Parent> add, Pair<ChooseAnswerCtrl, Parent> chooseAnswerPair,
+                           Pair<QuestionCtrl, Parent> question,
+                           Pair<ChoosePowerUpsCtrl, Parent> choosePower,
+
+                           Pair<CountdownTimer,Parent> timer) {
 
         this.primaryStage = primaryStage;
 
@@ -66,7 +70,8 @@ public class MainCtrl {
         this.choosePower = new Scene(choosePower.getValue());
 
         //showOverview();
-        showChooseAnswer();
+        //showChooseAnswer();
+        showQuestion();
         primaryStage.show();
     }
 

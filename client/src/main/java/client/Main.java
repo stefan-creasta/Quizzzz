@@ -48,6 +48,6 @@ public class Main extends Application {
         var choosePower = FXML.load(ChoosePowerUpsCtrl.class,"client","scenes","ChoosePowerUps.fxml");
 
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        mainCtrl.initialize(primaryStage, overview, add, chooseAnswer,timer);
+        mainCtrl.initialize(primaryStage, overview, add, chooseAnswer,  question, choosePower, timer);
     }
 }
