@@ -35,9 +35,18 @@ public class MainCtrl {
     private ChooseAnswerCtrl chooseCtrl;
     private Scene choose;
 
-    public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
 
-            Pair<AddQuoteCtrl, Parent> add, Pair<ChooseAnswerCtrl, Parent> chooseAnswerPair, Pair<CountdownTimer,Parent> timer) {
+    private QuestionCtrl questionCtrl;
+    private Scene question;
+
+    public void initialize(
+            Stage primaryStage,
+            Pair<QuoteOverviewCtrl, Parent> overview,
+            Pair<AddQuoteCtrl, Parent> add,
+            Pair<ChooseAnswerCtrl, Parent> chooseAnswerPair,
+            Pair<QuestionCtrl, Parent> question,
+            Pair<CountdownTimer,Parent> timer)
+    {
 
         this.primaryStage = primaryStage;
 
@@ -53,8 +62,12 @@ public class MainCtrl {
         this.chooseCtrl = chooseAnswerPair.getKey();
         this.choose = new Scene(chooseAnswerPair.getValue());
 
+        this.questionCtrl = question.getKey();
+        this.question = new Scene(question.getValue());
+
         //showOverview();
-        showChooseAnswer();
+        //showChooseAnswer();
+        showQuestion();
         primaryStage.show();
     }
 
@@ -73,6 +86,11 @@ public class MainCtrl {
     public void showTimer() {
             primaryStage.setTitle("Countdown Timer");
             primaryStage.setScene(timer);
+    }
+
+    public void showQuestion() {
+        primaryStage.setTitle("Question");
+        primaryStage.setScene(question);
     }
 
     public void showChooseAnswer() {

@@ -43,8 +43,10 @@ public class Main extends Application {
         var overview = FXML.load(QuoteOverviewCtrl.class, "client", "scenes", "QuoteOverview.fxml");
         var add = FXML.load(AddQuoteCtrl.class, "client", "scenes", "AddQuote.fxml");
         var chooseAnswer = FXML.load(ChooseAnswerCtrl.class, "client", "scenes", "ChooseAnswer.fxml");
+        var question = FXML.load(QuestionCtrl.class, "client", "scenes", "Question.fxml");
+
         var timer = FXML.load(CountdownTimer.class,"client","scenes","Timer.fxml");
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        mainCtrl.initialize(primaryStage, overview, add, chooseAnswer,timer);
+        mainCtrl.initialize(primaryStage, overview, add, chooseAnswer, question, timer);
     }
 }
