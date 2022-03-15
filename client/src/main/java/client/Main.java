@@ -60,7 +60,11 @@ public class Main extends Application {
         Pair<Long, GameState> gameInfo = hardcodedThingsForDemo(gameCommunication);
         long gameId = gameInfo.getKey();
         GameState state = gameInfo.getValue();
-        long playerId = state.getPlayer().id;
+        //TODO: Fix GameState, so that playerId isn't null
+        long playerId = 0;
+        if (state.getPlayer() != null) {
+            playerId = state.getPlayer().id;
+        }
         serverListener.initialize(playerId, mainCtrl);
         gameCommunication.initiateGame(gameId);
     }

@@ -12,6 +12,9 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+import javafx.application.Platform;
+
+
 public class ServerListener {
     private HttpClient client;
 
@@ -29,7 +32,9 @@ public class ServerListener {
     public void initialize(final long playerId, MainCtrl mainCtrl) throws IllegalArgumentException {
         if (mainCtrl == null) throw new IllegalArgumentException();
         this.mainCtrl = mainCtrl;
-        listeningThread = new Thread(() -> {
+
+        // New threads need to be invoked via the JavaFX Platform API, otherwise it won't run
+        Platform.runLater(() -> {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("http://localhost:8080/api/listen?playerId=" + playerId))
                     .GET()
@@ -37,6 +42,7 @@ public class ServerListener {
             while (true) {
                 try {
                     var response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                    System.out.println(response.body());
                     var gameState = (GameState) gson.fromJson(response.body(), new TypeToken<GameState>(){}.getType());
                     this.handler(gameState);
                 } catch (IOException e) {
@@ -49,7 +55,6 @@ public class ServerListener {
             }
         });
 
-        listeningThread.start();
     }
 
     private void handler(GameState gameState) {

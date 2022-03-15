@@ -63,6 +63,7 @@ public class GameService {
     @Autowired
     public GameService(@Qualifier("questionService") QuestionService questionService){
         this.questionService = questionService;
+       // this.playerConnections = new HashMap<>();
     }
 
     public Game getId(long id){
