@@ -42,6 +42,6 @@
       <Button fx:id="halfTime" layoutX="724.0" layoutY="235.0" mnemonicParsing="false" onAction="#HalfTimeButtonPressed" prefWidth="230.0" text="Half time" />
       <Label layoutX="711.0" layoutY="27.0" styleClass="leaderboard-text" text="Hold Tab to see Leaderboard" textFill="WHITE" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="40.0" layoutX="223.0" layoutY="462.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="loading-bar" width="529.0" />
-      <Label layoutX="372.0" layoutY="527.0" styleClass="time-left" text="Time left: 7 seconds" />
+      <Label fx:id="questionTime" layoutX="372.0" layoutY="527.0" styleClass="time-left" text="Time left: 7 seconds" />
    </children>
 </AnchorPane>

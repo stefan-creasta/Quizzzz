@@ -2,15 +2,23 @@ package client.scenes;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Collections;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import client.Communication.AnswerCommunication;
+import client.Communication.ImageCommunication;
 import client.Communication.PowerUpsCommunication;
+import commons.Question;
+import commons.Timer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import java.time.Duration;
 
 public class QuestionCtrl {
 
@@ -47,6 +55,11 @@ public class QuestionCtrl {
 
     @FXML
     private Label questionTitle;
+
+    @FXML
+    private Label questionTime;
+
+    private Timer timer;
 
     //TODO: Send correct Game ID
     @FXML
@@ -87,6 +100,53 @@ public class QuestionCtrl {
         assert questionText != null : "fx:id=\"questionText\" was not injected: check your FXML file 'Question.fxml'.";
         assert questionTitle != null : "fx:id=\"questionTitle\" was not injected: check your FXML file 'Question.fxml'.";
 
+        timer = new Timer(0,20);
+        Timeline timeline= new Timeline( new KeyFrame(javafx.util.Duration.millis(1), e ->{
+            questionTime.setText(timer.toTimerDisplayString());
+        }));
+        timeline.setCycleCount((int)timer.getDurationLong()/1000);
+        timeline.play();
+    }
+
+    public void syncTimer(long syncLong, Duration duration) {
+        timer.setDuration(duration);
+        timer.synchronize(syncLong);
+    }
+
+    public void setQuestion(Question q) {
+        questionText.setText(q.question);
+        if (q.questionImage != null) {
+            try {
+                questionImage.setImage(ImageCommunication.getImage("https://localhost:8080/" + q.questionImage));
+            }
+            catch (IOException e) {
+                System.out.println("Failed to set the question image.");
+            }
+        }
+        List<String> answerList = List.of(q.answer, q.wrongAnswer1, q.wrongAnswer2);
+
+        Collections.shuffle(answerList);
+
+        answer1.setText(answerList.get(0));
+        answer2.setText(answerList.get(1));
+        answer3.setText(answerList.get(2));
+    }
+
+    public void markAnswer(String correct, String ofplayer) {
+        for (Button answer : List.of(answer1, answer2, answer3)) {
+            if (answer.getText().equals(ofplayer)) {
+                answer.getStyleClass().add("wrong");
+            }
+            if (answer.getText().equals(correct)) {
+                answer.getStyleClass().add("right");
+            }
+        }
+    }
+
+    public void clearAnswer() {
+        for (Button answer : List.of(answer1, answer2, answer3)) {
+            answer.getStyleClass().removeAll("wrong", "right");
+        }
     }
 
 }

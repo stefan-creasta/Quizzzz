@@ -15,6 +15,7 @@
  */
 package client.scenes;
 
+import commons.GameState;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -111,5 +112,18 @@ public class MainCtrl {
 //        Scene scene = new Scene(ChooseAnswerCtrl.AnchorPane1, 640, 480);
 //        primaryStage.setScene(scene);
 //        primaryStage.show();
+    }
+
+    public void handleGameState(GameState gameState) {
+        //if any other screen is displayed there is something wrong.
+        showQuestion();
+        if (gameState.question != null) {
+            questionCtrl.clearAnswer();
+            questionCtrl.setQuestion(gameState.question);
+        }
+        if (gameState.stage == GameState.Stage.INTERVAL) {
+            questionCtrl.markAnswer(gameState.question.answer, gameState.getPlayer().answer);
+        }
+        questionCtrl.syncTimer(gameState.timerSyncLong, gameState.duration);
     }
 }
