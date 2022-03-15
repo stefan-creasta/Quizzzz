@@ -16,21 +16,19 @@
 package client;
 
 
-
-
-import static com.google.inject.Guice.createInjector;
-import java.io.IOException;
-import java.net.URISyntaxException;
-
 import client.Communication.GameCommunication;
 import client.Communication.ServerListener;
-import client.scenes.ChooseAnswerCtrl;
-import com.google.inject.Injector;
 import client.scenes.*;
+import com.google.inject.Injector;
 import commons.GameState;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+
+import static com.google.inject.Guice.createInjector;
 
 
 public class Main extends Application {
@@ -62,9 +60,8 @@ public class Main extends Application {
         GameState state = gameInfo.getValue();
         //TODO: Fix GameState, so that playerId isn't null
         long playerId = 0;
-        if (state.getPlayer() != null) {
-            playerId = state.getPlayer().id;
-        }
+        playerId = state.playerId;
+
         serverListener.initialize(playerId, mainCtrl);
         gameCommunication.initiateGame(gameId);
     }

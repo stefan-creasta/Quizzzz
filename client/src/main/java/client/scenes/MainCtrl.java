@@ -122,7 +122,7 @@ public class MainCtrl {
             questionCtrl.setQuestion(gameState.question);
         }
         if (gameState.stage == GameState.Stage.INTERVAL) {
-            questionCtrl.markAnswer(gameState.question.answer, gameState.getPlayer().answer);
+            questionCtrl.markAnswer(gameState.question.answer, gameState.playerAnswer);
         }
         questionCtrl.syncTimer(gameState.timerSyncLong, gameState.duration);
     }

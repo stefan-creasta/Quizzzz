@@ -3,16 +3,16 @@ package client.Communication;
 import client.scenes.MainCtrl;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.inject.Inject;
 import commons.GameState;
+import javafx.application.Platform;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-
-import javafx.application.Platform;
 
 
 public class ServerListener {
@@ -22,7 +22,7 @@ public class ServerListener {
 
     private MainCtrl mainCtrl;
 
-    private static Gson gson = new Gson();
+    private static Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
     @Inject
     public ServerListener(HttpClient client) {

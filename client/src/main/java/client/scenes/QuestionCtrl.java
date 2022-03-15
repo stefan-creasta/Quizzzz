@@ -1,11 +1,5 @@
 package client.scenes;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.Collections;
-import java.util.List;
-import java.util.ResourceBundle;
-
 import client.Communication.AnswerCommunication;
 import client.Communication.ImageCommunication;
 import client.Communication.PowerUpsCommunication;
@@ -18,7 +12,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
-import java.time.Duration;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.Collections;
+import java.util.List;
+import java.util.ResourceBundle;
 
 public class QuestionCtrl {
 
@@ -108,7 +107,7 @@ public class QuestionCtrl {
         timeline.play();
     }
 
-    public void syncTimer(long syncLong, Duration duration) {
+    public void syncTimer(long syncLong, long duration) {
         timer.setDuration(duration);
         timer.synchronize(syncLong);
     }
