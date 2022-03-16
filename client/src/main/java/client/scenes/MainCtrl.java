@@ -29,6 +29,12 @@ public class MainCtrl {
     private AddQuoteCtrl addCtrl;
     private Scene add;
 
+    private AddQuoteCtrl playerCtrl;
+    private Scene player;
+
+    private LobbyCtrl lobbyCtrl;
+    private Scene lobby;
+
     private CountdownTimer timerCtrl;
     private Scene timer;
 
@@ -47,7 +53,8 @@ public class MainCtrl {
                            Pair<QuestionCtrl, Parent> question,
                            Pair<ChoosePowerUpsCtrl, Parent> choosePower,
 
-                           Pair<CountdownTimer,Parent> timer) {
+                           Pair<CountdownTimer,Parent> timer,
+                           Pair<LobbyCtrl, Parent> lobbyPair) {
 
         this.primaryStage = primaryStage;
 
@@ -69,9 +76,13 @@ public class MainCtrl {
         this.choosePowerUpCtrl = choosePower.getKey();
         this.choosePower = new Scene(choosePower.getValue());
 
+        this.lobbyCtrl = lobbyPair.getKey();
+        this.lobby = new Scene(lobbyPair.getValue());
+
         //showOverview();
         //showChooseAnswer();
-        showQuestion();
+        showLobby();
+        //showQuestion();
         primaryStage.show();
     }
 
@@ -87,9 +98,15 @@ public class MainCtrl {
         add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
     }
 
+    public void showPlayer() {
+        primaryStage.setTitle("Adding a player");
+        primaryStage.setScene(player);
+        player.setOnKeyPressed(e -> playerCtrl.keyPressed(e));
+    }
+
     public void showTimer() {
-            primaryStage.setTitle("Countdown Timer");
-            primaryStage.setScene(timer);
+        primaryStage.setTitle("Countdown Timer");
+        primaryStage.setScene(timer);
     }
 
     public void showQuestion() {
@@ -100,6 +117,11 @@ public class MainCtrl {
     public void showPowerUps() {
         primaryStage.setTitle("Power Ups");
         primaryStage.setScene(choosePower);
+    }
+
+    public void showLobby() {
+        primaryStage.setTitle("Lobby");
+        primaryStage.setScene(lobby);
     }
 
     public void showChooseAnswer() {
