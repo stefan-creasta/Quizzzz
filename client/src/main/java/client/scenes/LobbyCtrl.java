@@ -3,7 +3,6 @@ package client.scenes;
 import client.utils.ServerUtils;
 import commons.Lobby;
 import commons.Player;
-import commons.Quote;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
