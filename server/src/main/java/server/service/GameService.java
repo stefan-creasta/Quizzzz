@@ -3,6 +3,7 @@ package server.service;
 import commons.Game;
 import commons.GameState;
 import commons.Player;
+import commons.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.util.Map;
 public class GameService {
     class GameRepository {
         private Map<Long, Game> games;
+
         GameRepository() {
             games = new HashMap<Long, Game>();
         }
@@ -36,6 +38,7 @@ public class GameService {
 
     class PlayerRepository {
         private Map<Long, Player> players;
+
         PlayerRepository() {
             players = new HashMap<>();
         }
@@ -60,18 +63,23 @@ public class GameService {
     private final PlayerRepository playerRepository = new PlayerRepository();
     private final QuestionService questionService;
 
+
+    //TODO: Example question till questionRepository is fixed
+    private final Question question = new Question("This is an example question?", "Right", "Wrong1", "Wrong2");
+
+
     @Autowired
-    public GameService(@Qualifier("questionService") QuestionService questionService){
+    public GameService(@Qualifier("questionService") QuestionService questionService) {
         this.questionService = questionService;
         this.playerConnections = new HashMap<>();
     }
 
-    public Game getId(long id){
+    public Game getId(long id) {
         Game g = gameRepository.getId(id);
         return g;
     }
 
-    public long startGame(){
+    public long startGame() {
         String l = questionService.quizList();
         Game g = new Game(l);
         gameRepository.save(g);
@@ -82,7 +90,8 @@ public class GameService {
     public GameState joinGame(long gameId, String username) throws IllegalArgumentException {
         Player player = new Player(username, 0);
         Game game = gameRepository.getId(gameId);
-        GameState state = new GameState(questionService.getId(game.getCurrentQuestion()), player);
+        //GameState state = new GameState(gameId, questionService.getId(game.getCurrentQuestion()), player);
+        GameState state = new GameState(gameId, question, player);
         if (!game.addPlayer(player)) {
             state.isError = true;
             state.message = "usernameAlreadyInGame";
@@ -100,7 +109,9 @@ public class GameService {
     }
 
     public void questionPhase(final Game game) {
-        GameState state = new GameState(questionService.getId(game.getCurrentQuestion()), null);
+        GameState state = new GameState(game.id, question, null);
+
+//        GameState state = new GameState(game.id, questionService.getId(game.getCurrentQuestion()), null);
 
         for (Player player : game.players) {
             state.setPlayer(player);
@@ -112,7 +123,7 @@ public class GameService {
         //TODO: have a flexible delay in case everyone's timer is shortened.
         new Thread(() -> {
             try {
-                Thread.sleep(30_000);
+                Thread.sleep(5_000);
                 intervalPhase(game);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -121,7 +132,8 @@ public class GameService {
     }
 
     public void intervalPhase(final Game game) {
-        GameState state = new GameState(questionService.getId(game.getCurrentQuestion()), null);
+        GameState state = new GameState(game.id, question, null);
+        // GameState state = new GameState(game.id, questionService.getId(game.getCurrentQuestion()), null);
         state.stage = GameState.Stage.INTERVAL;
         for (Player player : game.players) {
             state.setPlayer(player);
@@ -140,7 +152,7 @@ public class GameService {
         }
     }
 
-    public boolean existsById(long id){
+    public boolean existsById(long id) {
         return gameRepository.existsById(id);
     }
 
@@ -148,9 +160,11 @@ public class GameService {
         playerConnections.put(playerId, result);
     }
 
-    /**Note that the connection is only available after the player makes a request to
+    /**
+     * Note that the connection is only available after the player makes a request to
      * /api/listen, therefore you can't just send new data to a player without some
      * delay in between!
+     *
      * @param playerId
      * @param state
      */

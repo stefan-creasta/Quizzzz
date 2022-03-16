@@ -3,6 +3,7 @@ package client.scenes;
 import client.Communication.AnswerCommunication;
 import client.Communication.ImageCommunication;
 import client.Communication.PowerUpsCommunication;
+import commons.GameState;
 import commons.Question;
 import commons.Timer;
 import javafx.animation.KeyFrame;
@@ -60,21 +61,37 @@ public class QuestionCtrl {
 
     private Timer timer;
 
+    private GameState gameState;
+
+    void updateGameState(GameState gameState) {
+        this.gameState = gameState;
+
+        //TODO: Update question number based on current question
+        this.questionTitle.setText("Question 10");
+        this.questionText.setText(gameState.question.question);
+
+        this.answer1.setText(gameState.question.answer);
+        this.answer2.setText(gameState.question.wrongAnswer1);
+        this.answer3.setText(gameState.question.wrongAnswer2);
+
+
+    }
+
     //TODO: Send correct Game ID
     @FXML
     void Answer1Pressed(ActionEvent event) throws IOException, InterruptedException {
-        AnswerCommunication.sendAnswer(answer1.getText(), 0);
+        AnswerCommunication.sendAnswer(0, gameState);
     }
     //TODO: Send correct Game ID
     @FXML
     void Answer2Pressed(ActionEvent event) throws IOException, InterruptedException {
-        AnswerCommunication.sendAnswer(answer2.getText(), 0);
+        AnswerCommunication.sendAnswer(1, gameState);
     }
 
     //TODO: Send correct Game ID
     @FXML
     void Answer3Pressed(ActionEvent event) throws IOException, InterruptedException {
-        AnswerCommunication.sendAnswer(answer3.getText(), 0);
+        AnswerCommunication.sendAnswer(2, gameState);
     }
 
 
@@ -99,7 +116,7 @@ public class QuestionCtrl {
         assert questionText != null : "fx:id=\"questionText\" was not injected: check your FXML file 'Question.fxml'.";
         assert questionTitle != null : "fx:id=\"questionTitle\" was not injected: check your FXML file 'Question.fxml'.";
 
-        timer = new Timer(0,20);
+        timer = new Timer(0,5);
         Timeline timeline= new Timeline( new KeyFrame(javafx.util.Duration.millis(1), e ->{
             questionTime.setText(timer.toTimerDisplayString());
         }));

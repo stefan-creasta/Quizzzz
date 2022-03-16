@@ -38,7 +38,7 @@ public class GameController {
 
     @GetMapping("/join/{id}")
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
-    public GameState joinGame(@PathVariable long id, @PathVariable String username) throws IllegalArgumentException {
+    public GameState joinGame(@PathVariable long id, @RequestParam String username) throws IllegalArgumentException {
         return service.joinGame(id, username);
     }
 

@@ -10,11 +10,13 @@ public class GameState {
     public String message;
     public long timerSyncLong;
     public long duration;
+    public long gameId;
     public long playerId;
     public String username;
     public String playerAnswer;
 
-    public GameState(Question question, Player player) {
+    public GameState(long gameId, Question question, Player player) {
+        this.gameId = gameId;
         this.question = question;
         if (player != null) setPlayer(player);
     }
@@ -25,5 +27,21 @@ public class GameState {
         this.playerId = player.id;
         this.username = player.username;
         this.playerAnswer = player.answer;
+    }
+
+    @Override
+    public String toString() {
+        return "GameState{" +
+                "stage=" + stage +
+                ", question=" + question +
+                ", isError=" + isError +
+                ", message='" + message + '\'' +
+                ", timerSyncLong=" + timerSyncLong +
+                ", duration=" + duration +
+                ", gameId=" + gameId +
+                ", playerId=" + playerId +
+                ", username='" + username + '\'' +
+                ", playerAnswer='" + playerAnswer + '\'' +
+                '}';
     }
 }

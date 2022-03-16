@@ -45,22 +45,23 @@ public class Main extends Application {
 
         var overview = FXML.load(QuoteOverviewCtrl.class, "client", "scenes", "QuoteOverview.fxml");
         var add = FXML.load(AddQuoteCtrl.class, "client", "scenes", "AddQuote.fxml");
-        var chooseAnswer = FXML.load(ChooseAnswerCtrl.class, "client", "scenes", "ChooseAnswer.fxml");
         var timer = FXML.load(CountdownTimer.class,"client","scenes","Timer.fxml");
-        var question = FXML.load(QuestionCtrl.class, "client", "scenes", "Question.fxml");
-        var choosePower = FXML.load(ChoosePowerUpsCtrl.class,"client","scenes","ChoosePowerUps.fxml");
 
-        var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        mainCtrl.initialize(primaryStage, overview, add, chooseAnswer,  question, choosePower, timer);
+        var question = FXML.load(QuestionCtrl.class, "client", "scenes", "Question.fxml");
 
         var serverListener = INJECTOR.getInstance(ServerListener.class);
         var gameCommunication = INJECTOR.getInstance(GameCommunication.class);
         Pair<Long, GameState> gameInfo = hardcodedThingsForDemo(gameCommunication);
         long gameId = gameInfo.getKey();
         GameState state = gameInfo.getValue();
+
+
         //TODO: Fix GameState, so that playerId isn't null
         long playerId = 0;
         playerId = state.playerId;
+
+        var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
+        mainCtrl.initialize(primaryStage, overview, add,  question, state, timer);
 
         serverListener.initialize(playerId, mainCtrl);
         gameCommunication.initiateGame(gameId);
@@ -73,6 +74,7 @@ public class Main extends Application {
             Thread.sleep(100);
             GameState state = gameComm.joinGame(gameId, "group53");
             Thread.sleep(100);
+
             return new Pair<>(gameId, state);
         }
         catch (InterruptedException e) {

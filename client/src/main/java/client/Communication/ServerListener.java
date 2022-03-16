@@ -6,7 +6,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.inject.Inject;
 import commons.GameState;
-import javafx.application.Platform;
 
 import java.io.IOException;
 import java.net.URI;
@@ -34,7 +33,7 @@ public class ServerListener {
         this.mainCtrl = mainCtrl;
 
         // New threads need to be invoked via the JavaFX Platform API, otherwise it won't run
-        Platform.runLater(() -> {
+        listeningThread = new Thread(() -> {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("http://localhost:8080/api/listen?playerId=" + playerId))
                     .GET()
@@ -42,7 +41,6 @@ public class ServerListener {
             while (true) {
                 try {
                     var response = client.send(request, HttpResponse.BodyHandlers.ofString());
-                    System.out.println(response.body());
                     var gameState = (GameState) gson.fromJson(response.body(), new TypeToken<GameState>(){}.getType());
                     this.handler(gameState);
                 } catch (IOException e) {
@@ -54,6 +52,8 @@ public class ServerListener {
                 }
             }
         });
+
+        listeningThread.start();
 
     }
 
