@@ -16,22 +16,29 @@
 package server.api;
 
 import commons.Player;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import server.service.LobbyService;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/lobby")
 public class PlayerController {
-    private List<Player> repo;
+    private LobbyService service;
+    public PlayerController(LobbyService service){
+        this.service = service;
+
+    }
 
     @GetMapping(path = { "", "/" })
     public List<Player> getAll() {
-        return repo;
+        return service.returnPlayer();
     }
-
+    @PostMapping(path ={"","/"})
+    public void playjoinsLobby(@RequestBody String username){
+        Player newplayer = new Player(username,0);
+        service.addPlayer(newplayer);
+    }
 //    @GetMapping("/{id}")
 //    public ResponseEntity<Player> getById(@PathVariable("id") long id) {
 //        if (id < 0 || !repo.existsById(id)) {

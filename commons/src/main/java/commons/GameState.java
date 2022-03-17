@@ -29,6 +29,8 @@ public class GameState {
             leaderboard.add(new LeaderboardEntry(players.get(i).username, 0));
         }
         Collections.sort(leaderboard);
+        this.stage = Stage.LOBBY;
+
     }
 
     public void setPlayer(Player player) {

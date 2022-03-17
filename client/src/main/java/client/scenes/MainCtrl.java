@@ -15,7 +15,6 @@
  */
 package client.scenes;
 
-import client.Communication.GameCommunication;
 import commons.GameState;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -90,6 +89,7 @@ public class MainCtrl {
     public void showLobby() {
         primaryStage.setTitle("Lobby");
         primaryStage.setScene(lobby);
+        lobbyCtrl.refresh();
     }
 
     public void showAdd() {
@@ -129,7 +129,7 @@ public class MainCtrl {
 
         }
         else {
-            showQuestion();
+//            showQuestion();
             if (gameState.question != null) {
                 questionCtrl.clearAnswer();
                 questionCtrl.setQuestion(gameState.question);

@@ -5,6 +5,8 @@ import com.google.inject.Inject;
 import commons.Lobby;
 import commons.Player;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
@@ -19,7 +21,8 @@ public class LobbyCtrl {
     private static PlayerCommunication playerCommunication;
     private final MainCtrl mainCtrl;
     private Lobby currentLobby;
-    //private List<Player> playerlist;
+    private ObservableList<Player>  playerlist;
+
 
     @FXML
     private Button startButton;
@@ -42,6 +45,11 @@ public class LobbyCtrl {
         col1.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().username));
         //col2.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().username));
         currentLobby = new Lobby();
+    }
+    public void refresh() {
+        var players = playerCommunication.getPlayers();
+        playerlist = FXCollections.observableList(players);
+        table.setItems(playerlist);
     }
 
     public static void addPlayer(Player newPlayer) {
