@@ -51,7 +51,7 @@ public class QuestionsImporter implements ApplicationRunner {
             }
             Collections.shuffle(factors);
 
-            String answer = String.format("%.2f", consumption_in_wh);
+            String answer = String.format("%.0f", consumption_in_wh);
             String wrongAnswer1 = String.format("%.0f", factors.get(0) * consumption_in_wh);
             String wrongAnswer2 = String.format("%.0f", factors.get(1) * consumption_in_wh);
             var imageRelativeURI = URI.create(image_path.replace(" ", "%20"));
@@ -96,7 +96,7 @@ public class QuestionsImporter implements ApplicationRunner {
             Paths.get("server/resources/images", path, "activities.json").toUri().toURL(),
             new TypeReference<>() {}
         );
-        final URI imageURIRoot = URI.create("http://localhost:8080/images/").resolve(URI.create(path));
+        final URI imageURIRoot = URI.create("http://localhost:8080/images/activity-bank/").resolve(URI.create(path));
         final List<String> malformed = new LinkedList<>();
         activities.stream().map(x -> {
             try {
