@@ -15,6 +15,7 @@
  */
 package client.scenes;
 
+import client.Communication.GameCommunication;
 import commons.GameState;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -30,7 +31,7 @@ public class MainCtrl {
     private AddQuoteCtrl addCtrl;
     private Scene add;
 
-    private AddQuoteCtrl playerCtrl;
+    private AddPlayerCtrl playerCtrl;
     private Scene player;
 
     private LobbyCtrl lobbyCtrl;
@@ -44,11 +45,14 @@ public class MainCtrl {
     private QuestionCtrl questionCtrl;
     private Scene question;
 
+    private GameState gameState;
     public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
             Pair<AddQuoteCtrl, Parent> add,
                            Pair<QuestionCtrl, Parent> question,
                            GameState gameState,
-                           Pair<CountdownTimer,Parent> timer) {
+                           Pair<CountdownTimer,Parent> timer,
+                           Pair<LobbyCtrl, Parent> lobbyPair,
+                           Pair<AddPlayerCtrl, Parent> playerPair) {
 
         this.primaryStage = primaryStage;
 
@@ -66,8 +70,14 @@ public class MainCtrl {
         this.questionCtrl.updateGameState(gameState);
         this.question = new Scene(question.getValue());
 
+        this.lobbyCtrl = lobbyPair.getKey();
+        this.lobby = new Scene(lobbyPair.getValue());
 
-        showQuestion();
+        this.playerCtrl = playerPair.getKey();
+        this.player = new Scene(playerPair.getValue());
+
+        showPlayer();
+        //showQuestion();
         primaryStage.show();
     }
 
@@ -75,6 +85,11 @@ public class MainCtrl {
         primaryStage.setTitle("Quotes: Overview");
         primaryStage.setScene(overview);
         overviewCtrl.refresh();
+    }
+
+    public void showLobby() {
+        primaryStage.setTitle("Lobby");
+        primaryStage.setScene(lobby);
     }
 
     public void showAdd() {
@@ -107,15 +122,22 @@ public class MainCtrl {
 //        primaryStage.show();
 
     public void handleGameState(GameState gameState) {
+        this.gameState = gameState;
         //if any other screen is displayed there is something wrong.
-        showQuestion();
-        if (gameState.question != null) {
-            questionCtrl.clearAnswer();
-            questionCtrl.setQuestion(gameState.question);
+        if(gameState.stage == GameState.Stage.LOBBY) {
+            showLobby();
+
         }
-        if (gameState.stage == GameState.Stage.INTERVAL) {
-            questionCtrl.markAnswer(gameState.question.answer, gameState.playerAnswer);
+        else {
+            showQuestion();
+            if (gameState.question != null) {
+                questionCtrl.clearAnswer();
+                questionCtrl.setQuestion(gameState.question);
+            }
+            if (gameState.stage == GameState.Stage.INTERVAL) {
+                questionCtrl.markAnswer(gameState.question.answer, gameState.playerAnswer);
+            }
+            questionCtrl.syncTimer(gameState.timerSyncLong, gameState.duration);
         }
-        questionCtrl.syncTimer(gameState.timerSyncLong, gameState.duration);
     }
 }

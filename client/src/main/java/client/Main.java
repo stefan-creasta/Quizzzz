@@ -48,6 +48,8 @@ public class Main extends Application {
         var timer = FXML.load(CountdownTimer.class,"client","scenes","Timer.fxml");
 
         var question = FXML.load(QuestionCtrl.class, "client", "scenes", "Question.fxml");
+        var lobby = FXML.load(LobbyCtrl.class, "client", "scenes", "Lobby.fxml");
+        var player = FXML.load(AddPlayerCtrl.class, "client", "scenes", "AddPlayer.fxml");
 
         var serverListener = INJECTOR.getInstance(ServerListener.class);
         var gameCommunication = INJECTOR.getInstance(GameCommunication.class);
@@ -61,7 +63,7 @@ public class Main extends Application {
         playerId = state.playerId;
 
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        mainCtrl.initialize(primaryStage, overview, add,  question, state, timer);
+        mainCtrl.initialize(primaryStage, overview, add,  question, state, timer, lobby, player);
 
         serverListener.initialize(playerId, mainCtrl);
         gameCommunication.initiateGame(gameId);

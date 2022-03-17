@@ -16,10 +16,10 @@ import java.util.ResourceBundle;
 
 public class LobbyCtrl {
 
-    private final PlayerCommunication playerCommunication;
+    private static PlayerCommunication playerCommunication;
     private final MainCtrl mainCtrl;
     private Lobby currentLobby;
-    private List<Player> playerlist;
+    //private List<Player> playerlist;
 
     @FXML
     private Button startButton;
@@ -40,16 +40,16 @@ public class LobbyCtrl {
 
     public void initialize(URL location, ResourceBundle resources) {
         col1.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().username));
-        col2.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().username));
+        //col2.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().username));
         currentLobby = new Lobby();
     }
 
-    public void addPlayer(Player newPlayer) {
+    public static void addPlayer(Player newPlayer) {
         playerCommunication.addPlayer(newPlayer);
     }
 
-    public List<Player> getPlayers() {
-            return playerCommunication.getPlayers();
+    public static List<Player> getPlayers() {
+        return playerCommunication.getPlayers();
     }
 
 }

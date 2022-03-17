@@ -1,7 +1,11 @@
 package commons;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class GameState {
-    public enum Stage {QUESTION, INTERVAL};
+    public enum Stage {LOBBY, QUESTION, INTERVAL};
     //roughly stores which screen should be displayed during the game session.
     public Stage stage;
     public Question question;
@@ -14,11 +18,17 @@ public class GameState {
     public long playerId;
     public String username;
     public String playerAnswer;
+    public List<LeaderboardEntry> leaderboard;
 
-    public GameState(long gameId, Question question, Player player) {
+    public GameState(long gameId, Question question, Player player, List<Player> players) {
         this.gameId = gameId;
         this.question = question;
         if (player != null) setPlayer(player);
+        leaderboard = new ArrayList<>();
+        for(int i = 0; i < players.size(); i++) {
+            leaderboard.add(new LeaderboardEntry(players.get(i).username, 0));
+        }
+        Collections.sort(leaderboard);
     }
 
     public void setPlayer(Player player) {

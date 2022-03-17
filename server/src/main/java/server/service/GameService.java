@@ -85,7 +85,7 @@ public class GameService {
     public GameState joinGame(long gameId, String username) throws IllegalArgumentException {
         Player player = new Player(username, 0);
         Game game = gameRepository.getId(gameId);
-        GameState state = new GameState(gameId, game.getCurrentQuestion(), player);
+        GameState state = new GameState(gameId, game.getCurrentQuestion(), player, game.players);
         if (!game.addPlayer(player)) {
             state.isError = true;
             state.message = "usernameAlreadyInGame";
@@ -104,7 +104,7 @@ public class GameService {
 
     public void questionPhase(final Game game) {
 
-        GameState state = new GameState(game.id, game.getCurrentQuestion(), null);
+        GameState state = new GameState(game.id, game.getCurrentQuestion(), null, game.players);
 
         for (Player player : game.players) {
             state.setPlayer(player);
@@ -125,7 +125,7 @@ public class GameService {
     }
 
     public void intervalPhase(final Game game) {
-         GameState state = new GameState(game.id, game.getCurrentQuestion(), null);
+         GameState state = new GameState(game.id, game.getCurrentQuestion(), null, game.players);
         state.stage = GameState.Stage.INTERVAL;
         for (Player player : game.players) {
             state.setPlayer(player);

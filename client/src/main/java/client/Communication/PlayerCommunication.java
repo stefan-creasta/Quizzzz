@@ -20,11 +20,11 @@ public class PlayerCommunication {
                 .get(new GenericType<List<Player>>() {});
     }
 
-    public Player addPlayer(Player player) {
+    public String addPlayer(Player player) {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/lobby") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .post(Entity.entity(player, APPLICATION_JSON), Player.class);
+                .post(Entity.entity(player.username, APPLICATION_JSON), String.class);
     }
 }
