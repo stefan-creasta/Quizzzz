@@ -17,7 +17,7 @@ public class CountdownTimer implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        timer = new Timer(0,20);
+        timer = new Timer(0,5);
         Timeline timeline= new Timeline( new KeyFrame(Duration.millis(1),e ->{
             questionTime.setText(timer.toTimerDisplayString());
         }));

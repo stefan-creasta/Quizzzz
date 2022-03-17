@@ -15,6 +15,7 @@
  */
 package client.scenes;
 
+import commons.GameState;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -32,21 +33,15 @@ public class MainCtrl {
     private CountdownTimer timerCtrl;
     private Scene timer;
 
-    private ChooseAnswerCtrl chooseCtrl;
-    private Scene choose;
 
-    private ChoosePowerUpsCtrl choosePowerUpCtrl;
-    private Scene choosePower;
 
     private QuestionCtrl questionCtrl;
     private Scene question;
 
     public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
-
-            Pair<AddQuoteCtrl, Parent> add, Pair<ChooseAnswerCtrl, Parent> chooseAnswerPair,
+            Pair<AddQuoteCtrl, Parent> add,
                            Pair<QuestionCtrl, Parent> question,
-                           Pair<ChoosePowerUpsCtrl, Parent> choosePower,
-
+                           GameState gameState,
                            Pair<CountdownTimer,Parent> timer) {
 
         this.primaryStage = primaryStage;
@@ -60,17 +55,11 @@ public class MainCtrl {
         this.timerCtrl  = timer.getKey();
         this.timer = new Scene(timer.getValue());
 
-        this.chooseCtrl = chooseAnswerPair.getKey();
-        this.choose = new Scene(chooseAnswerPair.getValue());
 
         this.questionCtrl = question.getKey();
+        this.questionCtrl.updateGameState(gameState);
         this.question = new Scene(question.getValue());
 
-        this.choosePowerUpCtrl = choosePower.getKey();
-        this.choosePower = new Scene(choosePower.getValue());
-
-        //showOverview();
-        //showChooseAnswer();
         showQuestion();
         primaryStage.show();
     }
@@ -97,19 +86,23 @@ public class MainCtrl {
         primaryStage.setScene(question);
     }
 
-    public void showPowerUps() {
-        primaryStage.setTitle("Power Ups");
-        primaryStage.setScene(choosePower);
-    }
-
-    public void showChooseAnswer() {
-        primaryStage.setTitle("Choose Answer");
-        primaryStage.setScene(choose);
 //        choose.set(e -> chooseCtrl.Button1Pressed(e));
 
 
 //        Scene scene = new Scene(ChooseAnswerCtrl.AnchorPane1, 640, 480);
 //        primaryStage.setScene(scene);
 //        primaryStage.show();
+
+    public void handleGameState(GameState gameState) {
+        //if any other screen is displayed there is something wrong.
+        showQuestion();
+        if (gameState.question != null) {
+            questionCtrl.clearAnswer();
+            questionCtrl.setQuestion(gameState.question);
+        }
+        if (gameState.stage == GameState.Stage.INTERVAL) {
+            questionCtrl.markAnswer(gameState.question.answer, gameState.playerAnswer);
+        }
+        questionCtrl.syncTimer(gameState.timerSyncLong, gameState.duration);
     }
 }
