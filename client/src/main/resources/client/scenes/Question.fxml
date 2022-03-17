@@ -27,7 +27,7 @@
       <Button fx:id="answer1" layoutX="80.0" layoutY="370.0" mnemonicParsing="false" onAction="#Answer1Pressed" text="Answer 1" />
       <Button fx:id="answer2" layoutX="291.0" layoutY="370.0" mnemonicParsing="false" onAction="#Answer2Pressed" text="Answer 2" />
       <Button fx:id="answer3" layoutX="501.0" layoutY="370.0" mnemonicParsing="false" onAction="#Answer3Pressed" text="Answer 3" />
-      <Button fx:id="submit" layoutX="756.0" layoutY="370.0" mnemonicParsing="false" text="Submit" />
+      <Button fx:id="submit" layoutX="756.0" layoutY="370.0" mnemonicParsing="false" onAction="#SubmitPressed" text="Submit" />
       <ImageView fx:id="questionImage" fitHeight="241.0" fitWidth="290.0" layoutX="389.0" layoutY="57.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../images/image 2.png" />

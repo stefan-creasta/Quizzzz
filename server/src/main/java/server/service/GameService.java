@@ -60,9 +60,11 @@ public class GameService {
 
     private final GameRepository gameRepository = new GameRepository();
     private final PlayerRepository playerRepository = new PlayerRepository();
+    private final QuestionService questionService;
 
     @Autowired
-    public GameService() {
+    public GameService(QuestionService questionService) {
+        this.questionService = questionService;
         this.playerConnections = new HashMap<>();
     }
 
@@ -75,8 +77,7 @@ public class GameService {
         //List<Question> questions = questionService.getAll();
 
         List<Question> questions = new ArrayList<>();
-        questions.add(new Question("This is an example question?","Answer1","Wrong1","Wrong2"));
-
+        questions = questionService.getAll();
         Game g = new Game(questions);
         gameRepository.save(g);
         return g.id;

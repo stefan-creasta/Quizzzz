@@ -63,6 +63,8 @@ public class QuestionCtrl {
 
     private GameState gameState;
 
+    private String selectedAnswer;
+
     void updateGameState(GameState gameState) {
         this.gameState = gameState;
 
@@ -80,18 +82,23 @@ public class QuestionCtrl {
     //TODO: Send correct Game ID
     @FXML
     void Answer1Pressed(ActionEvent event) throws IOException, InterruptedException {
-        AnswerCommunication.sendAnswer(0, gameState);
+        selectedAnswer = answer1.getText();
     }
     //TODO: Send correct Game ID
     @FXML
     void Answer2Pressed(ActionEvent event) throws IOException, InterruptedException {
-        AnswerCommunication.sendAnswer(1, gameState);
+        selectedAnswer = answer2.getText();
     }
 
     //TODO: Send correct Game ID
     @FXML
     void Answer3Pressed(ActionEvent event) throws IOException, InterruptedException {
-        AnswerCommunication.sendAnswer(2, gameState);
+        selectedAnswer = answer3.getText();
+    }
+
+    @FXML
+    public void SubmitPressed(ActionEvent actionEvent) throws IOException, InterruptedException {
+        AnswerCommunication.sendAnswer(selectedAnswer, gameState);
     }
 
 
@@ -164,5 +171,4 @@ public class QuestionCtrl {
             answer.getStyleClass().removeAll("wrong", "right");
         }
     }
-
 }
