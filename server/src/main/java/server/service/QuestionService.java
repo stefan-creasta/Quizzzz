@@ -45,5 +45,9 @@ public class QuestionService {
         return l;
     }
 
+    public void deleteAll() {
+        questionRepository.deleteAll();
+    }
+
 }
 

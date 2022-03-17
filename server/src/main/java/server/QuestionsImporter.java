@@ -43,10 +43,8 @@ public class QuestionsImporter implements ApplicationRunner {
                 //TODO: If so, get its already existing id here so we can use it and not risk duplicate entries.
             }
             else {
-                do {
+                while (service.existsById(questionIdGenerator))
                     questionIdGenerator++;
-                    //} while (service.existsById(questionIdGenerator));
-                } while (false);
                 id = questionIdGenerator;
             }
             Collections.shuffle(factors);
@@ -72,10 +70,12 @@ public class QuestionsImporter implements ApplicationRunner {
     }
     @Override
     public void run(ApplicationArguments args) throws IOException {
+
         if (args.containsOption(optionName)) {
             String optionValue = args.getOptionValues(optionName).get(0);
             logger.info("Detected the " + optionName + " application option. Importing the activities/questions from " + optionValue);
-            //service.deleteAll();
+            service.deleteAll();
+            //service.resetId();
             importQuestions(optionValue);
         }
         else {
