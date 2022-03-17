@@ -17,6 +17,7 @@ import javafx.scene.image.ImageView;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -146,7 +147,7 @@ public class QuestionCtrl {
                 System.out.println("Failed to set the question image.");
             }
         }
-        List<String> answerList = List.of(q.answer, q.wrongAnswer1, q.wrongAnswer2);
+        List<String> answerList = new LinkedList<>(List.of(q.answer, q.wrongAnswer1, q.wrongAnswer2));
 
         Collections.shuffle(answerList);
 

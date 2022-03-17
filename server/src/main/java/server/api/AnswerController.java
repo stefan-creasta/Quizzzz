@@ -3,6 +3,7 @@ package server.api;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import commons.Game;
 import commons.PlayerAnswer;
 import commons.Question;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +35,11 @@ public class AnswerController {
 
         PlayerAnswer ans =  gson.fromJson(item, new TypeToken<PlayerAnswer>(){}.getType());
 
-        System.out.println(ans.gameId);
-        System.out.println(gameService.getId(ans.gameId));
-        Question q = questionService.getId(gameService.getId(ans.gameId).currentQuestion);
+        Game g = gameService.getId(ans.gameId);
+
+        Question q = questionService.getId(g.questions.get(g.currentQuestion).id);
+
+        System.out.println(q);
 
         if(ans.answer.equals(q.answer)){
             System.out.println("true answer");

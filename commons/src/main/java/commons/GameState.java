@@ -15,6 +15,9 @@ public class GameState {
     public String username;
     public String playerAnswer;
 
+    public GameState() {
+        this.question = new Question(null, null, null, null, null);
+    }
     public GameState(long gameId, Question question, Player player) {
         this.gameId = gameId;
         this.question = question;
