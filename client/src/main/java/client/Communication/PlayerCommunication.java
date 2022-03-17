@@ -1,7 +1,6 @@
 package client.Communication;
 
 import commons.Player;
-import commons.Quote;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;

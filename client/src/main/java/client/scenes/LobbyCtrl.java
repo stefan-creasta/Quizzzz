@@ -1,17 +1,17 @@
 package client.scenes;
 
 import client.Communication.PlayerCommunication;
-import client.utils.ServerUtils;
+import com.google.inject.Inject;
 import commons.Lobby;
 import commons.Player;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import com.google.inject.Inject;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class LobbyCtrl {
@@ -19,6 +19,7 @@ public class LobbyCtrl {
     private final PlayerCommunication playerCommunication;
     private final MainCtrl mainCtrl;
     private Lobby currentLobby;
+    private List<Player> playerlist;
 
     @FXML
     private Button startButton;
@@ -48,7 +49,7 @@ public class LobbyCtrl {
     }
 
     public List<Player> getPlayers() {
-
+            return playerCommunication.getPlayers();
     }
 
 }
