@@ -40,6 +40,7 @@ public class ServerListener {
                     .GET()
                     .build();
             while (true) {
+                System.out.println("loop is running");
                 try {
                     var response = client.send(request, HttpResponse.BodyHandlers.ofString());
                     var gameState = (GameState) gson.fromJson(response.body(), new TypeToken<GameState>(){}.getType());
