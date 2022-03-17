@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.Communication.PlayerCommunication;
 import client.utils.ServerUtils;
 import commons.Lobby;
 import commons.Player;
@@ -15,7 +16,7 @@ import java.util.ResourceBundle;
 
 public class LobbyCtrl {
 
-    private final ServerUtils server;
+    private final PlayerCommunication playerCommunication;
     private final MainCtrl mainCtrl;
     private Lobby currentLobby;
 
@@ -31,8 +32,8 @@ public class LobbyCtrl {
     private TableColumn<Player, String> col2;
 
     @Inject
-    public LobbyCtrl(ServerUtils server, MainCtrl mainCtrl) {
-        this.server = server;
+    public LobbyCtrl(PlayerCommunication playerCommunication, MainCtrl mainCtrl) {
+        this.playerCommunication = playerCommunication;
         this.mainCtrl = mainCtrl;
     }
 
@@ -42,8 +43,12 @@ public class LobbyCtrl {
         currentLobby = new Lobby();
     }
 
-    public void addPlayer() {
-        mainCtrl.showPlayer();
+    public void addPlayer(Player newPlayer) {
+        playerCommunication.addPlayer(newPlayer);
+    }
+
+    public List<Player> getPlayers() {
+
     }
 
 }
