@@ -61,7 +61,7 @@ public class Main extends Application {
         playerId = state.playerId;
 
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        mainCtrl.initialize(primaryStage, overviewj, add,  question, state, timer);
+        mainCtrl.initialize(primaryStage, overview, add,  question, state, timer);
 
         serverListener.initialize(playerId, mainCtrl);
         gameCommunication.initiateGame(gameId);

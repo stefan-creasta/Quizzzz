@@ -56,7 +56,7 @@ public class AddPlayerCtrl {
         }*/
 
         clearFields();
-        mainCtrl.showLobby();
+//        mainCtrl.showLobby();
     }
 
     private Player getPlayer() {
