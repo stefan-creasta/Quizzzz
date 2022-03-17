@@ -5,12 +5,11 @@ import commons.GameState;
 import commons.Player;
 import commons.Question;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.async.DeferredResult;
-//import server.database.GameRepository;
-
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -61,37 +60,32 @@ public class GameService {
 
     private final GameRepository gameRepository = new GameRepository();
     private final PlayerRepository playerRepository = new PlayerRepository();
-    private final QuestionService questionService;
-
-
-    //TODO: Example question till questionRepository is fixed
-    private final Question question = new Question("This is an example question?", "Right", "Wrong1", "Wrong2");
-
 
     @Autowired
-    public GameService(@Qualifier("questionService") QuestionService questionService) {
-        this.questionService = questionService;
+    public GameService() {
         this.playerConnections = new HashMap<>();
     }
 
     public Game getId(long id) {
-        Game g = gameRepository.getId(id);
-        return g;
+        return gameRepository.getId(id);
     }
 
-    public long startGame() {
-        String l = questionService.quizList();
-        Game g = new Game(l);
+    public long createGame() {
+        //TODO: Example questions till question import is fixed
+        //List<Question> questions = questionService.getAll();
+
+        List<Question> questions = new ArrayList<>();
+        questions.add(new Question("This is an example question?","Answer1","Wrong1","Wrong2"));
+
+        Game g = new Game(questions);
         gameRepository.save(g);
-        System.out.println(g.quiz);
         return g.id;
     }
 
     public GameState joinGame(long gameId, String username) throws IllegalArgumentException {
         Player player = new Player(username, 0);
         Game game = gameRepository.getId(gameId);
-        //GameState state = new GameState(gameId, questionService.getId(game.getCurrentQuestion()), player);
-        GameState state = new GameState(gameId, question, player);
+        GameState state = new GameState(gameId, game.getCurrentQuestion(), player);
         if (!game.addPlayer(player)) {
             state.isError = true;
             state.message = "usernameAlreadyInGame";
@@ -109,9 +103,8 @@ public class GameService {
     }
 
     public void questionPhase(final Game game) {
-        GameState state = new GameState(game.id, question, null);
 
-//        GameState state = new GameState(game.id, questionService.getId(game.getCurrentQuestion()), null);
+        GameState state = new GameState(game.id, game.getCurrentQuestion(), null);
 
         for (Player player : game.players) {
             state.setPlayer(player);
@@ -132,8 +125,7 @@ public class GameService {
     }
 
     public void intervalPhase(final Game game) {
-        GameState state = new GameState(game.id, question, null);
-        // GameState state = new GameState(game.id, questionService.getId(game.getCurrentQuestion()), null);
+         GameState state = new GameState(game.id, game.getCurrentQuestion(), null);
         state.stage = GameState.Stage.INTERVAL;
         for (Player player : game.players) {
             state.setPlayer(player);

@@ -18,9 +18,6 @@ public class AnswerController {
         this.repo = repo;
     }
 
-
-
-
     @PostMapping("")
     public void postAnswer(@RequestBody String item) {
         System.out.println(item);

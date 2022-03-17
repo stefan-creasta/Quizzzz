@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.inject.Inject;
 import commons.GameState;
+import javafx.application.Platform;
 
 import java.io.IOException;
 import java.net.URI;
@@ -42,7 +43,7 @@ public class ServerListener {
                 try {
                     var response = client.send(request, HttpResponse.BodyHandlers.ofString());
                     var gameState = (GameState) gson.fromJson(response.body(), new TypeToken<GameState>(){}.getType());
-                    this.handler(gameState);
+                    Platform.runLater(() -> this.handler(gameState));
                 } catch (IOException e) {
                     e.printStackTrace();
                     break;
