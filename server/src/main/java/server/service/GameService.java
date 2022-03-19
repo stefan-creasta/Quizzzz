@@ -56,6 +56,8 @@ public class GameService {
         }
     }
 
+    int stateInteger = -1;//0 if state is QUESTION, 1 if state is INTERVAL
+
     private Map<Long, DeferredResult<GameState>> playerConnections;
 
     private final GameRepository gameRepository = new GameRepository();
@@ -107,6 +109,8 @@ public class GameService {
 
     public void questionPhase(final Game game) {
 
+        stateInteger = 0;
+
         GameState state = new GameState(game.id, questionService.getId(game.questions.get(game.currentQuestion).id), null);
 
         for (Player player : game.players) {
@@ -128,6 +132,8 @@ public class GameService {
     }
 
     public void intervalPhase(final Game game) {
+
+        stateInteger = 1;
         GameState state = new GameState(game.id, game.getCurrentQuestion(), null);
         state.stage = GameState.Stage.INTERVAL;
         for (Player player : game.players) {
@@ -172,6 +178,9 @@ public class GameService {
     }
 
     public void submitByPlayer(Long playerId, String ans, Long gameId) {
+        if(stateInteger==1){
+            return;
+        }
         Game g = gameRepository.getId(gameId);
         Player p;
         int pos = 0;
@@ -179,7 +188,7 @@ public class GameService {
             pos++;
         }
         p = g.players.get(pos);
-        if(p.answer == null || p.answer.isEmpty()) {
+        if(p.answer == null || p.answer.isEmpty()&&stateInteger==0) {
             p.answer = ans;
             p.timeToAnswer = (System.nanoTime() - timeOfSent)/1000000000;//time it took user to answer in seconds
             System.out.println("it took user " + p.timeToAnswer + " seconds to answer");//debug
@@ -191,10 +200,13 @@ public class GameService {
         Question q = g.questions.get(g.currentQuestion);
         for(Player p: g.players){
             if(p.answer!=null && p.answer.equals(q.answer)) {
-                p.score = p.score + (10 - p.timeToAnswer)*10;
+                System.out.println("answer recieved");//debug
+                p.score = (long) (p.score + (10.0 - p.timeToAnswer)*10);
             }
+            System.out.println("this is quote after answer recieved");//debug
             p.answer = null;
             System.out.println(p.id + ": " + p.score);
+
         }
     }
 }
