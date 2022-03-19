@@ -1,9 +1,8 @@
 package client.Communication;
 
 import client.scenes.MainCtrl;
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import commons.GameState;
 import javafx.application.Platform;
@@ -22,7 +21,7 @@ public class ServerListener {
 
     private MainCtrl mainCtrl;
 
-    private static Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+    //private static Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
     @Inject
     public ServerListener(HttpClient client) {
@@ -33,6 +32,8 @@ public class ServerListener {
         if (mainCtrl == null) throw new IllegalArgumentException();
         this.mainCtrl = mainCtrl;
 
+        final ObjectMapper mapper = new ObjectMapper();
+        final TypeReference<GameState> typeRef = new TypeReference<GameState>() {};
         // New threads need to be invoked via the JavaFX Platform API, otherwise it won't run
         listeningThread = new Thread(() -> {
             HttpRequest request = HttpRequest.newBuilder()
@@ -42,7 +43,8 @@ public class ServerListener {
             while (true) {
                 try {
                     var response = client.send(request, HttpResponse.BodyHandlers.ofString());
-                    var gameState = (GameState) gson.fromJson(response.body(), new TypeToken<GameState>(){}.getType());
+                    GameState gameState = mapper.readValue(response.body(), typeRef);
+                    //var gameState = (GameState) gson.fromJson(response.body(), new TypeToken<GameState>(){}.getType());
                     Platform.runLater(() -> this.handler(gameState));
                 } catch (IOException e) {
                     e.printStackTrace();
