@@ -7,14 +7,14 @@ public class Player {
     public String username;
     public long score;
     public long gameId;
-    public Timer timer;
+//    public Timer timer;
     public String answer;
-
+    private Player(){}
     public Player(String username, long score) {
         this.id = idGenerator++;
         this.username = username;
         this.score = score;
-        this.timer = new Timer(0, 30);
+//        this.timer = new Timer(0, 30);
         this.answer = null;
         this.gameId = -1;
     }

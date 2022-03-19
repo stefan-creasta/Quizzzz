@@ -15,9 +15,8 @@
  */
 package client.scenes;
 
+import client.Communication.PlayerCommunication;
 import com.google.inject.Inject;
-
-import client.utils.ServerUtils;
 import commons.Player;
 import jakarta.ws.rs.WebApplicationException;
 import javafx.fxml.FXML;
@@ -28,14 +27,14 @@ import javafx.stage.Modality;
 
 public class AddPlayerCtrl {
 
-    private final ServerUtils server;
+    private final PlayerCommunication server;
     private final MainCtrl mainCtrl;
 
     @FXML
     private TextField usernameField;
 
     @Inject
-    public AddPlayerCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    public AddPlayerCtrl(PlayerCommunication server, MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
         this.server = server;
 
@@ -48,7 +47,7 @@ public class AddPlayerCtrl {
 
     public void play() {
         try {
-            LobbyCtrl.addPlayer(getPlayer());
+            server.addPlayer(getPlayer());
         } catch (WebApplicationException e) {
 
             var alert = new Alert(Alert.AlertType.ERROR);

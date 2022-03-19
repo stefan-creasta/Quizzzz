@@ -37,19 +37,26 @@ public class LobbyCtrl {
 
     @Inject
     public LobbyCtrl(PlayerCommunication playerCommunication, MainCtrl mainCtrl) {
+        this.table = new TableView<>();
         this.playerCommunication = playerCommunication;
         this.mainCtrl = mainCtrl;
     }
 
     public void initialize(URL location, ResourceBundle resources) {
         col1.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().username));
-        //col2.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().username));
-        currentLobby = new Lobby();
+        col2.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().username));
+//        currentLobby = new Lobby();
     }
     public void refresh() {
         var players = playerCommunication.getPlayers();
         playerlist = FXCollections.observableList(players);
-        table.setItems(playerlist);
+//        table.setItems(playerlist);
+//        table.getColumns().setAll(col1,col2);
+        table.getItems().add(players.get(players.size() - 1));
+        //for (int i = 0; i < players.size(); i++) {
+          //  System.out.println(players.get(i).username);
+        //}
+        //System.out.println(playerlist.toString());
     }
 
     public static void addPlayer(Player newPlayer) {
