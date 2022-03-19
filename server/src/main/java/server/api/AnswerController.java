@@ -3,12 +3,9 @@ package server.api;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import commons.Game;
 import commons.PlayerAnswer;
-import commons.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import server.database.QuestionRepository;
 import server.service.GameService;
 import server.service.QuestionService;
 
