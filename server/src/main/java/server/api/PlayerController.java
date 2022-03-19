@@ -39,6 +39,10 @@ public class PlayerController {
         Player newplayer = new Player(username,0);
         service.addPlayer(newplayer);
     }
+    @DeleteMapping(path = {"","/"})
+    public void deletePlayersFromLobby() {
+        service.removePlayers();
+    }
 //    @GetMapping("/{id}")
 //    public ResponseEntity<Player> getById(@PathVariable("id") long id) {
 //        if (id < 0 || !repo.existsById(id)) {

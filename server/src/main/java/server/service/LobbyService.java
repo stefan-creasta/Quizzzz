@@ -26,6 +26,10 @@ public class LobbyService {
             players.put(player.id, player);
         }
 
+        void reset() {
+            players = new HashMap<>();
+        }
+
         boolean existsById(long id) {
             return players.containsKey(id);
         }
@@ -49,4 +53,7 @@ public class LobbyService {
         return playerlist;
     }
 
+    public void removePlayers() {
+        lobbyrepository.reset();
+    }
 }

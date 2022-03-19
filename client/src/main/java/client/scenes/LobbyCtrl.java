@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.Communication.LobbyCommunication;
 import client.Communication.PlayerCommunication;
 import com.google.inject.Inject;
 import commons.Lobby;
@@ -12,14 +13,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class LobbyCtrl {
 
-    private static PlayerCommunication playerCommunication;
-    private final MainCtrl mainCtrl;
+    private PlayerCommunication playerCommunication;
+    private MainCtrl mainCtrl;
     private Lobby currentLobby;
     private ObservableList<Player>  playerlist;
 
@@ -59,12 +61,22 @@ public class LobbyCtrl {
         //System.out.println(playerlist.toString());
     }
 
-    public static void addPlayer(Player newPlayer) {
-        playerCommunication.addPlayer(newPlayer);
+    public void addPlayer(Player newPlayer) {
+        this.playerCommunication.addPlayer(newPlayer);
     }
 
-    public static List<Player> getPlayers() {
-        return playerCommunication.getPlayers();
+    public List<Player> getPlayers() {
+        return this.playerCommunication.getPlayers();
     }
 
+    @FXML
+    public void startGame() throws IOException, InterruptedException {
+        LobbyCommunication lobbyCommunication = new LobbyCommunication();
+        long gameId = lobbyCommunication.getGameId();
+        for(Player currentPlayer : getPlayers()) {
+            lobbyCommunication.joinGame(gameId, currentPlayer.username);
+        }
+        lobbyCommunication.removePlayersFromLobby();
+        mainCtrl.showQuestion();
+    }
 }

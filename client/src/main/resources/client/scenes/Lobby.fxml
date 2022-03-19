@@ -18,7 +18,7 @@
     <RowConstraints maxHeight="199.59998168945316" minHeight="10.0" prefHeight="60.39998474121097" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Button fx:id="startButton" alignment="CENTER" mnemonicParsing="false" text="Start Game" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+      <Button fx:id="startButton" alignment="CENTER" mnemonicParsing="false" onAction="#startGame" text="Start Game" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
       <Button fx:id="leaveButton" mnemonicParsing="false" text="Leave Game" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
       <TableView fx:id="table" prefHeight="205.0" prefWidth="341.0" GridPane.rowIndex="1">
         <columns>
