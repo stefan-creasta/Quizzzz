@@ -35,17 +35,7 @@ public class AnswerController {
 
         PlayerAnswer ans =  gson.fromJson(item, new TypeToken<PlayerAnswer>(){}.getType());
 
-        Game g = gameService.getId(ans.gameId);
-
-        Question q = questionService.getId(g.questions.get(g.currentQuestion).id);
-
-        System.out.println(q);
-
-        if(ans.answer.equals(q.answer)){
-            System.out.println("true answer");
-        }else{
-            System.out.println("wrong answer");
-        }
+        gameService.submitByPlayer(ans.playerId, ans.answer, ans.gameId);
     }
 
 
