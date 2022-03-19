@@ -61,9 +61,11 @@ public class GameService {
     private final GameRepository gameRepository = new GameRepository();
     private final PlayerRepository playerRepository = new PlayerRepository();
     private final QuestionService questionService;
+    private long timeOfSent;
 
     @Autowired
     public GameService(QuestionService questionService) {
+        //make timeOfSent = -1 or 0 if awarding the proper amount of points is buggy
         this.questionService = questionService;
         this.playerConnections = new HashMap<>();
     }
@@ -166,6 +168,7 @@ public class GameService {
         DeferredResult<GameState> connection = playerConnections.get(playerId);
         if (connection != null) connection.setResult(state);
         playerConnections.put(playerId, null);
+        timeOfSent = System.nanoTime();
     }
 
     public void submitByPlayer(Long playerId, String ans, Long gameId) {
@@ -176,16 +179,20 @@ public class GameService {
             pos++;
         }
         p = g.players.get(pos);
-        if(p.answer == null || p.answer.isEmpty())
+        if(p.answer == null || p.answer.isEmpty()) {
             p.answer = ans;
+            p.timeToAnswer = (System.nanoTime() - timeOfSent)/1000000000;//time it took user to answer in seconds
+            System.out.println("it took user " + p.timeToAnswer + " seconds to answer");//debug
+        }
     }
 
     public void score(Game g) {
         System.out.println("Scores:");
         Question q = g.questions.get(g.currentQuestion);
         for(Player p: g.players){
-            if(p.answer!=null && p.answer.equals(q.answer))
-                p.score ++;
+            if(p.answer!=null && p.answer.equals(q.answer)) {
+                p.score = p.score + (10 - p.timeToAnswer)*10;
+            }
             p.answer = null;
             System.out.println(p.id + ": " + p.score);
         }
