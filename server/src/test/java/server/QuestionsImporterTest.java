@@ -54,9 +54,17 @@ class QuestionsImporterTest {
 
         List<String> specAnswers = List.of("1200", "183", "300");
 
+        String rootPath = "http://localhost:8080/images/activity-bank-test/";
+        List<String> specQuestionImages = List.of(
+                rootPath + "38/hairdryer.png",
+                rootPath + "38/leafblower.png",
+                rootPath + "38/coffee.png"
+        );
+
         for (int i = 0; i < 3; i++) {
             assertEquals(specQuestions.get(i), collection.get(i).question);
             assertEquals(specAnswers.get(i), collection.get(i).answer);
+            assertEquals(specQuestionImages.get(i), collection.get(i).questionImage);
             assertNotNull(collection.get(i).wrongAnswer1);
             assertNotNull(collection.get(i).wrongAnswer2);
         }
