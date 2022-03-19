@@ -130,6 +130,7 @@ public class GameService {
         state.stage = GameState.Stage.INTERVAL;
         for (Player player : game.players) {
             state.setPlayer(player);
+            state.setPlayerAnswer(player.answer);
             sendToPlayer(player.id, state);
         }
         score(game);

@@ -32,6 +32,10 @@ public class GameState {
         this.playerAnswer = player.answer;
     }
 
+    public void setPlayerAnswer(String answer) {
+        this.playerAnswer = answer;
+    }
+
     @Override
     public String toString() {
         return "GameState{" +

@@ -151,6 +151,7 @@ public class QuestionCtrl {
 
         Collections.shuffle(answerList);
 
+        clearAnswer();
         answer1.setText(answerList.get(0));
         answer2.setText(answerList.get(1));
         answer3.setText(answerList.get(2));
@@ -158,18 +159,21 @@ public class QuestionCtrl {
 
     public void markAnswer(String correct, String ofplayer) {
         for (Button answer : List.of(answer1, answer2, answer3)) {
-            if (answer.getText().equals(ofplayer)) {
-                answer.getStyleClass().add("wrong");
-            }
+            answer.getStyleClass().removeAll("wrong", "right", "default");
             if (answer.getText().equals(correct)) {
                 answer.getStyleClass().add("right");
+            } else if (answer.getText().equals(ofplayer)) {
+                answer.getStyleClass().add("wrong");
+            } else {
+                answer.getStyleClass().add("default");
             }
         }
     }
 
     public void clearAnswer() {
         for (Button answer : List.of(answer1, answer2, answer3)) {
-            answer.getStyleClass().removeAll("wrong", "right");
+            answer.getStyleClass().removeAll("wrong", "right", "default");
+            answer.getStyleClass().add("default");
         }
     }
 }

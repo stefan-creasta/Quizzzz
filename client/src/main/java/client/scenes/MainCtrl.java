@@ -96,7 +96,7 @@ public class MainCtrl {
     public void handleGameState(GameState gameState) {
         //if any other screen is displayed there is something wrong.
         showQuestion();
-        if (gameState.question != null) {
+        if (gameState.stage == GameState.Stage.QUESTION && gameState.question != null) {
             questionCtrl.clearAnswer();
             questionCtrl.setQuestion(gameState.question);
         }
