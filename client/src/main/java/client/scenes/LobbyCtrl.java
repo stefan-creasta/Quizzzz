@@ -64,7 +64,7 @@ public class LobbyCtrl implements Initializable {
     public void startGame() throws IOException, InterruptedException {
         LobbyCommunication lobbyCommunication = new LobbyCommunication();
         long gameId = lobbyCommunication.getGameId();
-        for(Player currentPlayer : getPlayers()) {
+        for(Player currentPlayer : playerCommunication.getPlayers()) {
             lobbyCommunication.joinGame(gameId, currentPlayer.username);
         }
         lobbyCommunication.removePlayersFromLobby();
