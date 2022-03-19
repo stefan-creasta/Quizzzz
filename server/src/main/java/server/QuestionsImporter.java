@@ -76,7 +76,12 @@ public class QuestionsImporter implements ApplicationRunner {
             logger.info("Detected the " + optionName + " application option. Importing the activities/questions from " + optionValue);
             service.deleteAll();
             //service.resetId();
-            importQuestions(optionValue);
+            try {
+                importQuestions(optionValue);
+            }
+            catch (IllegalArgumentException e) {
+                logger.error("The activities source could not be processed. The path should be in form a/b/c, not in form ./a or b/");
+            }
         }
         else {
             logger.info("Could not detect the " + optionName + " application option. Not importing any activities/questions.");
@@ -90,13 +95,15 @@ public class QuestionsImporter implements ApplicationRunner {
      * @throws IOException
      */
     public void importQuestions(String path) throws IOException {
+        if (path.startsWith("/") || path.endsWith("/") || path.startsWith("."))
+            throw new IllegalArgumentException();
         questionIdGenerator = 0;
         ObjectMapper mapper = new ObjectMapper();
         List<Activity> activities = mapper.readValue(
             Paths.get("server/resources/images", path, "activities.json").toUri().toURL(),
             new TypeReference<>() {}
         );
-        final URI imageURIRoot = URI.create("http://localhost:8080/images/activity-bank/").resolve(URI.create(path));
+        final URI imageURIRoot = URI.create("http://localhost:8080/images/" + path + "/");
         final List<String> malformed = new LinkedList<>();
         activities.stream().map(x -> {
             try {
