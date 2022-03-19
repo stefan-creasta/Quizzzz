@@ -184,7 +184,7 @@ public class GameService {
         System.out.println("Scores:");
         Question q = g.questions.get(g.currentQuestion);
         for(Player p: g.players){
-            if(p.answer.equals(q.answer))
+            if(p.answer!=null && p.answer.equals(q.answer))
                 p.score ++;
             p.answer = null;
             System.out.println(p.id + ": " + p.score);
