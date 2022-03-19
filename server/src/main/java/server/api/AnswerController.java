@@ -4,10 +4,8 @@ package server.api;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import commons.PlayerAnswer;
-import commons.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import server.database.QuestionRepository;
 import server.service.GameService;
 import server.service.QuestionService;
 
@@ -34,15 +32,7 @@ public class AnswerController {
 
         PlayerAnswer ans =  gson.fromJson(item, new TypeToken<PlayerAnswer>(){}.getType());
 
-        System.out.println(ans.gameId);
-        System.out.println(gameService.getId(ans.gameId));
-        Question q = questionService.getId(gameService.getId(ans.gameId).currentQuestion);
-
-        if(ans.answer.equals(q.answer)){
-            System.out.println("true answer");
-        }else{
-            System.out.println("wrong answer");
-        }
+        gameService.submitByPlayer(ans.playerId, ans.answer, ans.gameId);
     }
 
 

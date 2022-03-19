@@ -105,7 +105,7 @@ public class GameService {
 
     public void questionPhase(final Game game) {
 
-        GameState state = new GameState(game.id, game.getCurrentQuestion(), null);
+        GameState state = new GameState(game.id, questionService.getId(game.questions.get(game.currentQuestion).id), null);
 
         for (Player player : game.players) {
             state.setPlayer(player);
@@ -117,7 +117,7 @@ public class GameService {
         //TODO: have a flexible delay in case everyone's timer is shortened.
         new Thread(() -> {
             try {
-                Thread.sleep(5_000);
+                Thread.sleep(10_000);
                 intervalPhase(game);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -126,12 +126,13 @@ public class GameService {
     }
 
     public void intervalPhase(final Game game) {
-         GameState state = new GameState(game.id, game.getCurrentQuestion(), null);
+        GameState state = new GameState(game.id, game.getCurrentQuestion(), null);
         state.stage = GameState.Stage.INTERVAL;
         for (Player player : game.players) {
             state.setPlayer(player);
             sendToPlayer(player.id, state);
         }
+        score(game);
         //switch to question phase 5 seconds later so the player has time to see the correctness of their answer
         if (game.progressGame()) {
             new Thread(() -> {
@@ -165,5 +166,28 @@ public class GameService {
         DeferredResult<GameState> connection = playerConnections.get(playerId);
         if (connection != null) connection.setResult(state);
         playerConnections.put(playerId, null);
+    }
+
+    public void submitByPlayer(Long playerId, String ans, Long gameId) {
+        Game g = gameRepository.getId(gameId);
+        Player p;
+        int pos = 0;
+        while(pos<g.players.size() && g.players.get(pos).id != playerId){
+            pos++;
+        }
+        p = g.players.get(pos);
+        if(p.answer == null || p.answer.isEmpty())
+            p.answer = ans;
+    }
+
+    public void score(Game g) {
+        System.out.println("Scores:");
+        Question q = g.questions.get(g.currentQuestion);
+        for(Player p: g.players){
+            if(p.answer!=null && p.answer.equals(q.answer))
+                p.score ++;
+            p.answer = null;
+            System.out.println(p.id + ": " + p.score);
+        }
     }
 }
