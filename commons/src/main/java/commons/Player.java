@@ -18,4 +18,5 @@ public class Player {
         this.answer = null;
         this.gameId = -1;
     }
+
 }

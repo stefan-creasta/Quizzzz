@@ -9,19 +9,21 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
-public class LobbyCtrl {
+public class LobbyCtrl implements Initializable {
 
-    private PlayerCommunication playerCommunication;
-    private MainCtrl mainCtrl;
+    private static PlayerCommunication playerCommunication;
+    private final MainCtrl mainCtrl;
+
+
     private Lobby currentLobby;
     private ObservableList<Player>  playerlist;
 
@@ -39,35 +41,24 @@ public class LobbyCtrl {
 
     @Inject
     public LobbyCtrl(PlayerCommunication playerCommunication, MainCtrl mainCtrl) {
-        this.table = new TableView<>();
         this.playerCommunication = playerCommunication;
         this.mainCtrl = mainCtrl;
     }
-
+    @Override
     public void initialize(URL location, ResourceBundle resources) {
         col1.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().username));
-        col2.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().username));
+//        col2.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().username));
 //        currentLobby = new Lobby();
     }
     public void refresh() {
         var players = playerCommunication.getPlayers();
         playerlist = FXCollections.observableList(players);
-//        table.setItems(playerlist);
-//        table.getColumns().setAll(col1,col2);
-        table.getItems().add(players.get(players.size() - 1));
-        //for (int i = 0; i < players.size(); i++) {
-          //  System.out.println(players.get(i).username);
-        //}
-        //System.out.println(playerlist.toString());
+        table.setItems(playerlist);
+        for (int i = 0; i < players.size(); i++) {
+            System.out.println(players.get(i).username);
+        }
     }
 
-    public void addPlayer(Player newPlayer) {
-        this.playerCommunication.addPlayer(newPlayer);
-    }
-
-    public List<Player> getPlayers() {
-        return this.playerCommunication.getPlayers();
-    }
 
     @FXML
     public void startGame() throws IOException, InterruptedException {
