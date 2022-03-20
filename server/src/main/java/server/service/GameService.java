@@ -70,6 +70,12 @@ public class GameService {
         return gameRepository.getId(id);
     }
 
+    /**Produce a gameId which the player client can join a game or its lobby with
+     *
+     * This method can be used even if there is only one lobby that can be joined at a given moment. Then it would
+     * return the gameId of the game that the player is wanted to join.
+     * @return the gameId
+     */
     public long createGame() {
         //TODO: Example questions till question import is fixed
         //List<Question> questions = questionService.getAll();
@@ -82,6 +88,14 @@ public class GameService {
         return g.id;
     }
 
+    /**Register *one player* into a game with the given username. This will fail if the lobby of the game already
+     * has a player with the given username.
+     *
+     * @param gameId the id of the game to join
+     * @param username the username that the player wants to join with
+     * @return the GameState to initially render the lobby or game screen
+     * @throws IllegalArgumentException if the gameId is invalid.
+     */
     public GameState joinGame(long gameId, String username) throws IllegalArgumentException {
         Player player = new Player(username, 0);
         Game game = gameRepository.getId(gameId);
@@ -95,6 +109,11 @@ public class GameService {
         return state;
     }
 
+    /**Initiate a game. Do not allow other players to join and show the first question.
+     *
+     * @param gameId the id of the game to initiate
+     * @throws IllegalArgumentException if the gameId is invalid.
+     */
     public void initiateGame(long gameId) throws IllegalArgumentException {
         Game game = gameRepository.getId(gameId);
         if (game.started) return;
@@ -102,6 +121,7 @@ public class GameService {
         questionPhase(game);
     }
 
+    //methods that call each other back and forth to have a single game running.
     public void questionPhase(final Game game) {
 
         GameState state = new GameState(game.id, game.getCurrentQuestion(), null);
@@ -152,7 +172,8 @@ public class GameService {
         playerConnections.put(playerId, result);
     }
 
-    /**
+    /**Send the game state to a player.
+     *
      * Note that the connection is only available after the player makes a request to
      * /api/listen, therefore you can't just send new data to a player without some
      * delay in between!
