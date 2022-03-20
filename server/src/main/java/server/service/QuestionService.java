@@ -35,6 +35,9 @@ public class QuestionService {
         return questionRepository.getAll();
     }
 
+    public void deleteAll() {
+        questionRepository.deleteAll();
+    }
 
 }
 
