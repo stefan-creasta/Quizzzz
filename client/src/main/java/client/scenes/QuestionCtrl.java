@@ -4,15 +4,21 @@ import client.Communication.AnswerCommunication;
 import client.Communication.ImageCommunication;
 import client.Communication.PowerUpsCommunication;
 import commons.GameState;
+import commons.LeaderboardEntry;
 import commons.Question;
 import commons.Timer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
@@ -20,6 +26,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import static javafx.beans.binding.Bindings.createObjectBinding;
 
 public class QuestionCtrl {
 
@@ -59,6 +67,19 @@ public class QuestionCtrl {
 
     @FXML
     private Label questionTime;
+
+    @FXML
+    private TableView<LeaderboardEntry> leaderboard;
+
+    @FXML
+    private TableColumn<LeaderboardEntry, String> leaderboardUsernames;
+    @FXML
+    private TableColumn<LeaderboardEntry, String> leaderboardRanks;
+    @FXML
+    private TableColumn<LeaderboardEntry, String> leaderboardScores;
+
+    @FXML
+    private AnchorPane root;
 
     private Timer timer;
 
@@ -119,17 +140,59 @@ public class QuestionCtrl {
     }
 
     @FXML
+    void KeyPressed(KeyEvent event) {
+        System.out.println(event.getCode() + " was pressed.");
+        switch (event.getCode()) {
+            case TAB:
+                showLeaderboard();
+        }
+    }
+
+    @FXML
+    void KeyReleased(KeyEvent event) {
+        switch (event.getCode()) {
+            case TAB:
+                hideLeaderboard();
+        }
+    }
+
+    @FXML
     void initialize() {
         assert questionImage != null : "fx:id=\"questionImage\" was not injected: check your FXML file 'Question.fxml'.";
         assert questionText != null : "fx:id=\"questionText\" was not injected: check your FXML file 'Question.fxml'.";
         assert questionTitle != null : "fx:id=\"questionTitle\" was not injected: check your FXML file 'Question.fxml'.";
 
+
+        root.addEventFilter(KeyEvent.KEY_PRESSED, this::KeyPressed);
+        root.addEventFilter(KeyEvent.KEY_RELEASED, this::KeyReleased);
+
         timer = new Timer(0,5);
-        Timeline timeline= new Timeline( new KeyFrame(javafx.util.Duration.millis(1), e ->{
+        Timeline timeline= new Timeline( new KeyFrame(Duration.millis(1), e ->{
             questionTime.setText(timer.toTimerDisplayString());
         }));
         timeline.setCycleCount((int)timer.getDurationLong()/1000);
         timeline.play();
+
+        leaderboardRanks.setCellFactory(e -> {
+            TableCell<LeaderboardEntry, String> indexCell = new TableCell<>();
+            var rowProperty = indexCell.tableRowProperty();
+            var rowBinding = createObjectBinding(() -> {
+                TableRow<LeaderboardEntry> row = rowProperty.get();
+                if (row != null) {
+                    int rowIndex = row.getIndex();
+                    if (rowIndex < row.getTableView().getItems().size()) {
+                        return "#" + Integer.toString(rowIndex + 1);
+                    }
+                }
+                return null;
+            }, rowProperty);
+            indexCell.textProperty().bind(rowBinding);
+            return indexCell;
+        });
+        leaderboardUsernames.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().username));
+        leaderboardScores.setCellValueFactory(e -> new SimpleStringProperty(Integer.toString(e.getValue().score)));
+
+        hideLeaderboard();
     }
 
     public void syncTimer(long syncLong, long duration) {
@@ -175,5 +238,23 @@ public class QuestionCtrl {
             answer.getStyleClass().removeAll("wrong", "right", "default");
             answer.getStyleClass().add("default");
         }
+    }
+
+    public void showLeaderboard() {
+        List<LeaderboardEntry> leaderboardEntries = new LinkedList<LeaderboardEntry>();
+        leaderboardEntries.addAll(List.of(
+                new LeaderboardEntry("userA", 300),
+                new LeaderboardEntry("userC", 100),
+                new LeaderboardEntry("userB", 200)
+        ));
+        Collections.sort(leaderboardEntries);
+
+        ObservableList<LeaderboardEntry> entries = FXCollections.observableList(leaderboardEntries);
+        leaderboard.setItems(entries);
+        leaderboard.setVisible(true);
+    }
+
+    public void hideLeaderboard() {
+        leaderboard.setVisible(false);
     }
 }
