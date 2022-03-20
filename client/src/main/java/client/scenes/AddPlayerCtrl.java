@@ -19,7 +19,6 @@ import client.Communication.GameCommunication;
 import client.Communication.PlayerCommunication;
 import client.Communication.ServerListener;
 import com.google.inject.Inject;
-import commons.GameState;
 import commons.Player;
 import jakarta.ws.rs.WebApplicationException;
 import javafx.fxml.FXML;
