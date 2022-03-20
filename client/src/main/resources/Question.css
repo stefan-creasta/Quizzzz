@@ -23,6 +23,7 @@
 
 .button {
     -fx-text-fill: white;
+    -fx-background-color: #673e8b;
     -fx-padding: 10 50 10 50;
     -fx-font-size: 22px;
     -fx-border-radius: 999px;
@@ -36,10 +37,6 @@
 
 .wrong {
     -fx-background-color: #c91616;
-}
-
-.default {
-    -fx-background-color: #673e8b;
 }
 
 .powerup-border {

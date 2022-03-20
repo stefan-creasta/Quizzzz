@@ -3,7 +3,7 @@ package commons;
 public class GameState {
     public enum Stage {QUESTION, INTERVAL};
     //roughly stores which screen should be displayed during the game session.
-    public Stage stage;
+    public static Stage stage;
     public Question question;
     //set to true if only the playerId needs to be processed.
     public boolean isError;
@@ -15,6 +15,9 @@ public class GameState {
     public String username;
     public String playerAnswer;
 
+    public GameState() {
+        this.question = new Question(null, null, null, null, null);
+    }
     public GameState(long gameId, Question question, Player player) {
         this.gameId = gameId;
         this.question = question;
@@ -27,6 +30,10 @@ public class GameState {
         this.playerId = player.id;
         this.username = player.username;
         this.playerAnswer = player.answer;
+    }
+
+    public void setPlayerAnswer(String answer) {
+        this.playerAnswer = answer;
     }
 
     @Override
