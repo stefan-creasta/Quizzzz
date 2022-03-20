@@ -1,5 +1,4 @@
 package server.service;
-
 import org.springframework.stereotype.Service;
 import server.database.PowerUpRepository;
 import commons.PowerUp;
@@ -13,9 +12,9 @@ public class PowerUpService {
 
     }
     public List<PowerUp> getPowerUpList() {
-            return repo.getPowerUpList();
+        return repo.getPowerUpList();
     }
-    public void addNewPowerUp(PowerUp p){
-        repo.save(p);
+    public PowerUp addNewPowerUp(PowerUp p){
+        return repo.save(p);
     }
 }

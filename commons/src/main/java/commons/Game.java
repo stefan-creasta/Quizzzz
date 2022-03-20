@@ -4,31 +4,45 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import javax.persistence.*;
+import java.util.LinkedList;
+import java.util.List;
 
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
-@Entity
+
 public class Game {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    public static long idGenerator = 0L;
     public long id;
-    public int nr;
-    public String quiz;
+    public List<Question> questions;
+    public int currentQuestion;
+    public List<Player> players;
+    public boolean started;
 
     private Game(){}
 
-    public Game(String q){
-        this.quiz = q;
-        nr = 0;
+    public Game(List<Question> questions){
+        this.id = idGenerator++;
+        this.players = new LinkedList<>();
+        this.questions = questions;
+        this.currentQuestion = 0;
+        this.started = false;
     }
 
-    public long getCurrentQuestion(){
-        return (long) this.quiz.charAt(this.nr);
+    public Question getCurrentQuestion() {
+        return questions.get(currentQuestion);
     }
 
-    public void progressGame(){
-        this.nr++;
+    public boolean progressGame(){
+        return ++this.currentQuestion < questions.size();
+
+        //TODO: assign scores to each player
+    }
+
+    public boolean addPlayer(Player player) {
+        if (players.stream().anyMatch(x -> x.username.equals(player.username))) return false;
+        players.add(player);
+        player.gameId = id;
+        return true;
     }
 
     @Override

@@ -16,6 +16,9 @@
 package client;
 
 
+import client.Communication.GameCommunication;
+import client.Communication.ServerListener;
+import client.utils.HttpClientFactory;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Scopes;
@@ -23,6 +26,8 @@ import com.google.inject.Scopes;
 import client.scenes.AddQuoteCtrl;
 import client.scenes.MainCtrl;
 import client.scenes.QuoteOverviewCtrl;
+
+import java.net.http.HttpClient;
 
 public class MyModule implements Module {
 
@@ -32,5 +37,8 @@ public class MyModule implements Module {
         binder.bind(AddQuoteCtrl.class).in(Scopes.SINGLETON);
         binder.bind(QuoteOverviewCtrl.class).in(Scopes.SINGLETON);
 //        binder.bind(ChooseAnswerCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(HttpClient.class).toProvider(HttpClientFactory.class).in(Scopes.SINGLETON);
+        binder.bind(ServerListener.class).in(Scopes.SINGLETON);
+        binder.bind(GameCommunication.class).in(Scopes.SINGLETON);
     }
 }

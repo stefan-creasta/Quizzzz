@@ -1,7 +1,10 @@
 package client.Communication;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.reflect.TypeToken;
+import commons.GameState;
+import commons.PlayerAnswer;
 import commons.Question;
 
 import java.io.IOException;
@@ -9,6 +12,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+
 import com.google.gson.Gson;
 
 
@@ -18,13 +22,19 @@ public class AnswerCommunication {
 
     private static Gson gson = new Gson();
 
-    public static void sendAnswer(String message, long id) throws IOException, InterruptedException {
-        message = id + "_" + message;
-        System.out.println("\nAnswer sent to server:\n" + message);
+    public static void sendAnswer(String answer, GameState gameState) throws IOException, InterruptedException {
+
+        PlayerAnswer ans = new PlayerAnswer(answer, gameState.gameId, gameState.playerId);
+
+        var objectMapper = new ObjectMapper();
+        String requestBody = objectMapper
+                .writeValueAsString(ans);
+
+        System.out.println("\nAnswer sent to server:\n" + answer);
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/api/answer"))
-                .POST(HttpRequest.BodyPublishers.ofString(message))
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
         client.send(request, HttpResponse.BodyHandlers.ofString());
     }
