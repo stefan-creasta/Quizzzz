@@ -17,7 +17,7 @@ public class Game {
     public int currentQuestion;
     public List<Player> players;
     public boolean started;
-
+    public GameState.Stage stage;
     private Game(){}
 
     public Game(List<Question> questions){
@@ -26,6 +26,7 @@ public class Game {
         this.questions = questions;
         this.currentQuestion = 0;
         this.started = false;
+        this.stage = GameState.Stage.LOBBY;
     }
 
     public Question getCurrentQuestion() {

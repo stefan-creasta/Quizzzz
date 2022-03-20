@@ -1,10 +1,8 @@
 package client.Communication;
 
-import client.scenes.*;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import client.scenes.*;
 import com.google.inject.Inject;
 import commons.GameState;
 import javafx.application.Platform;
@@ -23,7 +21,7 @@ public class ServerListener {
 
     public MainCtrl mainCtrl;
 
-    private static Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+    //private static Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
     @Inject
     public ServerListener(HttpClient client) {
@@ -41,7 +39,6 @@ public class ServerListener {
         this.mainCtrl = mainCtrl;
         final ObjectMapper mapper = new ObjectMapper();
         final TypeReference<GameState> typeRef = new TypeReference<>() {};
-
         // New threads need to be invoked via the JavaFX Platform API, otherwise it won't run
         listeningThread = new Thread(() -> {
             HttpRequest request = HttpRequest.newBuilder()
