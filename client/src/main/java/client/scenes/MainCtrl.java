@@ -15,6 +15,8 @@
  */
 package client.scenes;
 
+import client.Communication.GameCommunication;
+import client.Communication.ServerListener;
 import commons.GameState;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -39,19 +41,25 @@ public class MainCtrl {
     private CountdownTimer timerCtrl;
     private Scene timer;
 
-
+    private GameCommunication gameCommunication;
 
     private QuestionCtrl questionCtrl;
     private Scene question;
 
-    private GameState gameState;
+    private ServerListener serverListener;
+
+    private long gameId;
     public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
             Pair<AddQuoteCtrl, Parent> add,
                            Pair<QuestionCtrl, Parent> question,
-                           GameState gameState,
                            Pair<CountdownTimer,Parent> timer,
                            Pair<LobbyCtrl, Parent> lobbyPair,
-                           Pair<AddPlayerCtrl, Parent> playerPair) {
+                           Pair<AddPlayerCtrl, Parent> playerPair,
+                           GameCommunication gameCommunication,
+                           ServerListener serverListener) {
+
+        this.gameCommunication = gameCommunication;
+        this.serverListener = serverListener;
 
         this.primaryStage = primaryStage;
 
@@ -66,7 +74,7 @@ public class MainCtrl {
 
 
         this.questionCtrl = question.getKey();
-        this.questionCtrl.updateGameState(gameState);
+        gameId = gameCommunication.createGame();
         this.question = new Scene(question.getValue());
 
         this.lobbyCtrl = lobbyPair.getKey();
@@ -78,6 +86,10 @@ public class MainCtrl {
         showPlayer();
         //showQuestion();
         primaryStage.show();
+    }
+
+    public void joinGame(long userId) {
+        serverListener.initialize(userId, this);
     }
 
     public void showOverview() {
@@ -114,6 +126,10 @@ public class MainCtrl {
         primaryStage.setScene(question);
     }
 
+    public void initiateGame() {
+        gameCommunication.initiateGame(gameId);
+    }
+
 //        choose.set(e -> chooseCtrl.Button1Pressed(e));
 
 
@@ -122,7 +138,6 @@ public class MainCtrl {
 //        primaryStage.show();
 
     public void handleGameState(GameState gameState) {
-        this.gameState = gameState;
         //if any other screen is displayed there is something wrong.
         if(gameState.stage == GameState.Stage.LOBBY) {
             showLobby();

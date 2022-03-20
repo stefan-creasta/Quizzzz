@@ -15,8 +15,11 @@
  */
 package client.scenes;
 
+import client.Communication.GameCommunication;
 import client.Communication.PlayerCommunication;
+import client.Communication.ServerListener;
 import com.google.inject.Inject;
+import commons.GameState;
 import commons.Player;
 import jakarta.ws.rs.WebApplicationException;
 import javafx.fxml.FXML;
@@ -29,15 +32,18 @@ public class AddPlayerCtrl {
 
     private final PlayerCommunication server;
     private final MainCtrl mainCtrl;
+    private final ServerListener serverListener;
+    private final GameCommunication gameCommunication;
 
     @FXML
     private TextField usernameField;
 
     @Inject
-    public AddPlayerCtrl(PlayerCommunication server, MainCtrl mainCtrl) {
+    public AddPlayerCtrl(PlayerCommunication server, MainCtrl mainCtrl, ServerListener serverListener, GameCommunication gameCommunication) {
         this.mainCtrl = mainCtrl;
         this.server = server;
-
+        this.serverListener = serverListener;
+        this.gameCommunication = gameCommunication;
     }
 
     public void cancel() {
@@ -47,7 +53,10 @@ public class AddPlayerCtrl {
 
     public void play() {
         try {
-            server.addPlayer(getPlayer());
+            Player newPlayer = getPlayer();
+            server.addPlayer(newPlayer);
+            mainCtrl.joinGame(newPlayer.id);
+
         } catch (WebApplicationException e) {
 
             var alert = new Alert(Alert.AlertType.ERROR);
