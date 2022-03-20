@@ -7,10 +7,8 @@ import commons.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.async.DeferredResult;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 
 @Service
 public class GameService {
@@ -27,6 +25,7 @@ public class GameService {
         }
 
         void save(Game game) {
+            Objects.requireNonNull(game, "game cannot be null");
             games.put(game.id, game);
         }
 
@@ -43,11 +42,12 @@ public class GameService {
         }
 
         Player getId(long id) throws IllegalArgumentException {
-            if (existsById(id)) throw new IllegalArgumentException();
+            if (!existsById(id)) throw new IllegalArgumentException();
             return players.get(id);
         }
 
         void save(Player player) {
+            Objects.requireNonNull(player, "player cannot be null");
             players.put(player.id, player);
         }
 
