@@ -1,8 +1,8 @@
 package client.Communication;
 
-import client.scenes.MainCtrl;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import client.scenes.*;
 import com.google.inject.Inject;
 import commons.GameState;
 import javafx.application.Platform;
@@ -19,7 +19,7 @@ public class ServerListener {
 
     private Thread listeningThread;
 
-    private MainCtrl mainCtrl;
+    public MainCtrl mainCtrl;
 
     //private static Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
@@ -31,9 +31,8 @@ public class ServerListener {
     public void initialize(final long playerId, MainCtrl mainCtrl) throws IllegalArgumentException {
         if (mainCtrl == null) throw new IllegalArgumentException();
         this.mainCtrl = mainCtrl;
-
         final ObjectMapper mapper = new ObjectMapper();
-        final TypeReference<GameState> typeRef = new TypeReference<GameState>() {};
+        final TypeReference<GameState> typeRef = new TypeReference<>() {};
         // New threads need to be invoked via the JavaFX Platform API, otherwise it won't run
         listeningThread = new Thread(() -> {
             HttpRequest request = HttpRequest.newBuilder()
@@ -41,10 +40,13 @@ public class ServerListener {
                     .GET()
                     .build();
             while (true) {
+                System.out.println("loop is running");
                 try {
                     var response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                    //GameState gameState = gson.fromJson(response.body(), new TypeToken<GameState>(){}.getType());
                     GameState gameState = mapper.readValue(response.body(), typeRef);
-                    //var gameState = (GameState) gson.fromJson(response.body(), new TypeToken<GameState>(){}.getType());
+                    System.out.println(response.body());
+                    System.out.println(gameState);
                     Platform.runLater(() -> this.handler(gameState));
                 } catch (IOException e) {
                     e.printStackTrace();

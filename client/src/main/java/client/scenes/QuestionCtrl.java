@@ -17,6 +17,7 @@ import javafx.scene.image.ImageView;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -63,6 +64,8 @@ public class QuestionCtrl {
 
     private GameState gameState;
 
+    private String selectedAnswer;
+
     void updateGameState(GameState gameState) {
         this.gameState = gameState;
 
@@ -80,18 +83,23 @@ public class QuestionCtrl {
     //TODO: Send correct Game ID
     @FXML
     void Answer1Pressed(ActionEvent event) throws IOException, InterruptedException {
-        AnswerCommunication.sendAnswer(0, gameState);
+        selectedAnswer = answer1.getText();
     }
     //TODO: Send correct Game ID
     @FXML
     void Answer2Pressed(ActionEvent event) throws IOException, InterruptedException {
-        AnswerCommunication.sendAnswer(1, gameState);
+        selectedAnswer = answer2.getText();
     }
 
     //TODO: Send correct Game ID
     @FXML
     void Answer3Pressed(ActionEvent event) throws IOException, InterruptedException {
-        AnswerCommunication.sendAnswer(2, gameState);
+        selectedAnswer = answer3.getText();
+    }
+
+    @FXML
+    public void SubmitPressed(ActionEvent actionEvent) throws IOException, InterruptedException {
+        AnswerCommunication.sendAnswer(selectedAnswer, gameState);
     }
 
 
@@ -139,10 +147,11 @@ public class QuestionCtrl {
                 System.out.println("Failed to set the question image.");
             }
         }
-        List<String> answerList = List.of(q.answer, q.wrongAnswer1, q.wrongAnswer2);
+        List<String> answerList = new LinkedList<>(List.of(q.answer, q.wrongAnswer1, q.wrongAnswer2));
 
         Collections.shuffle(answerList);
 
+        clearAnswer();
         answer1.setText(answerList.get(0));
         answer2.setText(answerList.get(1));
         answer3.setText(answerList.get(2));
@@ -150,19 +159,21 @@ public class QuestionCtrl {
 
     public void markAnswer(String correct, String ofplayer) {
         for (Button answer : List.of(answer1, answer2, answer3)) {
-            if (answer.getText().equals(ofplayer)) {
-                answer.getStyleClass().add("wrong");
-            }
+            answer.getStyleClass().removeAll("wrong", "right", "default");
             if (answer.getText().equals(correct)) {
                 answer.getStyleClass().add("right");
+            } else if (answer.getText().equals(ofplayer)) {
+                answer.getStyleClass().add("wrong");
+            } else {
+                answer.getStyleClass().add("default");
             }
         }
     }
 
     public void clearAnswer() {
         for (Button answer : List.of(answer1, answer2, answer3)) {
-            answer.getStyleClass().removeAll("wrong", "right");
+            answer.getStyleClass().removeAll("wrong", "right", "default");
+            answer.getStyleClass().add("default");
         }
     }
-
 }

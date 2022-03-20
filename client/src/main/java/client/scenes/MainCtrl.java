@@ -49,10 +49,11 @@ public class MainCtrl {
     private ServerListener serverListener;
 
     private long gameId;
+
     public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
-            Pair<AddQuoteCtrl, Parent> add,
+                           Pair<AddQuoteCtrl, Parent> add,
                            Pair<QuestionCtrl, Parent> question,
-                           Pair<CountdownTimer,Parent> timer,
+                           Pair<CountdownTimer, Parent> timer,
                            Pair<LobbyCtrl, Parent> lobbyPair,
                            Pair<AddPlayerCtrl, Parent> playerPair,
                            GameCommunication gameCommunication,
@@ -69,7 +70,7 @@ public class MainCtrl {
         this.addCtrl = add.getKey();
         this.add = new Scene(add.getValue());
 
-        this.timerCtrl  = timer.getKey();
+        this.timerCtrl = timer.getKey();
         this.timer = new Scene(timer.getValue());
 
 
@@ -139,20 +140,24 @@ public class MainCtrl {
 
     public void handleGameState(GameState gameState) {
         //if any other screen is displayed there is something wrong.
-        if(gameState.stage == GameState.Stage.LOBBY) {
+        if (gameState.stage == GameState.Stage.LOBBY) {
             showLobby();
 
-        }
-        else {
-//            showQuestion();
-            if (gameState.question != null) {
+            if (gameState.stage == GameState.Stage.QUESTION && gameState.question != null) {
+                showQuestion(); //im not sure where to put this
                 questionCtrl.clearAnswer();
                 questionCtrl.setQuestion(gameState.question);
+            } else {
+//            showQuestion();
+                if (gameState.question != null) {
+                    questionCtrl.clearAnswer();
+                    questionCtrl.setQuestion(gameState.question);
+                }
+                if (gameState.stage == GameState.Stage.INTERVAL) {
+                    questionCtrl.markAnswer(gameState.question.answer, gameState.playerAnswer);
+                }
+                questionCtrl.syncTimer(gameState.timerSyncLong, gameState.duration);
             }
-            if (gameState.stage == GameState.Stage.INTERVAL) {
-                questionCtrl.markAnswer(gameState.question.answer, gameState.playerAnswer);
-            }
-            questionCtrl.syncTimer(gameState.timerSyncLong, gameState.duration);
         }
     }
 }
