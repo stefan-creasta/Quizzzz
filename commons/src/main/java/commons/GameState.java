@@ -3,7 +3,7 @@ package commons;
 public class GameState {
     public enum Stage {QUESTION, INTERVAL};
     //roughly stores which screen should be displayed during the game session.
-    public Stage stage;
+    public static Stage stage;
     public Question question;
     //set to true if only the playerId needs to be processed.
     public boolean isError;

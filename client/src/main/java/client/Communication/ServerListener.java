@@ -1,6 +1,6 @@
 package client.Communication;
 
-import client.scenes.MainCtrl;
+import client.scenes.*;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -21,7 +21,7 @@ public class ServerListener {
 
     private Thread listeningThread;
 
-    private MainCtrl mainCtrl;
+    public MainCtrl mainCtrl;
 
     private static Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
