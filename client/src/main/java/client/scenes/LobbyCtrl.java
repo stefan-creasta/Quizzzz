@@ -16,6 +16,7 @@ import javafx.scene.control.TableView;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class LobbyCtrl implements Initializable {
@@ -50,7 +51,9 @@ public class LobbyCtrl implements Initializable {
 //        col2.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().username));
 //        currentLobby = new Lobby();
     }
+
     public void refresh() {
+        System.out.println("REFRESHING LOBBY");
         var players = playerCommunication.getPlayers();
         playerlist = FXCollections.observableList(players);
         table.setItems(playerlist);
@@ -59,13 +62,17 @@ public class LobbyCtrl implements Initializable {
         }
     }
 
+    public void leave() {
+        System.out.println("Leaving");
+    }
+
 
     @FXML
     public void startGame() throws IOException, InterruptedException {
         LobbyCommunication lobbyCommunication = new LobbyCommunication();
         lobbyCommunication.removePlayersFromLobby();
-        mainCtrl.showQuestion();
         mainCtrl.initiateGame();
+        mainCtrl.showQuestion();
         //System.out.println(lobbyCommunication.getPlayers().size());
     }
 }

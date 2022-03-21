@@ -22,6 +22,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+
 public class MainCtrl {
 
     private Stage primaryStage;
@@ -140,9 +141,13 @@ public class MainCtrl {
 
     public void handleGameState(GameState gameState) {
         //if any other screen is displayed there is something wrong.
+
+        System.out.println("GAME STATE");
+        System.out.println(gameState);
+
         if (gameState.stage == GameState.Stage.LOBBY) {
             showLobby();
-
+        } else {
             if (gameState.stage == GameState.Stage.QUESTION && gameState.question != null) {
                 showQuestion(); //im not sure where to put this
                 questionCtrl.clearAnswer();
