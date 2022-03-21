@@ -45,11 +45,11 @@
       <Label layoutX="711.0" layoutY="27.0" styleClass="leaderboard-text" text="Hold Tab to see Leaderboard" textFill="WHITE" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="40.0" layoutX="223.0" layoutY="462.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="loading-bar" width="529.0" />
       <Label fx:id="questionTime" layoutX="372.0" layoutY="527.0" styleClass="time-left" text="Time left: 7 seconds" />
-      <TableView fx:id="leaderboard" layoutX="208.0" layoutY="37.0" prefHeight="526.0" prefWidth="598.0">
+      <TableView fx:id="leaderboard" layoutX="266.0" layoutY="86.0" prefHeight="412.0" prefWidth="479.0" styleClass="leaderboard">
         <columns>
-          <TableColumn fx:id="leaderboardRanks" editable="false" prefWidth="78.40000915527344" text="Rank" />
-            <TableColumn fx:id="leaderboardUsernames" editable="false" minWidth="0.0" prefWidth="368.79998779296875" text="Username" />
-            <TableColumn fx:id="leaderboardScores" editable="false" minWidth="0.0" prefWidth="148.79998779296875" text="Score" />
+          <TableColumn fx:id="leaderboardRanks" editable="false" prefWidth="117.55978393554688" text="Rank" />
+            <TableColumn fx:id="leaderboardUsernames" editable="false" minWidth="0.0" prefWidth="207.94021606445312" text="Username" />
+            <TableColumn fx:id="leaderboardScores" editable="false" minWidth="0.0" prefWidth="141.01806640625" text="Score" />
         </columns>
       </TableView>
    </children>
