@@ -23,7 +23,6 @@ import com.google.inject.Injector;
 import commons.GameState;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
