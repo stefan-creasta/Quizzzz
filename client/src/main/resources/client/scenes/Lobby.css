@@ -12,7 +12,7 @@
 }
 
 .button.red {
-    -fx-background-color: red;
+    -fx-background-color: #C82727;
     -fx-text-fill: white;
 }
 
