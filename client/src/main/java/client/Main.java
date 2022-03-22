@@ -23,7 +23,6 @@ import com.google.inject.Injector;
 import commons.GameState;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -53,35 +52,13 @@ public class Main extends Application {
 
         var serverListener = INJECTOR.getInstance(ServerListener.class);
         var gameCommunication = INJECTOR.getInstance(GameCommunication.class);
-        Pair<Long, GameState> gameInfo = hardcodedThingsForDemo(gameCommunication);
-        long gameId = gameInfo.getKey();
-        GameState state = gameInfo.getValue();
+        GameState state = new GameState();
 
-
-        //TODO: Fix GameState, so that playerId isn't null
-        long playerId = 0;
-        playerId = state.playerId;
+        long playerId = 1;
 
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
         mainCtrl.initialize(primaryStage, overview, add,  question, timer, lobby, player, gameCommunication, serverListener);
 
         serverListener.initialize(playerId, mainCtrl);
-        gameCommunication.initiateGame(gameId);
-    }
-
-
-    public Pair<Long, GameState> hardcodedThingsForDemo(GameCommunication gameComm) {
-        try {
-            long gameId = gameComm.createGame();
-            Thread.sleep(100);
-            GameState state = gameComm.joinGame(gameId, "group53");
-            Thread.sleep(100);
-
-            return new Pair<>(gameId, state);
-        }
-        catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 }

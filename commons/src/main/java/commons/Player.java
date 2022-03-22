@@ -3,6 +3,7 @@ package commons;
 public class Player {
     private static long idGenerator = 0L;
 
+
     public long id;
     public String username;
     public long score;
@@ -10,6 +11,16 @@ public class Player {
 //    public Timer timer;
     public String answer;
     public long timeToAnswer;
+
+    public Player() {
+        this.id = idGenerator++;
+        this.username = null;
+        this.score = 0;
+//        this.timer = new Timer(0, 30);
+        this.answer = null;
+        this.gameId = -1;
+        this.timeToAnswer = -1;
+    }
 
     public Player(String username, long score) {
         this.id = idGenerator++;
