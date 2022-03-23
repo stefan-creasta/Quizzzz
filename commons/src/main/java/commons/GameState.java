@@ -7,7 +7,7 @@ import java.util.List;
 public class GameState {
     public enum Stage {LOBBY, QUESTION, INTERVAL};
     //roughly stores which screen should be displayed during the game session.
-    public static Stage stage;
+    public Stage stage;
     public Question question;
     //set to true if only the playerId needs to be processed.
     public boolean isError;
@@ -21,14 +21,18 @@ public class GameState {
     public List<LeaderboardEntry> leaderboard;
     public GameState() {
         this.question = new Question(null, null, null, null, null);
+        this.stage = Stage.LOBBY;
     }
     public GameState(long gameId, Question question, Player player,List<Player> players) {
+        if (players == null) {
+            players = new ArrayList<Player>();
+        }
         this.gameId = gameId;
         this.question = question;
         if (player != null) setPlayer(player);
         leaderboard = new ArrayList<>();
-        for(int i = 0; i < players.size(); i++) {
-            leaderboard.add(new LeaderboardEntry(players.get(i).username, 0));
+        for (Player value : players) {
+            leaderboard.add(new LeaderboardEntry(value.username, 0));
         }
         Collections.sort(leaderboard);
         this.stage = Stage.LOBBY;
@@ -60,6 +64,7 @@ public class GameState {
                 ", playerId=" + playerId +
                 ", username='" + username + '\'' +
                 ", playerAnswer='" + playerAnswer + '\'' +
+                ", leaderboard=" + leaderboard +
                 '}';
     }
 }

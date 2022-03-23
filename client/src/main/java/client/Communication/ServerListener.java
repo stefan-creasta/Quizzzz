@@ -50,6 +50,7 @@ public class ServerListener {
                 try {
                     var response = client.send(request, HttpResponse.BodyHandlers.ofString());
                     //GameState gameState = gson.fromJson(response.body(), new TypeToken<GameState>(){}.getType());
+                    System.out.println(response.body());
                     GameState gameState = mapper.readValue(response.body(), typeRef);
                     System.out.println(response.body());
                     System.out.println(gameState);
