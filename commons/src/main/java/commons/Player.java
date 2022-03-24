@@ -8,7 +8,7 @@ public class Player {
     public String username;
     public long score;
     public long gameId;
-    public Timer timer;
+//    public Timer timer;
     public String answer;
     public long timeToAnswer;
 
@@ -16,7 +16,7 @@ public class Player {
         this.id = idGenerator++;
         this.username = null;
         this.score = 0;
-//        this.timer = new Timer(0, 30);
+//      this.timer = new Timer(0, 30);
         this.answer = null;
         this.gameId = -1;
         this.timeToAnswer = -1;
@@ -26,7 +26,7 @@ public class Player {
         this.id = idGenerator++;
         this.username = username;
         this.score = score;
-        this.timer = new Timer(0, 30);
+//        this.timer = new Timer(0, 30);
         this.answer = null;
         this.gameId = -1;
         this.timeToAnswer = -1;

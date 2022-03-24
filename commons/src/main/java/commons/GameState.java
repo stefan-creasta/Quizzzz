@@ -44,8 +44,8 @@ public class GameState {
      * @param player the specific player that the GameState is going to be sent to
      */
     public void setPlayer(Player player) {
-        this.timerSyncLong = player.timer.getSynchronizationLong();
-        this.duration = player.timer.getDurationLong();
+ //       this.timerSyncLong = player.timer.getSynchronizationLong();
+ //       this.duration = player.timer.getDurationLong();
         this.playerId = player.id;
         this.username = player.username;
         this.playerAnswer = player.answer;
