@@ -62,6 +62,8 @@ public class GameService {
         }
     }
 
+    private Game currentGame;
+
     int stateInteger = -1;//0 if state is QUESTION, 1 if state is INTERVAL
 
     private Map<Long, DeferredResult<GameState>> playerConnections;
@@ -111,7 +113,7 @@ public class GameService {
     public GameState joinGame(long gameId, String username) throws IllegalArgumentException {
         Player player = new Player(username, 0);
         Game game = gameRepository.getId(gameId);
-        GameState state = new GameState(gameId, game.getCurrentQuestion(), player, game.players);
+        GameState state = game.getState(player);
         if (!game.addPlayer(player)) {
             state.isError = true;
             state.message = "usernameAlreadyInGame";
@@ -142,7 +144,7 @@ public class GameService {
 
         stateInteger = 0;
 
-        GameState state = new GameState(game.id, questionService.getId(game.questions.get(game.currentQuestion).id), null,null);
+        GameState state = game.getState();
 
         for (Player player : game.players) {
             state.setPlayer(player);
@@ -163,9 +165,10 @@ public class GameService {
     }
 
     public void intervalPhase(final Game game) {
-
         stateInteger = 1;
-        GameState state = new GameState(game.id, game.getCurrentQuestion(), null,game.players);
+
+        GameState state = game.getState();
+
         state.stage = GameState.Stage.INTERVAL;
         for (Player player : game.players) {
             state.setPlayer(player);

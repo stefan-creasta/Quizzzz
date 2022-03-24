@@ -20,26 +20,29 @@ public class GameState {
     public String playerAnswer;
     public List<LeaderboardEntry> leaderboard;
 
-    public GameState() {
-        this.question = new Question(null, null, null, null, null);
-        this.stage = Stage.LOBBY;
-    }
-    public GameState(long gameId, Question question, Player player,List<Player> players) {
-        if (players == null) {
-            players = new ArrayList<Player>();
-        }
-        this.gameId = gameId;
-        this.question = question;
+    /**Create a GameState for a game tailored for a specific player. If player is null the constructor will skip setting the fields relevant to the player.
+     * @param game the game
+     * @param player the specific player that the GameState is going to be sent to
+     */
+    public GameState(Game game, Player player) {
+        this.stage = game.stage;
+        this.question = game.getCurrentQuestion();
+        this.isError = false;
+        this.message = null;
+        this.gameId = game.id;
+
         if (player != null) setPlayer(player);
-        leaderboard = new ArrayList<>();
-        for (Player value : players) {
-            leaderboard.add(new LeaderboardEntry(value.username, 0));
-        }
-        Collections.sort(leaderboard);
-        this.stage = Stage.LOBBY;
 
+        this.leaderboard = new ArrayList<>();
+        for (Player lobbyPlayer : game.players) {
+            this.leaderboard.add(new LeaderboardEntry(lobbyPlayer.username, (int) lobbyPlayer.score));
+        }
+        Collections.sort(this.leaderboard);
     }
 
+    /**Sets the relevant fields for the specific player that the GameState is going to be sent to.
+     * @param player the specific player that the GameState is going to be sent to
+     */
     public void setPlayer(Player player) {
 //        this.timerSyncLong = player.timer.getSynchronizationLong();
 //        this.duration = player.timer.getDurationLong();
