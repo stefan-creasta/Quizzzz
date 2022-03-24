@@ -1,15 +1,20 @@
 package client.Communication;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
+import commons.Game;
 import commons.GameState;
+import commons.Player;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.List;
 
 public class GameCommunication {
     private HttpClient client;
@@ -43,7 +48,9 @@ public class GameCommunication {
                 .build();
         try {
             String response = client.send(request, HttpResponse.BodyHandlers.ofString()).body();
-            return gson.fromJson(response, new TypeToken<GameState>(){}.getType());
+            GameState gameState = gson.fromJson(response, new TypeToken<GameState>(){}.getType());
+            System.out.println("Leaderboard size is: " + gameState.leaderboard.size());
+            return gameState;
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -64,5 +71,14 @@ public class GameCommunication {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+    public List<String> getPlayers(long gameId) throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/api/game/players/" + gameId))
+                .GET()
+                .build();
+        var response = client.send(request, HttpResponse.BodyHandlers.ofString());        final ObjectMapper mapper = new ObjectMapper();
+        final TypeReference<List<String>> typeRef = new TypeReference<>() {};
+        return mapper.readValue(response.body(), typeRef);
     }
 }

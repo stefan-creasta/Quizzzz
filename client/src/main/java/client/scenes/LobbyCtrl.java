@@ -1,9 +1,6 @@
 package client.scenes;
 
-import client.Communication.LobbyCommunication;
-import client.Communication.PlayerCommunication;
 import com.google.inject.Inject;
-import commons.Lobby;
 import commons.Player;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -20,12 +17,9 @@ import java.util.ResourceBundle;
 
 public class LobbyCtrl implements Initializable {
 
-    private static PlayerCommunication playerCommunication;
     private final MainCtrl mainCtrl;
 
-
-    private Lobby currentLobby;
-    private ObservableList<Player>  playerlist;
+    private ObservableList<String>  playerlist;
 
 
     @FXML
@@ -33,15 +27,14 @@ public class LobbyCtrl implements Initializable {
     @FXML
     private Button leaveButton;
     @FXML
-    private TableView<Player> table;
+    private TableView<String> table;
     @FXML
     private TableColumn<Player, String> col1;
     @FXML
     private TableColumn<Player, String> col2;
 
     @Inject
-    public LobbyCtrl(PlayerCommunication playerCommunication, MainCtrl mainCtrl) {
-        this.playerCommunication = playerCommunication;
+    public LobbyCtrl(MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
     }
     @Override
@@ -51,14 +44,12 @@ public class LobbyCtrl implements Initializable {
 //        currentLobby = new Lobby();
     }
 
-    public void refresh() {
+    public void refresh() throws IOException, InterruptedException {
         System.out.println("REFRESHING LOBBY");
-        var players = playerCommunication.getPlayers();
+        var players = mainCtrl.getPlayers();
+        System.out.println(players.size());
         playerlist = FXCollections.observableList(players);
         table.setItems(playerlist);
-        for (int i = 0; i < players.size(); i++) {
-            System.out.println(players.get(i).username);
-        }
     }
 
     public void leave() {
@@ -68,8 +59,6 @@ public class LobbyCtrl implements Initializable {
 
     @FXML
     public void startGame() throws IOException, InterruptedException {
-        LobbyCommunication lobbyCommunication = new LobbyCommunication();
-        lobbyCommunication.removePlayersFromLobby();
         mainCtrl.initiateGame();
         mainCtrl.showQuestion();
         //System.out.println(lobbyCommunication.getPlayers().size());
