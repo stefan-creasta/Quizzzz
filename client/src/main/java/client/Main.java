@@ -20,7 +20,6 @@ import client.Communication.GameCommunication;
 import client.Communication.ServerListener;
 import client.scenes.*;
 import com.google.inject.Injector;
-import commons.GameState;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -52,7 +51,6 @@ public class Main extends Application {
 
         var serverListener = INJECTOR.getInstance(ServerListener.class);
         var gameCommunication = INJECTOR.getInstance(GameCommunication.class);
-        GameState state = new GameState();
 
         long playerId = 1;
 
