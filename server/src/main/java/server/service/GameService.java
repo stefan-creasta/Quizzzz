@@ -10,6 +10,7 @@ import java.util.*;
 @Service
 public class GameService {
 
+
     class GameRepository {
         private Map<Long, Game> games;
 
@@ -20,7 +21,7 @@ public class GameService {
         /**
          * Gets the game with the according ID
          * @param id the ID of the game
-         * @return
+         * @return the Game instance
          * @throws IllegalArgumentException
          */
         Game getId(long id) throws IllegalArgumentException {
@@ -37,6 +38,7 @@ public class GameService {
             return games.containsKey(id);
         }
     }
+
 
     class PlayerRepository {
         private Map<Long, Player> players;
@@ -82,6 +84,113 @@ public class GameService {
         this.playerConnections = new HashMap<>();
         createCurrentGame();
     }
+
+    /**
+     * Gets called when a player presses on a power up button.
+     * The points the player gets from this answer will be doubled
+     * @param playerID The ID of the player using the power up
+     * @param gameID the ID of the game the player is playing in
+     */
+    public String doublePointsPowerUp(long playerID, long gameID){
+
+        Game g = gameRepository.getId(gameID);
+        Player pl = null;
+        for(Player p: g.players){
+            if(p.id==playerID){
+                pl = p;
+                break;
+            }
+        }
+        try{
+            if(pl.doublePointsPower){
+                pl.doublePointsPower = false;
+                pl.shouldReceiveDouble = true;
+                return "doublePointsPowerUp___success";
+            }
+            return "doublePointsPowerUp___fail";//is returned when the player has already used the power up
+        }
+        catch(Exception exc){
+            exc.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Gets called when a player tries to use an eliminate wrong answer power up. If the player has not used the power up before,
+     * a random wrong answer gets sent to the client.
+     * @param playerID The playerID of the client using the power up.
+     * @param gameID The gameID of the game that the client is playing in.
+     * @return a string saying whether the power up was successfully used and the wrong answer.
+     */
+    public String eliminateWrongAnswerPowerUp(long playerID, long gameID){
+
+        Game g = gameRepository.getId(gameID);
+        Player pl = null;
+        for(Player p: g.players){
+            if(p.id==playerID){
+                pl = p;
+                break;
+            }
+        }
+
+        try{
+            if(pl.eliminateAnswerPower){
+                pl.eliminateAnswerPower = false;
+                Question q = g.questions.get(g.currentQuestion);
+                int randomIndex = new Random().nextInt(2);
+                String wrongAnswer;
+
+                if(randomIndex==0){
+                    wrongAnswer = q.wrongAnswer1;
+                }else{
+                    wrongAnswer = q.wrongAnswer2;
+                }
+                return "eliminateWrongAnswerPowerUp___success___" + wrongAnswer;
+            }
+            return "eliminateWrongAnswerPowerUp___fail";//gets returned when the user has already used the power up
+        }
+        catch(Exception exc){
+            exc.printStackTrace();
+        }
+        return null;
+    }
+
+    public String halfTimePowerUp(long playerID, long gameID){
+
+        Game g = gameRepository.getId(gameID);
+        Player pl = null;
+        for(Player p: g.players){
+            if(p.id==playerID){
+                pl = p;
+                break;
+            }
+        }
+        try{
+            if(pl.eliminateAnswerPower){
+                pl.eliminateAnswerPower = false;
+                //CLIENT SIDE EFFECT - Send to all other players except this player a message saying their time is halved
+                Game thisGame = gameRepository.getId(gameID);
+                List<Player> players = thisGame.players;
+                for(Player p:players){
+                    if(p.id!=playerID){
+                        GameState gState = thisGame.getState();
+                        gState.halfTime = true;
+                        sendToPlayer(p.id, g.getState());
+                    }
+                }
+                //TODO SERVER SIDE EFFECT
+                //hard to do since player award system is not set properly in place atm
+                return "halfTimePowerUp___success___";
+            }
+            return "halfTimePowerUp___fail";//executes when the player has already used the power up
+        }
+        catch(Exception exc){
+            exc.printStackTrace();
+        }
+        return null;
+    }
+
+
 
     /**
      * A method which creates the current game - which is the lobby
@@ -143,7 +252,8 @@ public class GameService {
         return state;
     }
 
-    /**Initiate a game. Do not allow other players to join and show the first question.
+    /**
+     * Initiates a game. Do not allow other players to join and show the first question.
      * At the same time, it also creates a new current game (a new lobby)
      *
      * @param gameId the id of the game to initiate
@@ -231,7 +341,8 @@ public class GameService {
         playerConnections.put(playerId, result);
     }
 
-    /**Send the game state to a player.
+    /**
+     * Send the game state to a player.
      *
      * Note that the connection is only available after the player makes a request to
      * /api/listen, therefore you can't just send new data to a player without some
@@ -271,7 +382,12 @@ public class GameService {
         for(Player p: g.players){
             if(p.answer!=null && p.answer.equals(q.answer)) {
                 System.out.println("answer recieved");//debug
-                p.score = (long) (p.score + (10.0 - p.timeToAnswer)*10);
+                long toAdd = (long) (10.0 - p.timeToAnswer);
+                if(p.shouldReceiveDouble){
+                    toAdd = toAdd*2;
+                    p.shouldReceiveDouble = false;
+                }
+                p.score = (long) (p.score + toAdd*10);
             }
             System.out.println("this is quote after answer recieved");//debug
             p.answer = null;

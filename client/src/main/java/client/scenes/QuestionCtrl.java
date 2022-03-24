@@ -3,10 +3,7 @@ package client.scenes;
 import client.Communication.AnswerCommunication;
 import client.Communication.ImageCommunication;
 import client.Communication.PowerUpsCommunication;
-import commons.GameState;
-import commons.LeaderboardEntry;
-import commons.Question;
-import commons.Timer;
+import commons.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.SimpleStringProperty;
@@ -54,7 +51,6 @@ public class QuestionCtrl {
 
     @FXML
     private Button halfTime;
-
 
     @FXML
     private ImageView questionImage;
@@ -124,19 +120,87 @@ public class QuestionCtrl {
     }
 
 
+
     @FXML
-    void DoublePointsButtonPressed(ActionEvent event) throws IOException, InterruptedException {
-        PowerUpsCommunication.sendPowerUps(doublePoints.getText() + " WAS USED!");
+    /**
+     * Gets called when the double points power up gets activated. Sends a request to the server,
+     * where it is checked if the power up has already been used by this client. If not, the power
+     * up is used.
+     */
+    public void DoublePointsButtonPressed(ActionEvent event) throws IOException, InterruptedException {
+        String result = PowerUpsCommunication.sendPowerUps("doublePointsPowerUp", gameState);
+
+        try{
+            if(result.split("___")[1].equals("success")){
+                //TODO tell user that the powerup has been used properly
+            }else{
+                System.out.println("doublePointsPowerUp has already been used before");
+                //TODO tell user power up is already used
+            }
+        }
+        catch(Exception exc){
+            exc.printStackTrace();
+        }
+
     }
 
     @FXML
+    /**
+     * Gets called when the eliminate wrong answer power up is used. Sends a request to the server,
+     * where it is checked if the player has already used that power up. If not, the power up is used,
+     * and the wrong answer button is made invisible and inaccessible.
+     */
     void EliminateWrongAnswerButtonPressed(ActionEvent event) throws IOException, InterruptedException {
-        PowerUpsCommunication.sendPowerUps(eliminateWrongAnswer.getText()+ " WAS USED!");
+        String result = PowerUpsCommunication.sendPowerUps("eliminateWrongAnswerPowerUp", gameState);
+
+        try{
+            if(result.split("___")[1].equals("success")){
+                String answer = result.split("___")[2];
+                if(answer1.getText().equals(answer)){
+                    setVisible("answer1", false);//TODO dont forget to turn visible later if needed
+                }
+                if(answer2.getText().equals(answer)){
+                    setVisible("answer1", false);//TODO dont forget to turn visible later if needed
+                }
+                if(answer3.getText().equals(answer)){
+                    setVisible("answer1", false);//TODO dont forget to turn visible later if needed
+                }
+
+            }
+            if(result.split("___")[1].equals("fail")){
+                System.out.println("eliminateWrongAnswerPowerUp has already been used before");
+                //TODO tell user that power up has been used
+
+            }
+        }
+        catch(Exception exc){
+            exc.printStackTrace();
+        }
+
     }
 
     @FXML
+    /**
+     * Gets called when the half time power up is used. Sends a request to the server,
+     * where it is checked if the player has already used that power up. If not, the power up is used,
+     * and the time of all other players is halved.
+     */
     void HalfTimeButtonPressed(ActionEvent event) throws IOException, InterruptedException {
-        PowerUpsCommunication.sendPowerUps(halfTime.getText() +" WAS USED!");
+        String result = PowerUpsCommunication.sendPowerUps("halfTimePowerUp", gameState);
+        try{
+            if(result.split("___")[1].equals("success")){
+                System.out.println("halftime has been used but maybe not implemented yet");
+                //TODO show to user that power up is used
+            }
+            else {
+                System.out.println("halfTimePowerUp has already been used before");
+            }
+        }
+        catch(Exception exc){
+            exc.printStackTrace();
+        }
+
+
     }
 
     @FXML
@@ -193,6 +257,26 @@ public class QuestionCtrl {
         leaderboardScores.setCellValueFactory(e -> new SimpleStringProperty(Integer.toString(e.getValue().score)));
 
         hideLeaderboard();
+    }
+
+
+    /**
+     * Makes an FXML element visible/invisible
+     * @param variableName the fxml ID of the element
+     * @param should whether the element should become visible, or invisible
+     */
+    public void setVisible(String variableName, boolean should){
+        switch(variableName){
+            case "answer1":
+                answer1.setVisible(should);
+                break;
+            case "answer2":
+                answer2.setVisible(should);
+                break;
+            case "answer3":
+                answer3.setVisible(should);
+                break;
+        }
     }
 
     public void syncTimer(long syncLong, long duration) {

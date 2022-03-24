@@ -3,6 +3,11 @@ package commons;
 public class Player {
     private static long idGenerator = 0L;
 
+    public boolean doublePointsPower;//whether they have used a doublePointsPowerUp
+    public boolean eliminateAnswerPower;//whether they have used an eliminate wrong answer power up
+    public boolean reduceTimePower;//whether they have used a reduce time power up
+
+    public boolean shouldReceiveDouble; // wheter the player should recieve double points this round
 
     public long id;
     public String username;

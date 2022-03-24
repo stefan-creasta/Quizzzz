@@ -19,6 +19,7 @@ public class GameState {
     public String username;
     public String playerAnswer;
     public List<LeaderboardEntry> leaderboard;
+    public boolean halfTime;
 
     public GameState() {
 
@@ -28,6 +29,7 @@ public class GameState {
      * @param player the specific player that the GameState is going to be sent to
      */
     public GameState(Game game, Player player) {
+        this.halfTime = false;
         this.stage = game.stage;
         this.question = game.getCurrentQuestion();
         this.isError = false;

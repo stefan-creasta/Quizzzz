@@ -165,7 +165,11 @@ public class MainCtrl {
 
         System.out.println("GAME STATE: " + gameState);
 
-        if (gameState.stage == GameState.Stage.LOBBY) {
+        if(gameState.halfTime == true){
+            //TODO show on clientside that time is halved
+            //timer implementation is in another branch that is not merged yet. Will do later on.
+        }
+        else if (gameState.stage == GameState.Stage.LOBBY) {
             try {
                 showLobby();
             } catch (IOException e) {
