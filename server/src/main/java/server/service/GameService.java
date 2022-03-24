@@ -17,6 +17,12 @@ public class GameService {
             games = new HashMap<Long, Game>();
         }
 
+        /**
+         * Gets the game with the according ID
+         * @param id the ID of the game
+         * @return
+         * @throws IllegalArgumentException
+         */
         Game getId(long id) throws IllegalArgumentException {
             if (!existsById(id)) throw new IllegalArgumentException();
             return games.get(id);
@@ -91,8 +97,8 @@ public class GameService {
         return gameRepository.getId(id);
     }
 
-    /**Produce a gameId which the player client can join a game or its lobby with
-     *
+    /**
+     * Produce a gameId which the player client can join a game or its lobby with
      * This method can be used even if there is only one lobby that can be joined at a given moment. Then it would
      * return the gameId of the game that the player is wanted to join.
      * @return the gameId
@@ -108,7 +114,8 @@ public class GameService {
         return currentGame.id;
     }
 
-    /**Register *one player* into a game with the given username. This will fail if the lobby of the game already
+    /**
+     * Register *one player* into a game with the given username. This will fail if the lobby of the game already
      * has a player with the given username.
      *
      * @param gameId the id of the game to join

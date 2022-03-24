@@ -140,10 +140,15 @@ public class MainCtrl {
         primaryStage.setTitle("Question");
         primaryStage.setScene(question);
     }
-
+    
     public List<String> getPlayers() throws IOException, InterruptedException {
         return gameCommunication.getPlayers(gameId);
     }
+
+    /**
+     * Sends a request to the server to initiate the game with ID gameId
+     */
+
     public void initiateGame() {
         gameCommunication.initiateGame(gameId);
     }

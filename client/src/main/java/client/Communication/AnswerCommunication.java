@@ -22,6 +22,15 @@ public class AnswerCommunication {
 
     private static Gson gson = new Gson();
 
+
+    /**
+     * Gets called when an answer button is pressed. Sends the contents of the button as a string, the gameID and the playerID
+     * using a POST HTTP request.
+     * @param answer String containing the contents of the answer button that got pressed
+     * @param gameState the gameState(game instance) that is player
+     * @throws IOException can get thrown
+     * @throws InterruptedException can get thrown
+     */
     public static void sendAnswer(String answer, GameState gameState) throws IOException, InterruptedException {
 
         PlayerAnswer ans = new PlayerAnswer(answer, gameState.gameId, gameState.playerId);
@@ -39,6 +48,13 @@ public class AnswerCommunication {
         client.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
+    /**
+     * Gets the current question that is displayed during the QUESTION state of a game using a GET HTTP request.
+     * @param gameId the gameID of the gameState
+     * @return the Question entity of the question
+     * @throws IOException can get thrown
+     * @throws InterruptedException can get thrown
+     */
     public static Question getQuestion(long gameId) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/api/game/"+gameId))

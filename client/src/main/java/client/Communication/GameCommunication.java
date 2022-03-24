@@ -23,6 +23,10 @@ public class GameCommunication {
         this.client = client;
     }
 
+    /**
+     * Sends an HTTP request to the server to create a game, gets the ID of the game.
+     * @return the ID of the game state that is created, if an exception occurs, return -1;
+     */
     public long createGame() {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/api/game/create"))
@@ -38,6 +42,13 @@ public class GameCommunication {
         return -1;
     }
 
+    /**
+     * Sends the server the gameID that the user wants to join, together with the username they have chosen.
+     * @param gameId the ID of the game, the user wants to join. Usually, this would not
+     * necessary, since there is always only 1 game that can be joined at a time, but it is designed that way.
+     * @param username The username that the client has chosen to join the game with.
+     * @return the gameState to initially render the game with, returns null if an exception occurred.
+     */
     public GameState joinGame(long gameId, String username) {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/api/game/join/" + gameId + "?username=" + username))
@@ -59,6 +70,10 @@ public class GameCommunication {
         return null;
     }
 
+    /**
+     * Sends a request to the server to initiate the game with id gameId.
+     * @param gameId The id of the game to be initiated.
+     */
     public void initiateGame(long gameId) {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/api/game/init/" + gameId))
