@@ -1,7 +1,6 @@
 package client.scenes;
 
 import com.google.inject.Inject;
-import commons.Player;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,9 +28,9 @@ public class LobbyCtrl implements Initializable {
     @FXML
     private TableView<String> table;
     @FXML
-    private TableColumn<Player, String> col1;
+    private TableColumn<String, String> col1;
     @FXML
-    private TableColumn<Player, String> col2;
+    private TableColumn<String, String> col2;
 
     @Inject
     public LobbyCtrl(MainCtrl mainCtrl) {
@@ -39,15 +38,14 @@ public class LobbyCtrl implements Initializable {
     }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        col1.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().username));
-//        col2.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().username));
-//        currentLobby = new Lobby();
+        col1.setCellValueFactory(q -> new SimpleStringProperty(q.getValue()));
+        //col2.setCellValueFactory(q -> new SimpleStringProperty(q.getValue()));
     }
 
     public void refresh() throws IOException, InterruptedException {
         System.out.println("REFRESHING LOBBY");
         var players = mainCtrl.getPlayers();
-        System.out.println(players.size());
+        System.out.println("Refresh: " + players.size());
         playerlist = FXCollections.observableList(players);
         table.setItems(playerlist);
     }

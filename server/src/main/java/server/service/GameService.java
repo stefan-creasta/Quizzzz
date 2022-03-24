@@ -117,13 +117,20 @@ public class GameService {
      * @throws IllegalArgumentException if the gameId is invalid.
      */
     public GameState joinGame(long gameId, String username) throws IllegalArgumentException {
+        System.out.println("Username for player: " + username);
         Player player = new Player(username, 0);
         Game game = gameRepository.getId(gameId);
         GameState state = game.getState(player);
         if (!game.addPlayer(player)) {
             state.isError = true;
             state.message = "usernameAlreadyInGame";
+            System.out.println("Username already taken");
             return state;
+        }
+        state = game.getState();
+        for (Player otherPlayer : game.players) {
+            state.setPlayer(otherPlayer);
+            sendToPlayer(otherPlayer.id, state);
         }
         playerRepository.save(player);
         return state;
@@ -228,7 +235,7 @@ public class GameService {
      */
     public void sendToPlayer(Long playerId, GameState state) {
         DeferredResult<GameState> connection = playerConnections.get(playerId);
-        if (connection != null) connection.setResult(state);
+        if (connection != null) if (!connection.setResult(state)) System.out.println("GAMESTATE WASN'T SENT!!!");
         playerConnections.put(playerId, null);
         timeOfSent = System.nanoTime();
     }

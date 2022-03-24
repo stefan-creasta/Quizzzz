@@ -2,7 +2,6 @@ package client.Communication;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
 import commons.GameState;
@@ -45,9 +44,12 @@ public class GameCommunication {
                 .GET()
                 .build();
         try {
-            String response = client.send(request, HttpResponse.BodyHandlers.ofString()).body();
-            GameState gameState = gson.fromJson(response, new TypeToken<GameState>(){}.getType());
-            System.out.println("Leaderboard size is: " + gameState.leaderboard.size());
+            var response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            final ObjectMapper mapper = new ObjectMapper();
+            final TypeReference<GameState> typeRef = new TypeReference<>() {};
+            GameState gameState = mapper.readValue(response.body(), typeRef);
+            System.out.println("Leaderboard: " + gameState.leaderboard.size());
+
             return gameState;
         } catch (IOException e) {
             e.printStackTrace();
@@ -75,7 +77,8 @@ public class GameCommunication {
                 .uri(URI.create("http://localhost:8080/api/game/players/" + gameId))
                 .GET()
                 .build();
-        var response = client.send(request, HttpResponse.BodyHandlers.ofString());        final ObjectMapper mapper = new ObjectMapper();
+        var response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        final ObjectMapper mapper = new ObjectMapper();
         final TypeReference<List<String>> typeRef = new TypeReference<>() {};
         return mapper.readValue(response.body(), typeRef);
     }

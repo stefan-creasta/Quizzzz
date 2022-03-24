@@ -27,7 +27,7 @@ public class ListenController {
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     public DeferredResult<GameState> getListen(@RequestParam Long playerId) throws IllegalArgumentException {
         if (playerId == null) throw new IllegalArgumentException();
-        DeferredResult<GameState> result = new DeferredResult<>();
+        DeferredResult<GameState> result = new DeferredResult<GameState>(30000L);
         service.registerPlayerConnection(playerId, result);
         System.out.println(result.getResult());
         return result;

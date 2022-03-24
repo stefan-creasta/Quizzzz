@@ -49,8 +49,8 @@ public class ServerListener {
                 System.out.println("loop is running");
                 try {
                     var response = client.send(request, HttpResponse.BodyHandlers.ofString());
-                    //GameState gameState = gson.fromJson(response.body(), new TypeToken<GameState>(){}.getType());
-                    System.out.println(response.body());
+                    //GameState gameState = gson.fromJson(response.body(), new TypeToken<GameState>(){}.getType());if(response.body().contains("timestamp")) continue;
+                    if(response.body().contains("timestamp"))  { continue; }
                     GameState gameState = mapper.readValue(response.body(), typeRef);
                     System.out.println(response.body());
                     System.out.println(gameState);

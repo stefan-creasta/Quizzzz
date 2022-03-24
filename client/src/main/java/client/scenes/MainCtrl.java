@@ -158,8 +158,7 @@ public class MainCtrl {
     public void handleGameState(GameState gameState) {
         //if any other screen is displayed there is something wrong.
 
-        System.out.println("GAME STATE");
-        System.out.println(gameState);
+        System.out.println("GAME STATE: " + gameState);
 
         if (gameState.stage == GameState.Stage.LOBBY) {
             try {
