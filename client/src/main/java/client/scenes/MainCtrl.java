@@ -99,6 +99,10 @@ public class MainCtrl {
         gameCommunication.joinGame(gameId, newPlayer.username);
     }
 
+    public boolean checkUsername(String username) throws IOException, InterruptedException {
+        return gameCommunication.checkUsername(gameId, username);
+    }
+
     public void showOverview() {
         primaryStage.setTitle("Quotes: Overview");
         primaryStage.setScene(overview);

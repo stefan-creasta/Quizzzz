@@ -97,4 +97,15 @@ public class GameCommunication {
         final TypeReference<List<String>> typeRef = new TypeReference<>() {};
         return mapper.readValue(response.body(), typeRef);
     }
+    public boolean checkUsername(long gameId, String username) throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/api/game/check/" + gameId + "?username=" + username))
+                .GET()
+                .build();
+        var response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        final ObjectMapper mapper = new ObjectMapper();
+        final TypeReference<Boolean> typeRef = new TypeReference<>() {};
+        boolean answer = mapper.readValue(response.body(), typeRef);
+        return answer;
+    }
 }

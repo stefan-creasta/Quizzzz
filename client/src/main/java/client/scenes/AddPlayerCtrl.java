@@ -50,24 +50,26 @@ public class AddPlayerCtrl {
     }
 
     public void play() throws IOException, InterruptedException {
-        try {
-            Player newPlayer = getPlayer();
-            mainCtrl.joinGame(newPlayer);
+        Player newPlayer = getPlayer();
+        if(mainCtrl.checkUsername(newPlayer.username) == true) {
+            try {
+                mainCtrl.joinGame(newPlayer);
 
-        } catch (WebApplicationException e) {
+            } catch (WebApplicationException e) {
 
-            var alert = new Alert(Alert.AlertType.ERROR);
-            alert.initModality(Modality.APPLICATION_MODAL);
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
-            return;
+                var alert = new Alert(Alert.AlertType.ERROR);
+                alert.initModality(Modality.APPLICATION_MODAL);
+                alert.setContentText(e.getMessage());
+                alert.showAndWait();
+                return;
+            }
+            mainCtrl.showLobby();
         }
-        clearFields();
-        mainCtrl.showLobby();
     }
 
     private Player getPlayer() {
         var username = usernameField.getText();
+        clearFields();
         return new Player(username, 0);
     }
 
