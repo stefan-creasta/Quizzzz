@@ -19,6 +19,7 @@ public class GameState {
     public String username;
     public String playerAnswer;
     public List<LeaderboardEntry> leaderboard;
+
     public GameState() {
         this.question = new Question(null, null, null, null, null);
         this.stage = Stage.LOBBY;

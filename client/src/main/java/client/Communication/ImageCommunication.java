@@ -23,6 +23,13 @@ public class ImageCommunication {
     public static HttpClient client = HttpClient.newBuilder().build();
     public static String fallbackImageURI = new File("src/main/resources/images/image-fallback.png").toURI().toString();
 
+    /**
+     * Gets the image from the given path. Gets called when setting up a question, in order to get the image for that question.
+     * @param path The path to the image
+     * @return The image or the fallback image if there was an error in getting the question image
+     * @throws IOException gets thrown by imageIO
+     * @throws IllegalArgumentException if path is null, since the called is likely trying to fetch the image for a question that doesn't have one.
+     */
     public static Image getImage(String path) throws IOException, IllegalArgumentException {
         //null path means that the caller is likely trying to fetch the image for a question that doesn't have one.
         if (path == null) throw new IllegalArgumentException();
@@ -35,21 +42,21 @@ public class ImageCommunication {
         Image image = null;
 
         try {
-        //client.send(...) may throw a ConnectException if connection fails
-        HttpResponse<InputStream> response = client.send(request, HttpResponse.BodyHandlers.ofInputStream());
-        //the status may be 404 which in case we would still need the fallback image
-        if (response.statusCode() == 200) {
-        InputStream is = response.body();
+            //client.send(...) may throw a ConnectException if connection fails
+            HttpResponse<InputStream> response = client.send(request, HttpResponse.BodyHandlers.ofInputStream());
+            //the status may be 404 which in case we would still need the fallback image
+            if (response.statusCode() == 200) {
+            InputStream is = response.body();
 
-        //ImageIO may throw an IOException
-        BufferedImage bufferedImage = ImageIO.read(is);
-        //ImageIO doesn't close the stream by itself
-        is.close();
+            //ImageIO may throw an IOException
+            BufferedImage bufferedImage = ImageIO.read(is);
+            //ImageIO doesn't close the stream by itself
+            is.close();
 
-        //Image image = SwingFXUtils.toFXImage(bufferedImage, null);
-        //Image image = new Image("https://br-tomassen.com/wp-content/uploads/2018/05/DUCK-7.png%22");
-        image = convertToFxImage(bufferedImage);
-        }
+            //Image image = SwingFXUtils.toFXImage(bufferedImage, null);
+            //Image image = new Image("https://br-tomassen.com/wp-content/uploads/2018/05/DUCK-7.png%22");
+            image = convertToFxImage(bufferedImage);
+            }
         }
         catch (ConnectException e) {
             System.out.println("A connection error has occurred while getting an image!");
@@ -75,6 +82,12 @@ public class ImageCommunication {
         //if there was an error getting the image, return the fallback image instead
         return image;
     }
+
+    /**
+     * Converts a bufferedImage to a normal image.
+     * @param image The bufferedImage to convert
+     * @return The converted image
+     */
     private static Image convertToFxImage(BufferedImage image) {
         WritableImage wr = null;
         if (image != null) {

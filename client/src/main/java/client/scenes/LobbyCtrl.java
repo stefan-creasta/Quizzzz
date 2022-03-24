@@ -67,6 +67,10 @@ public class LobbyCtrl implements Initializable {
 
 
     @FXML
+    /**
+     * Gets called when the Start Game button in the lobby is pressed. Initiates a game with the players from the lobby.
+     * Creates a new lobby to be available for the next game. Shows the first question of the initiated game.
+     */
     public void startGame() throws IOException, InterruptedException {
         LobbyCommunication lobbyCommunication = new LobbyCommunication();
         lobbyCommunication.removePlayersFromLobby();

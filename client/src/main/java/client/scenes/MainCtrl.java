@@ -128,6 +128,9 @@ public class MainCtrl {
         primaryStage.setScene(question);
     }
 
+    /**
+     * Sends a request to the server to initiate the game with ID gameId
+     */
     public void initiateGame() {
         gameCommunication.initiateGame(gameId);
     }
