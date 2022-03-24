@@ -5,9 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
-import commons.Game;
 import commons.GameState;
-import commons.Player;
 
 import java.io.IOException;
 import java.net.URI;
