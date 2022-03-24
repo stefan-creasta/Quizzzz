@@ -20,6 +20,9 @@ public class GameState {
     public String playerAnswer;
     public List<LeaderboardEntry> leaderboard;
 
+    public GameState() {
+
+    }
     /**Create a GameState for a game tailored for a specific player. If player is null the constructor will skip setting the fields relevant to the player.
      * @param game the game
      * @param player the specific player that the GameState is going to be sent to

@@ -18,10 +18,14 @@ package client.scenes;
 import client.Communication.GameCommunication;
 import client.Communication.ServerListener;
 import commons.GameState;
+import commons.Player;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+
+import java.io.IOException;
+import java.util.List;
 
 public class MainCtrl {
 
@@ -90,8 +94,9 @@ public class MainCtrl {
         primaryStage.show();
     }
 
-    public void joinGame(long userId) {
-        serverListener.initialize(userId, this);
+    public void joinGame(Player newPlayer) {
+        serverListener.initialize(newPlayer.id, this);
+        gameCommunication.joinGame(gameId, newPlayer.username);
     }
 
     public void showOverview() {
@@ -100,7 +105,7 @@ public class MainCtrl {
         overviewCtrl.refresh();
     }
 
-    public void showLobby() {
+    public void showLobby() throws IOException, InterruptedException {
         primaryStage.setTitle("Lobby");
         primaryStage.setScene(lobby);
         lobbyCtrl.refresh();
@@ -115,7 +120,15 @@ public class MainCtrl {
     public void showPlayer() {
         primaryStage.setTitle("Adding a player");
         primaryStage.setScene(player);
-        player.setOnKeyPressed(e -> playerCtrl.keyPressed(e));
+        player.setOnKeyPressed(e -> {
+            try {
+                playerCtrl.keyPressed(e);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+        });
     }
 
     public void showTimer() {
@@ -127,10 +140,15 @@ public class MainCtrl {
         primaryStage.setTitle("Question");
         primaryStage.setScene(question);
     }
+    
+    public List<String> getPlayers() throws IOException, InterruptedException {
+        return gameCommunication.getPlayers(gameId);
+    }
 
     /**
      * Sends a request to the server to initiate the game with ID gameId
      */
+
     public void initiateGame() {
         gameCommunication.initiateGame(gameId);
     }
@@ -145,11 +163,16 @@ public class MainCtrl {
     public void handleGameState(GameState gameState) {
         //if any other screen is displayed there is something wrong.
 
-        System.out.println("GAME STATE");
-        System.out.println(gameState);
+        System.out.println("GAME STATE: " + gameState);
 
         if (gameState.stage == GameState.Stage.LOBBY) {
-            showLobby();
+            try {
+                showLobby();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         } else {
             if (gameState.stage == GameState.Stage.QUESTION && gameState.question != null) {
                 showQuestion(); //im not sure where to put this

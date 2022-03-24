@@ -16,7 +16,6 @@
 package client.scenes;
 
 import client.Communication.GameCommunication;
-import client.Communication.PlayerCommunication;
 import client.Communication.ServerListener;
 import com.google.inject.Inject;
 import commons.Player;
@@ -27,9 +26,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 
+import java.io.IOException;
+
 public class AddPlayerCtrl {
 
-    private final PlayerCommunication server;
     private final MainCtrl mainCtrl;
     private final ServerListener serverListener;
     private final GameCommunication gameCommunication;
@@ -38,23 +38,21 @@ public class AddPlayerCtrl {
     private TextField usernameField;
 
     @Inject
-    public AddPlayerCtrl(PlayerCommunication server, MainCtrl mainCtrl, ServerListener serverListener, GameCommunication gameCommunication) {
+    public AddPlayerCtrl( MainCtrl mainCtrl, ServerListener serverListener, GameCommunication gameCommunication) {
         this.mainCtrl = mainCtrl;
-        this.server = server;
         this.serverListener = serverListener;
         this.gameCommunication = gameCommunication;
     }
 
-    public void cancel() {
+    public void cancel() throws IOException, InterruptedException {
         clearFields();
         mainCtrl.showLobby();
     }
 
-    public void play() {
+    public void play() throws IOException, InterruptedException {
         try {
             Player newPlayer = getPlayer();
-            server.addPlayer(newPlayer);
-            mainCtrl.joinGame(newPlayer.id);
+            mainCtrl.joinGame(newPlayer);
 
         } catch (WebApplicationException e) {
 
@@ -77,7 +75,7 @@ public class AddPlayerCtrl {
         usernameField.clear();
     }
 
-    public void keyPressed(KeyEvent e) {
+    public void keyPressed(KeyEvent e) throws IOException, InterruptedException {
         switch (e.getCode()) {
             case ENTER:
                 play();

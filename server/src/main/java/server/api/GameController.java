@@ -1,12 +1,12 @@
 package server.api;
 
-import commons.Game;
-import commons.GameState;
-import commons.Question;
+import commons.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import server.service.GameService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/game")
@@ -54,5 +54,12 @@ public class GameController {
      */
     public void initiateGame(@PathVariable long id) throws IllegalArgumentException{
         service.initiateGame(id);
+    }
+    @GetMapping("/players/{id}")
+    public List<String> getPlayers(@PathVariable long id) {
+        System.out.println(id);
+        List<String> players = service.getPlayers(id);
+        System.out.println("GetMapping players: " + players.size());
+        return players;
     }
 }
