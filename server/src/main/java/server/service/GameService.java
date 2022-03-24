@@ -123,8 +123,11 @@ public class GameService {
      */
     public void initiateGame(long gameId) throws IllegalArgumentException {
         Game game = gameRepository.getId(gameId);
+
+
         if (game.started) return;
         game.started = true;
+        game.stage = GameState.Stage.QUESTION;
         questionPhase(game);
     }
 
