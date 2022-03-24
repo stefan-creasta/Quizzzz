@@ -70,7 +70,8 @@ public class ServerListener {
 
     }
 
-    /**Immediate step to prevent any erroneous GameStates from being passed to the rest of the client application.
+    /**
+     * Immediate step to prevent any erroneous GameStates from being passed to the rest of the client application.
      * @param gameState the received GameState
      */
     private void handler(GameState gameState) {

@@ -183,7 +183,7 @@ public class QuestionCtrl {
     /**
      * Gets called when the half time power up is used. Sends a request to the server,
      * where it is checked if the player has already used that power up. If not, the power up is used,
-     * and the time of all other players is halved.
+     * and the time of all other players is halved.//TODO finish
      */
     void HalfTimeButtonPressed(ActionEvent event) throws IOException, InterruptedException {
         String result = PowerUpsCommunication.sendPowerUps("halfTimePowerUp", gameState);

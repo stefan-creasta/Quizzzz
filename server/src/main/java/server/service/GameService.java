@@ -155,6 +155,15 @@ public class GameService {
         return null;
     }
 
+    /**
+     * Gets called when a player tries to use the half time power up. If the player has not used the power up before,
+     * all other players receive a message that their time is halved and the according changes take place on the client
+     * side. On the server side, the time of every player, during which they are allowed to submit an answer is
+     * changed accordingly.
+     * @param playerID The playerID of the client using the power up.
+     * @param gameID The gameID of the game that the client is playing in.
+     * @return a string saying whether the power up was successfully used and the wrong answer.
+     */
     public String halfTimePowerUp(long playerID, long gameID){
 
         Game g = gameRepository.getId(gameID);
@@ -358,6 +367,15 @@ public class GameService {
         timeOfSent = System.nanoTime();
     }
 
+    /**
+     * Gets called when a player clicks on the submit button for an answer. If they have not submitted an answer
+     * already, their answer gets saved, as well as the time at which they answered so that the scoring later on
+     * can be done according to the time of answering.//TODO make a field in the player class for time of answer
+     * //TODO and use that field to calculate scores later. Update that field in this method instead of keeping it here.
+     * @param playerId The id of the player who answered
+     * @param ans The contents of the answer button they clicked - their answer
+     * @param gameId The id of the game they are playing
+     */
     public void submitByPlayer(Long playerId, String ans, Long gameId) {
         if(stateInteger==1){
             return;
@@ -376,6 +394,11 @@ public class GameService {
         }
     }
 
+    /**
+     * Scores all players of a game at the end of the QUESTION phase of a gameState. Increases their score
+     * depending on the correctness and speed of their answer.
+     * @param g The game that is scored.
+     */
     public void score(Game g) {
         System.out.println("Scores:");
         Question q = g.questions.get(g.currentQuestion);
