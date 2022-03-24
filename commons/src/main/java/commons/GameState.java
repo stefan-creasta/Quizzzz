@@ -7,7 +7,7 @@ import java.util.List;
 public class GameState {
     public enum Stage {LOBBY, QUESTION, INTERVAL};
     //roughly stores which screen should be displayed during the game session.
-    public static Stage stage;
+    public Stage stage;
     public Question question;
     //set to true if only the playerId needs to be processed.
     public boolean isError;
@@ -68,6 +68,7 @@ public class GameState {
                 ", playerId=" + playerId +
                 ", username='" + username + '\'' +
                 ", playerAnswer='" + playerAnswer + '\'' +
+                ", leaderboard=" + leaderboard +
                 '}';
     }
 }
