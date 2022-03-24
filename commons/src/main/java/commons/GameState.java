@@ -20,6 +20,10 @@ public class GameState {
     public String playerAnswer;
     public List<LeaderboardEntry> leaderboard;
 
+    /**Create a GameState for a game tailored for a specific player. If player is null the constructor will skip setting the fields relevant to the player.
+     * @param game the game
+     * @param player the specific player that the GameState is going to be sent to
+     */
     public GameState(Game game, Player player) {
         this.stage = game.stage;
         this.question = game.getCurrentQuestion();
@@ -36,6 +40,9 @@ public class GameState {
         Collections.sort(this.leaderboard);
     }
 
+    /**Sets the relevant fields for the specific player that the GameState is going to be sent to.
+     * @param player the specific player that the GameState is going to be sent to
+     */
     public void setPlayer(Player player) {
         this.timerSyncLong = player.timer.getSynchronizationLong();
         this.duration = player.timer.getDurationLong();

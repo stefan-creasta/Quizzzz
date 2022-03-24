@@ -46,10 +46,17 @@ public class Game {
         return true;
     }
 
+    /**Get the current GameState that needs to be processed by a specific player client.
+     * @param player the specific player that the GameState is going to be sent to
+     * @return
+     */
     public GameState getState(Player player) {
         return new GameState(this, player);
     }
 
+    /**et the current GameState.
+     * @return
+     */
     public GameState getState() {
         return new GameState(this, null);
     }
