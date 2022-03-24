@@ -46,6 +46,14 @@ public class Game {
         return true;
     }
 
+    public GameState getState(Player player) {
+        return new GameState(this, player);
+    }
+
+    public GameState getState() {
+        return new GameState(this, null);
+    }
+
     @Override
     public boolean equals(Object obj) {
         return EqualsBuilder.reflectionEquals(this, obj);

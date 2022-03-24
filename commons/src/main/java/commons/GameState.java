@@ -19,25 +19,26 @@ public class GameState {
     public String username;
     public String playerAnswer;
     public List<LeaderboardEntry> leaderboard;
-    public GameState() {
-        this.question = new Question(null, null, null, null, null);
-    }
-    public GameState(long gameId, Question question, Player player,List<Player> players) {
-        this.gameId = gameId;
-        this.question = question;
-        if (player != null) setPlayer(player);
-        leaderboard = new ArrayList<>();
-        for(int i = 0; i < players.size(); i++) {
-            leaderboard.add(new LeaderboardEntry(players.get(i).username, 0));
-        }
-        Collections.sort(leaderboard);
-        this.stage = Stage.LOBBY;
 
+    public GameState(Game game, Player player) {
+        this.stage = game.stage;
+        this.question = game.getCurrentQuestion();
+        this.isError = false;
+        this.message = null;
+        this.gameId = game.id;
+
+        if (player != null) setPlayer(player);
+
+        this.leaderboard = new ArrayList<>();
+        for (Player lobbyPlayer : game.players) {
+            this.leaderboard.add(new LeaderboardEntry(lobbyPlayer.username, (int) lobbyPlayer.score));
+        }
+        Collections.sort(this.leaderboard);
     }
 
     public void setPlayer(Player player) {
-//        this.timerSyncLong = player.timer.getSynchronizationLong();
-//        this.duration = player.timer.getDurationLong();
+        this.timerSyncLong = player.timer.getSynchronizationLong();
+        this.duration = player.timer.getDurationLong();
         this.playerId = player.id;
         this.username = player.username;
         this.playerAnswer = player.answer;
