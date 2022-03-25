@@ -15,7 +15,10 @@ public class Player {
     public long gameId;
 //    public Timer timer;
     public String answer;
-    public long timeToAnswer;
+
+
+    public long timeToAnswer;//time it took them to answer in milliseconds
+    public long timeOfReceival;//time of receiving the question
 
     public Player() {
         this.id = idGenerator++;
@@ -25,6 +28,7 @@ public class Player {
         this.answer = null;
         this.gameId = -1;
         this.timeToAnswer = -1;
+        timeOfReceival = -1;
     }
 
     public Player(String username, long score) {

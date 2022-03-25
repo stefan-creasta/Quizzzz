@@ -83,6 +83,17 @@ public class QuestionCtrl {
 
     private String selectedAnswer;
 
+    private long timeSinceQuestion;//if we want to reduce time left by half with a joker, timeSinceQuestion-=(timeLeft/2)
+
+    private long currentTime;
+
+    private double timeLeft;
+
+
+    /**
+     * Updates the gameState for this particular client
+     * @param gameState the new gameState
+     */
     void updateGameState(GameState gameState) {
         this.gameState = gameState;
 

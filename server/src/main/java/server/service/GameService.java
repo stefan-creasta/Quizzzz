@@ -7,6 +7,8 @@ import org.springframework.web.context.request.async.DeferredResult;
 
 import java.util.*;
 
+import static commons.GameState.Stage.QUESTION;
+
 @Service
 public class GameService {
 
@@ -75,7 +77,6 @@ public class GameService {
     private final GameRepository gameRepository = new GameRepository();
     private final PlayerRepository playerRepository = new PlayerRepository();
     private final QuestionService questionService;
-    private long timeOfSent;
 
     @Autowired
     public GameService(QuestionService questionService) {
@@ -274,7 +275,7 @@ public class GameService {
 
         if (game.started) return;
         game.started = true;
-        game.stage = GameState.Stage.QUESTION;
+        game.stage = QUESTION;
         questionPhase(game);
         createCurrentGame();
     }
@@ -296,13 +297,12 @@ public class GameService {
     //methods that call each other back and forth to have a single game running.
     public void questionPhase(final Game game) {
 
-        stateInteger = 0;
-
         GameState state = game.getState();
 
         for (Player player : game.players) {
             state.setPlayer(player);
-            state.stage = GameState.Stage.QUESTION;
+            state.stage = QUESTION;
+            player.timeOfReceival = new Date().getTime();//current time in milliseconds since some arbitrary time in the past
             sendToPlayer(player.id, state);
         }
 
@@ -319,7 +319,6 @@ public class GameService {
     }
 
     public void intervalPhase(final Game game) {
-        stateInteger = 1;
 
         GameState state = game.getState();
 
@@ -365,7 +364,6 @@ public class GameService {
         DeferredResult<GameState> connection = playerConnections.get(playerId);
         if (connection != null) if (!connection.setResult(state)) System.out.println("GAMESTATE WASN'T SENT!!!");
         playerConnections.put(playerId, null);
-        timeOfSent = System.nanoTime();
     }
 
     /**
@@ -378,9 +376,7 @@ public class GameService {
      * @param gameId The id of the game they are playing
      */
     public void submitByPlayer(Long playerId, String ans, Long gameId) {
-        if(stateInteger==1){
-            return;
-        }
+
         Game g = gameRepository.getId(gameId);
         Player p;
         int pos = 0;
@@ -388,9 +384,9 @@ public class GameService {
             pos++;
         }
         p = g.players.get(pos);
-        if(p.answer == null || p.answer.isEmpty()&&stateInteger==0) {
+        if((p.answer == null || p.answer.isEmpty()&&g.stage==QUESTION)){
             p.answer = ans;
-            p.timeToAnswer = (System.nanoTime() - timeOfSent)/1000000000;//time it took user to answer in seconds
+            p.timeToAnswer = (new Date().getTime() - p.timeOfReceival)/1000;//time it took user to answer in seconds
             System.out.println("it took user " + p.timeToAnswer + " seconds to answer");//debug
         }
     }
@@ -401,11 +397,10 @@ public class GameService {
      * @param g The game that is scored.
      */
     public void score(Game g) {
-        System.out.println("Scores:");
+        System.out.println("Score function has been called:");
         Question q = g.questions.get(g.currentQuestion);
         for(Player p: g.players){
             if(p.answer!=null && p.answer.equals(q.answer)) {
-                System.out.println("answer recieved");//debug
                 long toAdd = (long) (10.0 - p.timeToAnswer);
                 if(p.shouldReceiveDouble){
                     toAdd = toAdd*2;
@@ -413,9 +408,8 @@ public class GameService {
                 }
                 p.score = (long) (p.score + toAdd*10);
             }
-            System.out.println("this is quote after answer recieved");//debug
             p.answer = null;
-            System.out.println(p.id + ": " + p.score);
+            System.out.println("Player with id " + p.id + " scored that many points - " + p.score);
 
         }
     }
