@@ -70,8 +70,6 @@ public class GameService {
     //currentGame is the game where new players will join. Basically the lobby
     private Game currentGame;
 
-    int stateInteger = -1;//0 if state is QUESTION, 1 if state is INTERVAL
-
     private Map<Long, DeferredResult<GameState>> playerConnections;
 
     private final GameRepository gameRepository = new GameRepository();
@@ -80,7 +78,6 @@ public class GameService {
 
     @Autowired
     public GameService(QuestionService questionService) {
-        //make timeOfSent = -1 or 0 if awarding the proper amount of points is buggy
         this.questionService = questionService;
         this.playerConnections = new HashMap<>();
         createCurrentGame();
@@ -103,8 +100,8 @@ public class GameService {
             }
         }
         try{
-            if(pl.doublePointsPower){//check if powerup has been used already
-                //TODO tell other users to showcase that someone used double points
+            if(pl.doublePointsPower){//check if power up has been used already
+                //TODO tell other users to showcase that someone used this power up
                 pl.doublePointsPower = false;
                 pl.shouldReceiveDouble = true;
                 return "doublePointsPowerUp___success";
@@ -137,6 +134,7 @@ public class GameService {
 
         try{
             if(pl.eliminateAnswerPower){
+                //TODO tell other users to showcase that someone used this power up
                 pl.eliminateAnswerPower = false;
                 Question q = g.questions.get(g.currentQuestion);
                 int randomIndex = new Random().nextInt(2);
@@ -178,6 +176,7 @@ public class GameService {
         }
         try{
             if(pl.reduceTimePower){
+                //TODO tell other users to showcase that someone used this power up
                 pl.reduceTimePower = false;
                 //CLIENT SIDE EFFECT - Send to all other players except this player a message saying their time is halved
                 Game thisGame = gameRepository.getId(gameID);
@@ -302,7 +301,7 @@ public class GameService {
         for (Player player : game.players) {
             state.setPlayer(player);
             state.stage = QUESTION;
-            player.timeOfReceival = new Date().getTime();//current time in milliseconds since some arbitrary time in the past
+            state.timeOfReceival = new Date().getTime();//current time in milliseconds since some arbitrary time in the past
             sendToPlayer(player.id, state);
         }
 
@@ -386,8 +385,10 @@ public class GameService {
         p = g.players.get(pos);
         if((p.answer == null || p.answer.isEmpty()&&g.stage==QUESTION)){
             p.answer = ans;
-            p.timeToAnswer = (new Date().getTime() - p.timeOfReceival)/1000;//time it took user to answer in seconds
-            System.out.println("it took user " + p.timeToAnswer + " seconds to answer");//debug
+            GameState state = g.getState(p);
+            state.timeToAnswer = (new Date().getTime() - state.timeOfReceival)/1000;
+            sendToPlayer(playerId, state);
+            System.out.println("it took user " + state.timeToAnswer + " seconds to answer");//debug
         }
     }
 
@@ -400,8 +401,9 @@ public class GameService {
         System.out.println("Score function has been called:");
         Question q = g.questions.get(g.currentQuestion);
         for(Player p: g.players){
+            GameState state = g.getState();
             if(p.answer!=null && p.answer.equals(q.answer)) {
-                long toAdd = (long) (10.0 - p.timeToAnswer);
+                long toAdd = (long) (10.0 - state.timeToAnswer);//alter later maybe
                 if(p.shouldReceiveDouble){
                     toAdd = toAdd*2;
                     p.shouldReceiveDouble = false;

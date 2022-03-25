@@ -4,6 +4,7 @@ import client.Communication.AnswerCommunication;
 import client.Communication.ImageCommunication;
 import client.Communication.PowerUpsCommunication;
 import commons.*;
+import commons.Timer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.SimpleStringProperty;
@@ -19,10 +20,7 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import static javafx.beans.binding.Bindings.createObjectBinding;
 
@@ -83,12 +81,6 @@ public class QuestionCtrl {
 
     private String selectedAnswer;
 
-    private long timeSinceQuestion;//if we want to reduce time left by half with a joker, timeSinceQuestion-=(timeLeft/2)
-
-    private long currentTime;
-
-    private double timeLeft;
-
 
     /**
      * Updates the gameState for this particular client
@@ -104,6 +96,14 @@ public class QuestionCtrl {
         this.answer1.setText(gameState.question.answer);
         this.answer2.setText(gameState.question.wrongAnswer1);
         this.answer3.setText(gameState.question.wrongAnswer2);
+
+        Timeline timeline = new Timeline( new KeyFrame(Duration.millis(1), e ->{//TODO
+            long timeToDisplay = 10000 - (new Date().getTime() - gameState.timeOfReceival);
+            questionTime.setText("Time left: " + timeToDisplay/1000.0 + " seconds");
+        }));
+
+        timeline.setCycleCount(100000);
+        timeline.play();
 
 
     }
@@ -241,12 +241,19 @@ public class QuestionCtrl {
         root.addEventFilter(KeyEvent.KEY_PRESSED, this::KeyPressed);
         root.addEventFilter(KeyEvent.KEY_RELEASED, this::KeyReleased);
 
+        //remember to stop timeline everytime a Question phase starts
+
+
+        //comment/delete everything between these 2 comments ->
+
         timer = new Timer(0,5);
-        Timeline timeline= new Timeline( new KeyFrame(Duration.millis(1), e ->{
-            questionTime.setText(timer.toTimerDisplayString());
-        }));
-        timeline.setCycleCount((int)timer.getDurationLong()/1000);
-        timeline.play();
+//        Timeline timeline= new Timeline( new KeyFrame(Duration.millis(1), e ->{
+////            questionTime.setText(timer.toTimerDisplayString());
+//        }));
+//        timeline.setCycleCount((int)timer.getDurationLong()/1000);
+//        timeline.play();
+
+        // <- comment/delete everything between these 2 comments later
 
         leaderboardRanks.setCellFactory(e -> {
             TableCell<LeaderboardEntry, String> indexCell = new TableCell<>();

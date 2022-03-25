@@ -21,6 +21,9 @@ public class GameState {
     public List<LeaderboardEntry> leaderboard;
     public boolean halfTime;
 
+    public long timeToAnswer;//time it took them to answer in milliseconds
+    public long timeOfReceival;//time of receiving the question in milliseconds
+
     public GameState() {
 
     }
@@ -35,6 +38,8 @@ public class GameState {
         this.isError = false;
         this.message = null;
         this.gameId = game.id;
+        timeOfReceival = -1;
+        timeToAnswer = -1;
 
         if (player != null) setPlayer(player);
 
