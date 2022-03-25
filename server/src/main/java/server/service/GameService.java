@@ -305,6 +305,7 @@ public class GameService {
             state.setPlayer(player);
             state.stage = QUESTION;
             state.timeOfReceival = new Date().getTime();//current time in milliseconds since some arbitrary time in the past
+            player.timeOfReceival = state.timeOfReceival;
             state.instruction = "questionPhase";
             sendToPlayer(player.id, state);
         }
@@ -394,12 +395,12 @@ public class GameService {
         if((p.answer == null || p.answer.isEmpty()&&g.stage==QUESTION)){
             p.answer = ans;
             GameState state = g.getState(p);
-            state.timeToAnswer = (new Date().getTime() - state.timeOfReceival)/1000;
+            state.timeToAnswer = (new Date().getTime() - p.timeOfReceival)/1000;
+            p.timeToAnswer = (new Date().getTime() - p.timeOfReceival)/1000;
 
-            System.out.println("it took user " + state.timeToAnswer + " seconds to answer" + " line 1");//debug
+            System.out.println("it took user " + p.timeToAnswer + " seconds to answer");//debug
             state.instruction = "answerSubmitted";
             sendToPlayer(playerId, state);//is being sent in order to show convey to the player the time of receival
-            System.out.println("it took user " + state.timeToAnswer + " seconds to answer");//debug
         }
     }
 
@@ -412,17 +413,19 @@ public class GameService {
         System.out.println("Score function has been called:");
         Question q = g.questions.get(g.currentQuestion);
         for(Player p: g.players){
-            GameState state = g.getState();
+            boolean inFunctionShouldReceive = false;
+            if(p.shouldReceiveDouble){
+                p.shouldReceiveDouble = false;
+                inFunctionShouldReceive = true;
+                System.out.println("DOUBLE POINTS POWER UP TOOK PLACE IN SCORING");
+            }
             if(p.answer!=null && p.answer.equals(q.answer)) {
-                long toAdd = (long) (10.0 - state.timeToAnswer);//alter later maybe
-                if(p.shouldReceiveDouble){
-                    System.out.println("DOUBLE POINTS POWER UP TOOK PLACE IN SCORING");//debug
+                long toAdd = (long) (10.0 - p.timeToAnswer);
+                if(inFunctionShouldReceive){
                     toAdd = toAdd*2;
-                    p.shouldReceiveDouble = false;
                 }
-                System.out.println("SCORING TOOK PLACE");
-
-                System.out.println("Player with id " + p.id + " scored that many points - " + toAdd);
+                System.out.println("ANSWER IS CORRECT");
+                System.out.println("Player with id " + p.id + " won that many points - " + toAdd);
                 p.score = (long) (p.score + toAdd*10);
             }
             p.answer = null;
