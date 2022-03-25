@@ -104,6 +104,9 @@ public class QuestionCtrl {
         timeline.setCycleCount(100000);
         timeline.play();
 
+        answer1.setVisible(true);
+        answer2.setVisible(true);
+        answer3.setVisible(true);
 
     }
 
@@ -174,16 +177,16 @@ public class QuestionCtrl {
                     setVisible("answer1", false);//TODO dont forget to turn visible later if needed
                 }
                 if(answer2.getText().equals(answer)){
-                    setVisible("answer1", false);//TODO dont forget to turn visible later if needed
+                    setVisible("answer2", false);//TODO dont forget to turn visible later if needed
                 }
                 if(answer3.getText().equals(answer)){
-                    setVisible("answer1", false);//TODO dont forget to turn visible later if needed
+                    setVisible("answer3", false);//TODO dont forget to turn visible later if needed
                 }
 
             }
             if(result.split("___")[1].equals("fail")){
                 System.out.println("eliminateWrongAnswerPowerUp has already been used before");
-                //TODO tell user that power up has been used
+                //TODO tell user that power up has already been used before
 
             }
         }

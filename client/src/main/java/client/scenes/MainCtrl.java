@@ -171,7 +171,7 @@ public class MainCtrl {
                 }
                 break;
             case "questionPhase"://called at the start of a question phase
-                questionCtrl.updateGameState(gameState);//TODO uncomment if broken
+                questionCtrl.updateGameState(gameState);
                 showQuestion();
                 questionCtrl.clearAnswer();
                 questionCtrl.setQuestion(gameState.question);

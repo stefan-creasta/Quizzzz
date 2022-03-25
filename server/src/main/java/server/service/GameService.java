@@ -131,7 +131,6 @@ public class GameService {
                 break;
             }
         }
-
         try{
             if(pl.eliminateAnswerPower){
                 //TODO tell other users to showcase that someone used this power up
@@ -213,6 +212,11 @@ public class GameService {
         gameRepository.save(currentGame);
     }
 
+    /**
+     * Gets a game from the gameRepository by its ID
+     * @param id the id of the game
+     * @return the game
+     */
     public Game getId(long id) {
         return gameRepository.getId(id);
     }
@@ -377,8 +381,7 @@ public class GameService {
     /**
      * Gets called when a player clicks on the submit button for an answer. If they have not submitted an answer
      * already, their answer gets saved, as well as the time at which they answered so that the scoring later on
-     * can be done according to the time of answering.//TODO make a field in the player class for time of answer
-     * //TODO and use that field to calculate scores later. Update that field in this method instead of keeping it here.
+     * can be done according to the time of answering.
      * @param playerId The id of the player who answered
      * @param ans The contents of the answer button they clicked - their answer
      * @param gameId The id of the game they are playing
@@ -395,10 +398,10 @@ public class GameService {
         if((p.answer == null || p.answer.isEmpty()&&g.stage==QUESTION)){
             p.answer = ans;
             GameState state = g.getState(p);
-            state.timeToAnswer = (new Date().getTime() - p.timeOfReceival)/1000;
-            p.timeToAnswer = (new Date().getTime() - p.timeOfReceival)/1000;
+            state.timeToAnswer = (long) ((new Date().getTime() - p.timeOfReceival)/1000.0);
+            p.timeToAnswer = (long) ((new Date().getTime() - p.timeOfReceival)/1000.0);
 
-            System.out.println("it took user " + p.timeToAnswer + " seconds to answer");//debug
+            System.out.println("it took user " + (double) p.timeToAnswer + " seconds to answer");//debug
             state.instruction = "answerSubmitted";
             sendToPlayer(playerId, state);//is being sent in order to show convey to the player the time of receival
         }
@@ -426,7 +429,7 @@ public class GameService {
                 }
                 System.out.println("ANSWER IS CORRECT");
                 System.out.println("Player with id " + p.id + " won that many points - " + toAdd);
-                p.score = (long) (p.score + toAdd*10);
+                p.score = p.score + toAdd*10;
             }
             p.answer = null;
 

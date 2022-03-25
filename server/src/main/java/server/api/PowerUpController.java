@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/powerup")
 public class PowerUpController {
 
-    //postmapping: string being given as argument, string contains: playerID, powerUp name
-    //if power up is double points - we turn on a flag on the player's object instance,
-
     GameService service;
 
     @Autowired
+    /**
+     * Constructor
+     */
     public PowerUpController(GameService service) {
         this.service = service;
     }
