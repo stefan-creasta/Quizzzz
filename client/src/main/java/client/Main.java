@@ -34,6 +34,8 @@ public class Main extends Application {
     private static final Injector INJECTOR = createInjector(new MyModule());
     private static final MyFXML FXML = new MyFXML(INJECTOR);
 
+    private ServerListener serverListener;
+
     public static void main(String[] args) throws URISyntaxException, IOException {
         launch();
     }
@@ -58,5 +60,12 @@ public class Main extends Application {
         mainCtrl.initialize(primaryStage, overview, add,  question, timer, lobby, player, gameCommunication, serverListener);
 
         serverListener.initialize(playerId, mainCtrl);
+
+        this.serverListener = serverListener;
+    }
+
+    @Override
+    public void stop() {
+        this.serverListener.stopListening();
     }
 }

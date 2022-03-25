@@ -1,8 +1,8 @@
 package client.Communication;
 
+import client.scenes.MainCtrl;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import client.scenes.*;
 import com.google.inject.Inject;
 import commons.GameState;
 import javafx.application.Platform;
@@ -12,12 +12,15 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class ServerListener {
     private HttpClient client;
 
     private Thread listeningThread;
+    private AtomicBoolean listeningThreadKeepAlive = new AtomicBoolean(true);
 
     public MainCtrl mainCtrl;
 
@@ -36,25 +39,34 @@ public class ServerListener {
      */
     public void initialize(final long playerId, MainCtrl mainCtrl) throws IllegalArgumentException {
         if (mainCtrl == null) throw new IllegalArgumentException();
+        if (listeningThread != null) {
+            stopListening();
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        listeningThreadKeepAlive.set(true);
         this.mainCtrl = mainCtrl;
         final ObjectMapper mapper = new ObjectMapper();
-        final TypeReference<GameState> typeRef = new TypeReference<>() {};
+        final TypeReference<List<GameState>> typeRef = new TypeReference<>() {};
         // New threads need to be invoked via the JavaFX Platform API, otherwise it won't run
         listeningThread = new Thread(() -> {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("http://localhost:8080/api/listen?playerId=" + playerId))
                     .GET()
                     .build();
-            while (true) {
+            while (listeningThreadKeepAlive.get()) {
                 System.out.println("loop is running");
                 try {
                     var response = client.send(request, HttpResponse.BodyHandlers.ofString());
                     //GameState gameState = gson.fromJson(response.body(), new TypeToken<GameState>(){}.getType());if(response.body().contains("timestamp")) continue;
                     if(response.body().contains("timestamp"))  { continue; }
-                    GameState gameState = mapper.readValue(response.body(), typeRef);
+                    List<GameState> gameState = mapper.readValue(response.body(), typeRef);
                     System.out.println(response.body());
                     System.out.println(gameState);
-                    Platform.runLater(() -> this.handler(gameState));
+                    Platform.runLater(() -> gameState.forEach(this::handler));
                 } catch (IOException e) {
                     e.printStackTrace();
                     break;
@@ -79,5 +91,11 @@ public class ServerListener {
         else {
             mainCtrl.handleGameState(gameState);
         }
+    }
+
+    /**Stops the listening thread.
+     */
+    public void stopListening() {
+        listeningThreadKeepAlive.set(false);
     }
 }

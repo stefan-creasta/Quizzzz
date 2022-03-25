@@ -73,12 +73,14 @@ public class GameService {
     private final GameRepository gameRepository = new GameRepository();
     private final PlayerRepository playerRepository = new PlayerRepository();
     private final QuestionService questionService;
+    private final LongPollingService longPollingService;
     private long timeOfSent;
 
     @Autowired
-    public GameService(QuestionService questionService) {
+    public GameService(QuestionService questionService, LongPollingService longPollingService) {
         //make timeOfSent = -1 or 0 if awarding the proper amount of points is buggy
         this.questionService = questionService;
+        this.longPollingService = longPollingService;
         this.playerConnections = new HashMap<>();
         createCurrentGame();
     }
@@ -227,10 +229,6 @@ public class GameService {
         return gameRepository.existsById(id);
     }
 
-    public void registerPlayerConnection(Long playerId, DeferredResult<GameState> result) {
-        playerConnections.put(playerId, result);
-    }
-
     /**Send the game state to a player.
      *
      * Note that the connection is only available after the player makes a request to
@@ -241,9 +239,7 @@ public class GameService {
      * @param state
      */
     public void sendToPlayer(Long playerId, GameState state) {
-        DeferredResult<GameState> connection = playerConnections.get(playerId);
-        if (connection != null) if (!connection.setResult(state)) System.out.println("GAMESTATE WASN'T SENT!!!");
-        playerConnections.put(playerId, null);
+        longPollingService.sendToPlayer(playerId, state);
         timeOfSent = System.nanoTime();
     }
 
