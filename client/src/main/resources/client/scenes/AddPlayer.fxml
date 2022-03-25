@@ -17,5 +17,10 @@
          <font>
             <Font size="30.0" />
          </font></Label>
+      <Button layoutX="14.0" layoutY="382.0" mnemonicParsing="false" onAction="#adminPanel" prefHeight="43.0" prefWidth="158.0" text="Admin Panel" textAlignment="CENTER">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Button>
     </children>
 </AnchorPane>

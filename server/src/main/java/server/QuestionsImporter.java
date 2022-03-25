@@ -74,7 +74,6 @@ public class QuestionsImporter implements ApplicationRunner {
         if (args.containsOption(optionName)) {
             String optionValue = args.getOptionValues(optionName).get(0);
             logger.info("Detected the " + optionName + " application option. Importing the activities/questions from " + optionValue);
-            service.deleteAll();
             //service.resetId();
             try {
                 importQuestions(optionValue);
@@ -105,6 +104,7 @@ public class QuestionsImporter implements ApplicationRunner {
         );
         final URI imageURIRoot = URI.create("http://localhost:8080/images/" + path + "/");
         final List<String> malformed = new LinkedList<>();
+        service.deleteAll();
         activities.stream().map(x -> {
             try {
                 return x.toQuestion(imageURIRoot, service);

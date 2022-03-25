@@ -51,6 +51,8 @@ public class MainCtrl {
     private QuestionCtrl questionCtrl;
     private Scene question;
 
+    private Scene adminInterface;
+
     private ServerListener serverListener;
 
     private long gameId;
@@ -61,6 +63,7 @@ public class MainCtrl {
                            Pair<CountdownTimer, Parent> timer,
                            Pair<LobbyCtrl, Parent> lobbyPair,
                            Pair<AddPlayerCtrl, Parent> playerPair,
+                           Pair<AdminInterfaceCtrl, Parent> adminInterfacePair,
                            GameCommunication gameCommunication,
                            ServerListener serverListener) {
 
@@ -88,6 +91,8 @@ public class MainCtrl {
 
         this.playerCtrl = playerPair.getKey();
         this.player = new Scene(playerPair.getValue());
+
+        this.adminInterface = new Scene(adminInterfacePair.getValue());
 
         showPlayer();
         //showQuestion();
@@ -139,6 +144,11 @@ public class MainCtrl {
     public void showQuestion() {
         primaryStage.setTitle("Question");
         primaryStage.setScene(question);
+    }
+
+    public void showAdminInterface() {
+        primaryStage.setTitle("Admin Panel");
+        primaryStage.setScene(adminInterface);
     }
     
     public List<String> getPlayers() throws IOException, InterruptedException {

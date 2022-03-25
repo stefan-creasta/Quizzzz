@@ -1,0 +1,35 @@
+package client.Communication;
+
+import com.google.inject.Inject;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
+public class ImporterCommunication {
+    private HttpClient client;
+
+    @Inject
+    public ImporterCommunication(HttpClient client) {
+        this.client = client;
+    }
+
+    public String importQuestions(String path) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/api/import?activitiesSource=" + path))
+                .GET()
+                .build();
+
+        try {
+            return client.send(request, HttpResponse.BodyHandlers.ofString()).body();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "An error occurred while requesting the import. See the debug console for details.";
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return "An error occurred while requesting the import. See the debug console for details.";
+        }
+    }
+}
