@@ -7,7 +7,7 @@ public class Player {
     public boolean eliminateAnswerPower;//whether they have used an eliminate wrong answer power up
     public boolean reduceTimePower;//whether they have used a reduce time power up
 
-    public boolean shouldReceiveDouble; // wheter the player should recieve double points this round
+    public boolean shouldReceiveDouble; // whether the player should recieve double points this round
 
     public long id;
     public String username;

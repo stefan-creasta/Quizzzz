@@ -102,7 +102,8 @@ public class GameService {
             }
         }
         try{
-            if(pl.doublePointsPower){
+            if(pl.doublePointsPower){//check if powerup has been used already
+                //TODO tell other users to showcase that someone used double points
                 pl.doublePointsPower = false;
                 pl.shouldReceiveDouble = true;
                 return "doublePointsPowerUp___success";
