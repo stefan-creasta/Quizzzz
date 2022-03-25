@@ -101,7 +101,6 @@ public class QuestionCtrl {
             long timeToDisplay = 10000 - (new Date().getTime() - gameState.timeOfReceival);
             questionTime.setText("Time left: " + timeToDisplay/1000.0 + " seconds");
         }));
-
         timeline.setCycleCount(100000);
         timeline.play();
 
@@ -126,6 +125,10 @@ public class QuestionCtrl {
     }
 
     @FXML
+    /**
+     * Gets called when the submit answer button is pressed
+     * Sends the answer to the server, together with the gameState
+     */
     public void SubmitPressed(ActionEvent actionEvent) throws IOException, InterruptedException {
         AnswerCommunication.sendAnswer(selectedAnswer, gameState);
     }
@@ -136,7 +139,7 @@ public class QuestionCtrl {
     /**
      * Gets called when the double points power up gets activated. Sends a request to the server,
      * where it is checked if the power up has already been used by this client. If not, the power
-     * up is used.
+     * up is used and all players are alerted.
      */
     public void DoublePointsButtonPressed(ActionEvent event) throws IOException, InterruptedException {
         String result = PowerUpsCommunication.sendPowerUps("doublePointsPowerUp", gameState);
@@ -159,7 +162,7 @@ public class QuestionCtrl {
     /**
      * Gets called when the eliminate wrong answer power up is used. Sends a request to the server,
      * where it is checked if the player has already used that power up. If not, the power up is used,
-     * and the wrong answer button is made invisible and inaccessible.
+     * and the wrong answer button is made invisible and inaccessible. Also other players are alerted.
      */
     void EliminateWrongAnswerButtonPressed(ActionEvent event) throws IOException, InterruptedException {
         String result = PowerUpsCommunication.sendPowerUps("eliminateWrongAnswerPowerUp", gameState);

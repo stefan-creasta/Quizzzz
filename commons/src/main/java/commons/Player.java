@@ -24,6 +24,9 @@ public class Player {
 //        this.timer = new Timer(0, 30);
         this.answer = null;
         this.gameId = -1;
+        doublePointsPower = true;
+        eliminateAnswerPower = true;
+        reduceTimePower = true;
     }
 
     public Player(String username, long score) {
@@ -33,6 +36,9 @@ public class Player {
 //        this.timer = new Timer(0, 30);
         this.answer = null;
         this.gameId = -1;
+        doublePointsPower = true;
+        eliminateAnswerPower = true;
+        reduceTimePower = true;
     }
 
 }

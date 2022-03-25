@@ -179,13 +179,14 @@ public class GameService {
                 //TODO tell other users to showcase that someone used this power up
                 pl.reduceTimePower = false;
                 //CLIENT SIDE EFFECT - Send to all other players except this player a message saying their time is halved
-                Game thisGame = gameRepository.getId(gameID);
-                List<Player> players = thisGame.players;
+                List<Player> players = g.players;
                 for(Player p:players){
                     if(p.id!=playerID){
-                        GameState gState = thisGame.getState();
+                        GameState gState = g.getState();
                         gState.halfTime = true;
-                        sendToPlayer(p.id, g.getState());
+                        gState.instruction = "halfTimePowerUp";
+
+                        sendToPlayer(p.id, gState);
                     }
                 }
                 //TODO SERVER SIDE EFFECT
@@ -256,6 +257,7 @@ public class GameService {
         state = game.getState();
         for (Player otherPlayer : game.players) {
             state.setPlayer(otherPlayer);
+            state.instruction = "joinGame";
             sendToPlayer(otherPlayer.id, state);
         }
         playerRepository.save(player);
@@ -296,12 +298,14 @@ public class GameService {
     //methods that call each other back and forth to have a single game running.
     public void questionPhase(final Game game) {
 
-        GameState state = game.getState();
 
         for (Player player : game.players) {
+            GameState state = game.getState();
+
             state.setPlayer(player);
             state.stage = QUESTION;
             state.timeOfReceival = new Date().getTime();//current time in milliseconds since some arbitrary time in the past
+            state.instruction = "questionPhase";
             sendToPlayer(player.id, state);
         }
 
@@ -325,6 +329,7 @@ public class GameService {
         for (Player player : game.players) {
             state.setPlayer(player);
             state.setPlayerAnswer(player.answer);
+            state.instruction = "intervalPhase";
             sendToPlayer(player.id, state);
         }
         score(game);
@@ -355,6 +360,9 @@ public class GameService {
      * Note that the connection is only available after the player makes a request to
      * /api/listen, therefore you can't just send new data to a player without some
      * delay in between!
+     *
+     * NOTE!!! to use the function, set the gameState's instruction field to some string instruction
+     * and make a case in the switch statement for the instruction in handleGameState.
      *
      * @param playerId
      * @param state
@@ -387,7 +395,10 @@ public class GameService {
             p.answer = ans;
             GameState state = g.getState(p);
             state.timeToAnswer = (new Date().getTime() - state.timeOfReceival)/1000;
-            sendToPlayer(playerId, state);
+
+            System.out.println("it took user " + state.timeToAnswer + " seconds to answer" + " line 1");//debug
+            state.instruction = "answerSubmitted";
+            sendToPlayer(playerId, state);//is being sent in order to show convey to the player the time of receival
             System.out.println("it took user " + state.timeToAnswer + " seconds to answer");//debug
         }
     }
@@ -405,13 +416,16 @@ public class GameService {
             if(p.answer!=null && p.answer.equals(q.answer)) {
                 long toAdd = (long) (10.0 - state.timeToAnswer);//alter later maybe
                 if(p.shouldReceiveDouble){
+                    System.out.println("DOUBLE POINTS POWER UP TOOK PLACE IN SCORING");//debug
                     toAdd = toAdd*2;
                     p.shouldReceiveDouble = false;
                 }
+                System.out.println("SCORING TOOK PLACE");
+
+                System.out.println("Player with id " + p.id + " scored that many points - " + toAdd);
                 p.score = (long) (p.score + toAdd*10);
             }
             p.answer = null;
-            System.out.println("Player with id " + p.id + " scored that many points - " + p.score);
 
         }
     }

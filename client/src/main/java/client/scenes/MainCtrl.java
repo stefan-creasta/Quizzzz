@@ -153,49 +153,36 @@ public class MainCtrl {
         gameCommunication.initiateGame(gameId);
     }
 
-//        choose.set(e -> chooseCtrl.Button1Pressed(e));
-
-
-//        Scene scene = new Scene(ChooseAnswerCtrl.AnchorPane1, 640, 480);
-//        primaryStage.setScene(scene);
-//        primaryStage.show();
 
     public void handleGameState(GameState gameState) {
-        //if any other screen is displayed there is something wrong.
-
-        System.out.println("GAME STATE: " + gameState);
-        if(gameState.timeOfReceival!=-1){
-            questionCtrl.updateGameState(gameState);
-        }
-        else if(gameState.halfTime == true){
-            //TODO show on clientside that time is halved
-            //timer implementation is in another branch that is not merged yet. Will do later on.
-        }
-        else if (gameState.stage == GameState.Stage.LOBBY) {
-            questionCtrl.updateGameState(gameState);
-            try {
-                showLobby();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        } else {
-            if (gameState.stage == GameState.Stage.QUESTION && gameState.question != null) {
-                showQuestion(); //im not sure where to put this
+//        System.out.println("GAME STATE: " + gameState);//debug
+        String instruction = gameState.instruction;
+        switch(instruction){
+            case "halfTimePowerUp":
+                //TODO client side halftime
+                break;
+            case "joinGame"://called when the client joins
+                try {
+                    showLobby();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case "questionPhase"://called at the start of a question phase
+                questionCtrl.updateGameState(gameState);//TODO uncomment if broken
+                showQuestion();
                 questionCtrl.clearAnswer();
                 questionCtrl.setQuestion(gameState.question);
-            } else {
-//            showQuestion();
-                if (gameState.question == null) {
-                    questionCtrl.clearAnswer();
-                    questionCtrl.setQuestion(gameState.question);
-                }
-                if (gameState.stage == GameState.Stage.INTERVAL) {
-                    questionCtrl.markAnswer(gameState.question.answer, gameState.playerAnswer);
-                }
-                questionCtrl.syncTimer(gameState.timerSyncLong, gameState.duration);
-            }
+                break;
+            case "intervalPhase"://called at the start of an interval phase
+                questionCtrl.markAnswer(gameState.question.answer, gameState.playerAnswer);
+                break;
+            case "answerSubmitted":
+                break;
+
         }
+
     }
 }

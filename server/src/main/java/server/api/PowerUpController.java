@@ -20,6 +20,13 @@ public class PowerUpController {
 
 
     @GetMapping("/{message}")
+    /**
+     * Takes the get request from the client with an appended message holding the
+     * type of power up, the playerID and the gameID. Depending on the type
+     * of power up, the respective power up method is called with the playerID
+     * and the gameID. returns to the client a message that tells whether the
+     * power up has been activated, together with other important information.
+     */
     public String postPowerUp(@PathVariable("message") String message){
         long gameID = Long.parseLong(message.split("___")[2]);
         long playerID = Long.parseLong(message.split("___")[1]);
