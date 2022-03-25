@@ -176,8 +176,8 @@ public class GameService {
             }
         }
         try{
-            if(pl.eliminateAnswerPower){
-                pl.eliminateAnswerPower = false;
+            if(pl.reduceTimePower){
+                pl.reduceTimePower = false;
                 //CLIENT SIDE EFFECT - Send to all other players except this player a message saying their time is halved
                 Game thisGame = gameRepository.getId(gameID);
                 List<Player> players = thisGame.players;
