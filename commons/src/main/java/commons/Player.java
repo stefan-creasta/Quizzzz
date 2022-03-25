@@ -7,7 +7,7 @@ public class Player {
     public boolean eliminateAnswerPower;//whether they have used an eliminate wrong answer power up
     public boolean reduceTimePower;//whether they have used a reduce time power up
 
-    public boolean shouldReceiveDouble; // wheter the player should recieve double points this round
+    public boolean shouldReceiveDouble; // whether the player should recieve double points this round
 
     public long id;
     public String username;
@@ -15,7 +15,7 @@ public class Player {
     public long gameId;
 //    public Timer timer;
     public String answer;
-    public long timeToAnswer;
+
 
     public Player() {
         this.id = idGenerator++;
@@ -24,7 +24,6 @@ public class Player {
 //        this.timer = new Timer(0, 30);
         this.answer = null;
         this.gameId = -1;
-        this.timeToAnswer = -1;
     }
 
     public Player(String username, long score) {
@@ -34,7 +33,6 @@ public class Player {
 //        this.timer = new Timer(0, 30);
         this.answer = null;
         this.gameId = -1;
-        this.timeToAnswer = -1;
     }
 
 }

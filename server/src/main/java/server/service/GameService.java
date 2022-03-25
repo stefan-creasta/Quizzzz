@@ -7,6 +7,8 @@ import org.springframework.web.context.request.async.DeferredResult;
 
 import java.util.*;
 
+import static commons.GameState.Stage.QUESTION;
+
 @Service
 public class GameService {
 
@@ -68,18 +70,14 @@ public class GameService {
     //currentGame is the game where new players will join. Basically the lobby
     private Game currentGame;
 
-    int stateInteger = -1;//0 if state is QUESTION, 1 if state is INTERVAL
-
     private Map<Long, DeferredResult<GameState>> playerConnections;
 
     private final GameRepository gameRepository = new GameRepository();
     private final PlayerRepository playerRepository = new PlayerRepository();
     private final QuestionService questionService;
-    private long timeOfSent;
 
     @Autowired
     public GameService(QuestionService questionService) {
-        //make timeOfSent = -1 or 0 if awarding the proper amount of points is buggy
         this.questionService = questionService;
         this.playerConnections = new HashMap<>();
         createCurrentGame();
@@ -102,7 +100,8 @@ public class GameService {
             }
         }
         try{
-            if(pl.doublePointsPower){
+            if(pl.doublePointsPower){//check if power up has been used already
+                //TODO tell other users to showcase that someone used this power up
                 pl.doublePointsPower = false;
                 pl.shouldReceiveDouble = true;
                 return "doublePointsPowerUp___success";
@@ -135,6 +134,7 @@ public class GameService {
 
         try{
             if(pl.eliminateAnswerPower){
+                //TODO tell other users to showcase that someone used this power up
                 pl.eliminateAnswerPower = false;
                 Question q = g.questions.get(g.currentQuestion);
                 int randomIndex = new Random().nextInt(2);
@@ -175,8 +175,9 @@ public class GameService {
             }
         }
         try{
-            if(pl.eliminateAnswerPower){
-                pl.eliminateAnswerPower = false;
+            if(pl.reduceTimePower){
+                //TODO tell other users to showcase that someone used this power up
+                pl.reduceTimePower = false;
                 //CLIENT SIDE EFFECT - Send to all other players except this player a message saying their time is halved
                 Game thisGame = gameRepository.getId(gameID);
                 List<Player> players = thisGame.players;
@@ -273,7 +274,7 @@ public class GameService {
 
         if (game.started) return;
         game.started = true;
-        game.stage = GameState.Stage.QUESTION;
+        game.stage = QUESTION;
         questionPhase(game);
         createCurrentGame();
     }
@@ -295,13 +296,12 @@ public class GameService {
     //methods that call each other back and forth to have a single game running.
     public void questionPhase(final Game game) {
 
-        stateInteger = 0;
-
         GameState state = game.getState();
 
         for (Player player : game.players) {
             state.setPlayer(player);
-            state.stage = GameState.Stage.QUESTION;
+            state.stage = QUESTION;
+            state.timeOfReceival = new Date().getTime();//current time in milliseconds since some arbitrary time in the past
             sendToPlayer(player.id, state);
         }
 
@@ -318,7 +318,6 @@ public class GameService {
     }
 
     public void intervalPhase(final Game game) {
-        stateInteger = 1;
 
         GameState state = game.getState();
 
@@ -364,7 +363,6 @@ public class GameService {
         DeferredResult<GameState> connection = playerConnections.get(playerId);
         if (connection != null) if (!connection.setResult(state)) System.out.println("GAMESTATE WASN'T SENT!!!");
         playerConnections.put(playerId, null);
-        timeOfSent = System.nanoTime();
     }
 
     /**
@@ -377,9 +375,7 @@ public class GameService {
      * @param gameId The id of the game they are playing
      */
     public void submitByPlayer(Long playerId, String ans, Long gameId) {
-        if(stateInteger==1){
-            return;
-        }
+
         Game g = gameRepository.getId(gameId);
         Player p;
         int pos = 0;
@@ -387,10 +383,12 @@ public class GameService {
             pos++;
         }
         p = g.players.get(pos);
-        if(p.answer == null || p.answer.isEmpty()&&stateInteger==0) {
+        if((p.answer == null || p.answer.isEmpty()&&g.stage==QUESTION)){
             p.answer = ans;
-            p.timeToAnswer = (System.nanoTime() - timeOfSent)/1000000000;//time it took user to answer in seconds
-            System.out.println("it took user " + p.timeToAnswer + " seconds to answer");//debug
+            GameState state = g.getState(p);
+            state.timeToAnswer = (new Date().getTime() - state.timeOfReceival)/1000;
+            sendToPlayer(playerId, state);
+            System.out.println("it took user " + state.timeToAnswer + " seconds to answer");//debug
         }
     }
 
@@ -400,21 +398,20 @@ public class GameService {
      * @param g The game that is scored.
      */
     public void score(Game g) {
-        System.out.println("Scores:");
+        System.out.println("Score function has been called:");
         Question q = g.questions.get(g.currentQuestion);
         for(Player p: g.players){
+            GameState state = g.getState();
             if(p.answer!=null && p.answer.equals(q.answer)) {
-                System.out.println("answer recieved");//debug
-                long toAdd = (long) (10.0 - p.timeToAnswer);
+                long toAdd = (long) (10.0 - state.timeToAnswer);//alter later maybe
                 if(p.shouldReceiveDouble){
                     toAdd = toAdd*2;
                     p.shouldReceiveDouble = false;
                 }
                 p.score = (long) (p.score + toAdd*10);
             }
-            System.out.println("this is quote after answer recieved");//debug
             p.answer = null;
-            System.out.println(p.id + ": " + p.score);
+            System.out.println("Player with id " + p.id + " scored that many points - " + p.score);
 
         }
     }
