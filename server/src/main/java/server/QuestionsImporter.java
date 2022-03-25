@@ -53,7 +53,7 @@ public class QuestionsImporter implements ApplicationRunner {
             String wrongAnswer1 = String.format("%.0f", factors.get(0) * consumption_in_wh);
             String wrongAnswer2 = String.format("%.0f", factors.get(1) * consumption_in_wh);
             var imageRelativeURI = URI.create(image_path.replace(" ", "%20"));
-            String imageURL = imageURIRoot.resolve(imageRelativeURI).toURL().toString();
+            String imageURL = imageURIRoot.resolve(imageRelativeURI).toURL().toString().replace("http://localhost:8080/images/", "images/");
             Question q = new Question(id, title,answer,wrongAnswer1,wrongAnswer2);
             q.questionImage = imageURL;
             return q;
