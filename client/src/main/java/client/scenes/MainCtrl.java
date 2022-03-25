@@ -170,6 +170,7 @@ public class MainCtrl {
             //timer implementation is in another branch that is not merged yet. Will do later on.
         }
         else if (gameState.stage == GameState.Stage.LOBBY) {
+            questionCtrl.updateGameState(gameState);
             try {
                 showLobby();
             } catch (IOException e) {
@@ -184,7 +185,7 @@ public class MainCtrl {
                 questionCtrl.setQuestion(gameState.question);
             } else {
 //            showQuestion();
-                if (gameState.question != null) {
+                if (gameState.question == null) {
                     questionCtrl.clearAnswer();
                     questionCtrl.setQuestion(gameState.question);
                 }
