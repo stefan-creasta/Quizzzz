@@ -250,12 +250,31 @@ public class QuestionCtrl {
         }
     }
 
-    public void showLeaderboard(){
-        updateLeaderboards();
+    public void showLeaderboard() {
+        try{
+            // if the current list of player in the lobby is one then the current game is in multiplayer mode
+        if (mainCtrl.getPlayers().size() > 1) {
+            updateMultilayerLeaderboards();
 
-        ObservableList<LeaderboardEntry> entries = FXCollections.observableList(leaderboardEntries);
-        leaderboard.setItems(entries);
-        leaderboard.setVisible(true);
+            ObservableList<LeaderboardEntry> entries = FXCollections.observableList(leaderboardEntries);
+            leaderboard.setItems(entries);
+            leaderboard.setVisible(true);
+        }
+        // if the current list of player in the lobby is one then the current game is  in single player mode
+        if (mainCtrl.getPlayers().size() ==1){
+            updateSingleplayerLeaderboards();
+
+            ObservableList<LeaderboardEntry> entries = FXCollections.observableList(leaderboardEntries);
+            leaderboard.setItems(entries);
+            leaderboard.setVisible(true);
+
+        }
+    }
+        catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void hideLeaderboard() {
@@ -267,10 +286,22 @@ public class QuestionCtrl {
      * @throws IOException
      * @throws InterruptedException
      */
-    public void updateLeaderboards(){
+    public void updateMultilayerLeaderboards(){
 
         try {
-            leaderboardEntries = mainCtrl.getLeaderboards();
+            leaderboardEntries = mainCtrl.getMultiplayerLeaderboards();
+            Collections.sort(leaderboardEntries);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
+    public void updateSingleplayerLeaderboards(){
+
+        try {
+            leaderboardEntries = mainCtrl.getSingleplayerLeaderboards();
             Collections.sort(leaderboardEntries);
         } catch (IOException e) {
             e.printStackTrace();

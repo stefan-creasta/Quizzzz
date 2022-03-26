@@ -145,8 +145,25 @@ public class MainCtrl {
     public List<String> getPlayers() throws IOException, InterruptedException {
         return gameCommunication.getPlayers(gameId);
     }
-    public List<LeaderboardEntry> getLeaderboards() throws IOException, InterruptedException{
+
+    /**
+     *
+     * @return the current list containing all the current entries for the current multiplayer game
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    public List<LeaderboardEntry> getMultiplayerLeaderboards() throws IOException, InterruptedException{
         return gameCommunication.getLeaderboardMultiplayer(gameId);
+    }
+
+    /**
+     *
+     * @return the leaderboards containing all the entries for singleplayer mode
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    public List<LeaderboardEntry> getSingleplayerLeaderboards() throws IOException, InterruptedException{
+        return gameCommunication.getLeaderboardSingleplayer();
     }
 
     /**
