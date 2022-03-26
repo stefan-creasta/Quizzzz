@@ -28,6 +28,7 @@ public class ServerListener {
         this.client = client;
     }
 
+
     /**Initialize the listener with the playerId received from joinGame and the mainCtrl that will handleGameState
      * Needs to be called as soon as the player wants to see up-to-date lobby and game session information.
      * @param playerId the playerId that is retrieved in a GameState object
@@ -69,7 +70,8 @@ public class ServerListener {
 
     }
 
-    /**Immediate step to prevent any erroneous GameStates from being passed to the rest of the client application.
+    /**
+     * Immediate step to prevent any erroneous GameStates from being passed to the rest of the client application.
      * @param gameState the received GameState
      */
     private void handler(GameState gameState) {
