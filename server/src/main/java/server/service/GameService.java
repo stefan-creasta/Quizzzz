@@ -3,14 +3,14 @@ package server.service;
 import commons.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.async.DeferredResult;
 
 import java.util.*;
 
 @Service
 public class GameService {
 
-    class GameRepository {
+    static class GameRepository {
+        static long idGenerator = 0;
         private Map<Long, Game> games;
 
         GameRepository() {
@@ -30,6 +30,7 @@ public class GameService {
 
         void save(Game game) {
             Objects.requireNonNull(game, "game cannot be null");
+            game.id = idGenerator++;
             games.put(game.id, game);
         }
 
@@ -38,7 +39,8 @@ public class GameService {
         }
     }
 
-    class PlayerRepository {
+    static class PlayerRepository {
+        static long idGenerator;
         private Map<Long, Player> players;
 
         PlayerRepository() {
@@ -52,6 +54,7 @@ public class GameService {
 
         void save(Player player) {
             Objects.requireNonNull(player, "player cannot be null");
+            player.id = idGenerator++;
             players.put(player.id, player);
         }
 
@@ -68,8 +71,6 @@ public class GameService {
 
     int stateInteger = -1;//0 if state is QUESTION, 1 if state is INTERVAL
 
-    private Map<Long, DeferredResult<GameState>> playerConnections;
-
     private final GameRepository gameRepository = new GameRepository();
     private final PlayerRepository playerRepository = new PlayerRepository();
     private final QuestionService questionService;
@@ -81,7 +82,6 @@ public class GameService {
         //make timeOfSent = -1 or 0 if awarding the proper amount of points is buggy
         this.questionService = questionService;
         this.longPollingService = longPollingService;
-        this.playerConnections = new HashMap<>();
         createCurrentGame();
     }
 
@@ -177,9 +177,9 @@ public class GameService {
 
     //methods that call each other back and forth to have a single game running.
     public void questionPhase(final Game game) {
-
         stateInteger = 0;
 
+        game.stage = GameState.Stage.QUESTION;
         GameState state = game.getState();
 
         for (Player player : game.players) {
@@ -203,9 +203,9 @@ public class GameService {
     public void intervalPhase(final Game game) {
         stateInteger = 1;
 
+        game.stage = GameState.Stage.INTERVAL;
         GameState state = game.getState();
 
-        state.stage = GameState.Stage.INTERVAL;
         for (Player player : game.players) {
             state.setPlayer(player);
             state.setPlayerAnswer(player.answer);
