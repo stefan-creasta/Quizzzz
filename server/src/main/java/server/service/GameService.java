@@ -200,11 +200,10 @@ public class GameService {
      * @return false if the username is already taken, true, otherwise
      */
     public boolean checkUsername(long id, String username) {
+
         List<String> players = getPlayers(id);
-        for(int i = 0; i < players.size(); i++) {
-            if(players.get(i).equals(username)) {
-                return false;
-            }
+        if(players.contains(username) == true) {
+            return false;
         }
         return true;
     }
