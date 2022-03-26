@@ -87,6 +87,9 @@ public class GameCommunication {
             e.printStackTrace();
         }
     }
+
+
+
     public List<String> getPlayers(long gameId) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/api/game/players/" + gameId))

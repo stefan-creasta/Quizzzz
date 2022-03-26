@@ -76,6 +76,8 @@ public class GameService {
     private final PlayerRepository playerRepository = new PlayerRepository();
     private final QuestionService questionService;
 
+    public String stateString = "";
+
     @Autowired
     public GameService(QuestionService questionService) {
         this.questionService = questionService;
@@ -175,21 +177,20 @@ public class GameService {
         }
         try{
             if(pl.reduceTimePower){
-                //TODO tell other users to showcase that someone used this power up
                 pl.reduceTimePower = false;
-                //CLIENT SIDE EFFECT - Send to all other players except this player a message saying their time is halved
                 List<Player> players = g.players;
                 for(Player p:players){
-                    if(p.id!=playerID){
+                    if(p.id!=playerID){//sends it to everyone except the player using the power up
                         GameState gState = g.getState();
-                        gState.halfTime = true;
+                        gState.timeOfReceival = p.timeOfReceival;
+                        double toReduce = 0.5;//alter percentages if you want to by changing the double
+                        gState.timeOfReceival = (long) (gState.timeOfReceival - (10000 - (new Date().getTime() - gState.timeOfReceival))*toReduce);
+                        p.timeOfReceival = gState.timeOfReceival;
                         gState.instruction = "halfTimePowerUp";
-
                         sendToPlayer(p.id, gState);
+
                     }
                 }
-                //TODO SERVER SIDE EFFECT
-                //hard to do since player award system is not set properly in place atm
                 return "halfTimePowerUp___success___";
             }
             return "halfTimePowerUp___fail";//executes when the player has already used the power up
@@ -302,6 +303,7 @@ public class GameService {
     //methods that call each other back and forth to have a single game running.
     public void questionPhase(final Game game) {
 
+        stateString = "QUESTION";
 
         for (Player player : game.players) {
             GameState state = game.getState();
@@ -327,6 +329,8 @@ public class GameService {
     }
 
     public void intervalPhase(final Game game) {
+
+        stateString = "INTERVAL";
 
         GameState state = game.getState();
 
@@ -374,7 +378,7 @@ public class GameService {
      */
     public void sendToPlayer(Long playerId, GameState state) {
         DeferredResult<GameState> connection = playerConnections.get(playerId);
-        if (connection != null) if (!connection.setResult(state)) System.out.println("GAMESTATE WASN'T SENT!!!");
+        if (connection != null) if (!connection.setResult(state)) System.out.println("GAMESTATE WASN'T SENT!!!");//debug maybe
         playerConnections.put(playerId, null);
     }
 
@@ -395,15 +399,12 @@ public class GameService {
             pos++;
         }
         p = g.players.get(pos);
-        if((p.answer == null || p.answer.isEmpty()&&g.stage==QUESTION)){
-            p.answer = ans;
-            GameState state = g.getState(p);
-            state.timeToAnswer = (long) ((new Date().getTime() - p.timeOfReceival)/1000.0);
-            p.timeToAnswer = (long) ((new Date().getTime() - p.timeOfReceival)/1000.0);
+        if((p.answer == null || p.answer.isEmpty())&&stateString.equals("QUESTION")){
 
+            p.answer = ans;
+            p.timeToAnswer = (long) ((new Date().getTime() - p.timeOfReceival)/1000.0);
             System.out.println("it took user " + (double) p.timeToAnswer + " seconds to answer");//debug
-            state.instruction = "answerSubmitted";
-            sendToPlayer(playerId, state);//is being sent in order to show convey to the player the time of receival
+
         }
     }
 

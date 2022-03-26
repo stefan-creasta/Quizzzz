@@ -81,6 +81,8 @@ public class QuestionCtrl {
 
     private String selectedAnswer;
 
+    private Timeline timeline;
+
 
     /**
      * Updates the gameState for this particular client
@@ -88,25 +90,40 @@ public class QuestionCtrl {
      */
     void updateGameState(GameState gameState) {
         this.gameState = gameState;
+        switch(gameState.instruction){
+            case "questionPhase":
+                //TODO: Update question number based on current question
+                this.questionTitle.setText("Question 10");
+                this.questionText.setText(gameState.question.question);
 
-        //TODO: Update question number based on current question
-        this.questionTitle.setText("Question 10");
-        this.questionText.setText(gameState.question.question);
+                this.answer1.setText(gameState.question.answer);
+                this.answer2.setText(gameState.question.wrongAnswer1);
+                this.answer3.setText(gameState.question.wrongAnswer2);
+                
+                timeline = new Timeline( new KeyFrame(Duration.millis(1), e ->{
+                    long timeToDisplay = 10000 - (new Date().getTime() - gameState.timeOfReceival);
+                    questionTime.setText("Time left: " + timeToDisplay/1000.0 + " seconds");
+                }));
+                timeline.setCycleCount(100000);
+                timeline.play();
 
-        this.answer1.setText(gameState.question.answer);
-        this.answer2.setText(gameState.question.wrongAnswer1);
-        this.answer3.setText(gameState.question.wrongAnswer2);
+                answer1.setVisible(true);//in case an eliminate wrong answer power up was called in the previous round
+                answer2.setVisible(true);//we set everything visible
+                answer3.setVisible(true);
 
-        Timeline timeline = new Timeline( new KeyFrame(Duration.millis(1), e ->{//TODO
-            long timeToDisplay = 10000 - (new Date().getTime() - gameState.timeOfReceival);
-            questionTime.setText("Time left: " + timeToDisplay/1000.0 + " seconds");
-        }));
-        timeline.setCycleCount(100000);
-        timeline.play();
+                break;
+            case "halfTimePowerUp":
+                this.gameState = gameState;
+                timeline = new Timeline( new KeyFrame(Duration.millis(1), e ->{
+                    long timeToDisplay = 10000 - (new Date().getTime() - gameState.timeOfReceival);
+                    questionTime.setText("Time left: " + timeToDisplay/1000.0 + " seconds");
+                }));
+                timeline.setCycleCount(100000);
+                timeline.play();
+                //TODO time is already being halved, but make it explicit to the client, so that it is easily noticeable
+                break;
+        }
 
-        answer1.setVisible(true);
-        answer2.setVisible(true);
-        answer3.setVisible(true);
 
     }
 
