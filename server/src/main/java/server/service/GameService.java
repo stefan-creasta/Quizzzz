@@ -36,6 +36,11 @@ public class GameService {
             games.put(game.id, game);
         }
 
+        /**
+         * Checks whether the game with a certain id exists
+         * @param id the game id
+         * @return true, if the game with a certain id exists, false, otherwise
+         */
         boolean existsById(long id) {
             return games.containsKey(id);
         }
@@ -59,9 +64,19 @@ public class GameService {
             players.put(player.id, player);
         }
 
+        /**
+         * Checks whether the player with a certain id exists
+         * @param id the player id
+         * @return true, if the player with a certain id exists, false, otherwise
+         */
         boolean existsById(long id) {
             return players.containsKey(id);
         }
+
+        /**
+         * Gets the list of players in the repository
+         * @return the list of players
+         */
         Map<Long, Player> getPlayers() {
             return  players;
         }
@@ -286,6 +301,11 @@ public class GameService {
         createCurrentGame();
     }
 
+    /**
+     * Method which returns the list of players for a certain game
+     * @param id the game's id
+     * @return the list of players
+     */
     public List<String> getPlayers(long id) {
         Map<Long, Player> players = playerRepository.getPlayers();
         List<String> playersForGame = new ArrayList<>();
@@ -300,6 +320,20 @@ public class GameService {
         return playersForGame;
     }
 
+    /**
+     * Method which checks whether a username has already been taken
+     * @param id the id of the game
+     * @param username the new player's username
+     * @return false if the username is already taken, true, otherwise
+     */
+    public boolean checkUsername(long id, String username) {
+
+        List<String> players = getPlayers(id);
+        if(players.contains(username) == true) {
+            return false;
+        }
+        return true;
+    }
     //methods that call each other back and forth to have a single game running.
     public void questionPhase(final Game game) {
 
