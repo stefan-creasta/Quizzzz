@@ -441,6 +441,15 @@ public class GameService {
     }
 
     /**
+     * Gets called when the server receives an emote from a player.
+     * @param ans the emote and gameId where the emote should be added.
+     */
+    public void addEmote(EmoteClass ans) {
+        Game g = gameRepository.getId(ans.gameId);
+        g.emotes[ans.emote.ordinal()]++;
+    }
+
+    /**
      * Scores all players of a game at the end of the QUESTION phase of a gameState. Increases their score
      * depending on the correctness and speed of their answer.
      * @param g The game that is scored.

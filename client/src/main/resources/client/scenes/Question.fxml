@@ -52,5 +52,6 @@
             <TableColumn fx:id="leaderboardScores" editable="false" minWidth="0.0" prefWidth="141.01806640625" text="Score" />
         </columns>
       </TableView>
+      <Button fx:id="emoteAngry" layoutX="47.0" layoutY="490.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#Answer1Pressed" prefHeight="40.0" prefWidth="60.0" text="Angry" wrapText="true" />
    </children>
 </AnchorPane>

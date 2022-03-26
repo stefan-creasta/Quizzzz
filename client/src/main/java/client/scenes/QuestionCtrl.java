@@ -42,6 +42,11 @@ public class QuestionCtrl {
     private Button answer3;
 
     @FXML
+    private Button emoteAngry;
+
+    private boolean angryPressed;
+
+    @FXML
     private Button doublePoints;
 
     @FXML
@@ -153,7 +158,15 @@ public class QuestionCtrl {
         AnswerCommunication.sendAnswer(selectedAnswer, gameState);
     }
 
-
+    /**
+     * Gets called when the angry emote is pressed.
+     * Sends the emote to the server and stops further identical emotes until the next question.
+     */
+    @FXML
+    void AngryEmotePressed(ActionEvent event) throws IOException, InterruptedException {
+        EmoteClass e = new EmoteClass(gameState.gameId, EmoteClass.Emote.Angry);
+        AnswerCommunication.sendEmote(e);
+    }
 
     @FXML
     /**
@@ -343,6 +356,9 @@ public class QuestionCtrl {
         answer1.setText(answerList.get(0));
         answer2.setText(answerList.get(1));
         answer3.setText(answerList.get(2));
+
+        // Enable emotes for the new question
+        angryPressed = false;
     }
 
     public void markAnswer(String correct, String ofplayer) {

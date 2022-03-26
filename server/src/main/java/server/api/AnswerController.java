@@ -3,6 +3,7 @@ package server.api;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import commons.EmoteClass;
 import commons.PlayerAnswer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +34,15 @@ public class AnswerController {
         PlayerAnswer ans =  gson.fromJson(item, new TypeToken<PlayerAnswer>(){}.getType());
 
         gameService.submitByPlayer(ans.playerId, ans.answer, ans.gameId);
+    }
+
+    @PostMapping("/emote")
+    public void postEmote(@RequestBody String item) {
+        System.out.println(item);
+
+        EmoteClass ans =  gson.fromJson(item, new TypeToken<EmoteClass>(){}.getType());
+
+        gameService.addEmote(ans);
     }
 
 
