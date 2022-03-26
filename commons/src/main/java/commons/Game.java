@@ -18,6 +18,7 @@ public class Game {
     public List<Player> players;
     public boolean started;
     public GameState.Stage stage;
+    public int[] emotes = {0, 0, 0, 0, 0};
     private Game(){}
 
     public Game(List<Question> questions){

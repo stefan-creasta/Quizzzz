@@ -3,6 +3,7 @@ package client.Communication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.reflect.TypeToken;
+import commons.EmoteClass;
 import commons.GameState;
 import commons.PlayerAnswer;
 import commons.Question;
@@ -64,4 +65,23 @@ public class AnswerCommunication {
         return gson.fromJson(response.body(), new TypeToken<Question>(){}.getType());
     }
 
+    /**
+     * Sends the emote and gameId to the server, so it can update the list of emotes pressed.
+     * @param emote
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    public static void sendEmote(EmoteClass emote) throws IOException, InterruptedException {
+        var objectMapper = new ObjectMapper();
+        String requestBody = objectMapper
+                .writeValueAsString(emote);
+
+        System.out.println("\nEmote sent to server:\n" + emote.emote.name());
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/api/answer/emote"))
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
+        client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
 }
