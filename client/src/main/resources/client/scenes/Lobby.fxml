@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" styleClass="main" stylesheets="@Lobby.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.LobbyCtrl">
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" styleClass="main" stylesheets="@../../Lobby.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.LobbyCtrl">
    <children>
       <Button fx:id="startButton" alignment="CENTER" layoutX="678.0" layoutY="210.0" mnemonicParsing="false" onAction="#startGame" text="Start Game" textAlignment="CENTER" />
       <Button fx:id="leaveButton" layoutX="668.0" layoutY="344.0" mnemonicParsing="false" styleClass="red" text="Leave Game" />
