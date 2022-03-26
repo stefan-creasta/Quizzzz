@@ -173,6 +173,24 @@ public class GameService {
         return playersForGame;
     }
 
+    /**
+     * Method which returns a leaderboard for a certain game
+     * @param id the game's id
+     * @return the list of leaderboard entries
+     */
+    public List<LeaderboardEntry> getLeaderboard(long id) {
+        Map<Long, Player> players = playerRepository.getPlayers();
+        List<LeaderboardEntry> leaderboardEntries = new ArrayList<>();
+        for(Long playerId : players.keySet()) {
+            Player player = players.get(playerId);
+            if(player.gameId == id) {
+                LeaderboardEntry newLeaderboardEntry = new LeaderboardEntry(player.username, (int) player.score);
+                leaderboardEntries.add(newLeaderboardEntry);
+            }
+        }
+        return leaderboardEntries;
+    }
+
     //methods that call each other back and forth to have a single game running.
     public void questionPhase(final Game game) {
 

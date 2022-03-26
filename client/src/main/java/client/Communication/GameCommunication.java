@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
 import commons.GameState;
+import commons.LeaderboardEntry;
 
 import java.io.IOException;
 import java.net.URI;
@@ -95,6 +96,37 @@ public class GameCommunication {
         var response = client.send(request, HttpResponse.BodyHandlers.ofString());
         final ObjectMapper mapper = new ObjectMapper();
         final TypeReference<List<String>> typeRef = new TypeReference<>() {};
+        return mapper.readValue(response.body(), typeRef);
+    }
+
+    /**
+     * Method which returns the leaderboard for a multiplayer game
+     * @param gameId the game's id
+     * @return the list of leaderboard entries
+     */
+    public List<LeaderboardEntry> getLeaderboardMultiplayer(long gameId) throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/api/game/leaderboard/" + gameId))
+                .GET()
+                .build();
+        var response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        final ObjectMapper mapper = new ObjectMapper();
+        final TypeReference<List<LeaderboardEntry>> typeRef = new TypeReference<>() {};
+        return mapper.readValue(response.body(), typeRef);
+    }
+    /**
+     * Method which returns the leaderboard for a singleplayer game. Since this method returns the global
+     * leaderboard, it doesn't need the game's id
+     * @return the list of leaderboard entries
+     */
+    public List<LeaderboardEntry> getLeaderboardSingleplayer() throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/api/leaderboard/"))
+                .GET()
+                .build();
+        var response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        final ObjectMapper mapper = new ObjectMapper();
+        final TypeReference<List<LeaderboardEntry>> typeRef = new TypeReference<>() {};
         return mapper.readValue(response.body(), typeRef);
     }
 }
