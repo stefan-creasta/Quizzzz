@@ -18,6 +18,7 @@ package client.scenes;
 import client.Communication.GameCommunication;
 import client.Communication.ServerListener;
 import commons.GameState;
+import commons.LeaderboardEntry;
 import commons.Player;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -143,6 +144,26 @@ public class MainCtrl {
     
     public List<String> getPlayers() throws IOException, InterruptedException {
         return gameCommunication.getPlayers(gameId);
+    }
+
+    /**
+     *
+     * @return the current list containing all the current entries for the current multiplayer game
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    public List<LeaderboardEntry> getMultiplayerLeaderboards() throws IOException, InterruptedException{
+        return gameCommunication.getLeaderboardMultiplayer(gameId);
+    }
+
+    /**
+     *
+     * @return the leaderboards containing all the entries for singleplayer mode
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    public List<LeaderboardEntry> getSingleplayerLeaderboards() throws IOException, InterruptedException{
+        return gameCommunication.getLeaderboardSingleplayer();
     }
 
     /**
