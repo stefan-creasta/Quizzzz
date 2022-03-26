@@ -3,6 +3,7 @@ package client.scenes;
 import client.Communication.AnswerCommunication;
 import client.Communication.ImageCommunication;
 import client.Communication.PowerUpsCommunication;
+import com.google.inject.Inject;
 import commons.GameState;
 import commons.LeaderboardEntry;
 import commons.Question;
@@ -87,6 +88,16 @@ public class QuestionCtrl {
 
     private String selectedAnswer;
 
+    private List<LeaderboardEntry> leaderboardEntries;
+
+
+    private final MainCtrl mainCtrl;
+
+    @Inject
+    public QuestionCtrl(MainCtrl mainCtrl) {
+        this.mainCtrl = mainCtrl;
+    }
+
     void updateGameState(GameState gameState) {
         this.gameState = gameState;
 
@@ -140,7 +151,7 @@ public class QuestionCtrl {
     }
 
     @FXML
-    void KeyPressed(KeyEvent event) {
+    void KeyPressed(KeyEvent event){
         System.out.println(event.getCode() + " was pressed.");
         switch (event.getCode()) {
             case TAB:
@@ -161,7 +172,6 @@ public class QuestionCtrl {
         assert questionImage != null : "fx:id=\"questionImage\" was not injected: check your FXML file 'Question.fxml'.";
         assert questionText != null : "fx:id=\"questionText\" was not injected: check your FXML file 'Question.fxml'.";
         assert questionTitle != null : "fx:id=\"questionTitle\" was not injected: check your FXML file 'Question.fxml'.";
-
 
         root.addEventFilter(KeyEvent.KEY_PRESSED, this::KeyPressed);
         root.addEventFilter(KeyEvent.KEY_RELEASED, this::KeyReleased);
@@ -193,7 +203,7 @@ public class QuestionCtrl {
         leaderboardScores.setCellValueFactory(e -> new SimpleStringProperty(Integer.toString(e.getValue().score)));
 
         hideLeaderboard();
-    }
+        }
 
     public void syncTimer(long syncLong, long duration) {
         timer.setDuration(duration);
@@ -240,14 +250,8 @@ public class QuestionCtrl {
         }
     }
 
-    public void showLeaderboard() {
-        List<LeaderboardEntry> leaderboardEntries = new LinkedList<LeaderboardEntry>();
-        leaderboardEntries.addAll(List.of(
-                new LeaderboardEntry("userA", 300),
-                new LeaderboardEntry("userC", 100),
-                new LeaderboardEntry("userB", 200)
-        ));
-        Collections.sort(leaderboardEntries);
+    public void showLeaderboard(){
+        updateLeaderboards();
 
         ObservableList<LeaderboardEntry> entries = FXCollections.observableList(leaderboardEntries);
         leaderboard.setItems(entries);
@@ -256,5 +260,23 @@ public class QuestionCtrl {
 
     public void hideLeaderboard() {
         leaderboard.setVisible(false);
+    }
+
+    /**
+     * Retrieves the list of Leaderboard Entries from the server and populates the table in the game
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    public void updateLeaderboards(){
+
+        try {
+            leaderboardEntries = mainCtrl.getLeaderboards();
+            Collections.sort(leaderboardEntries);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
     }
 }
