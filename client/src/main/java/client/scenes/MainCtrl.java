@@ -186,8 +186,9 @@ public class MainCtrl {
      */
     public void initiateSingleplayerGame(Player newPlayer) {
         gameId = gameCommunication.createSingleplayerGame();
-        serverListener.initialize(newPlayer.id, this);
-        gameCommunication.joinSingleplayerGame(gameId, newPlayer.username);
+        GameState state = gameCommunication.joinSingleplayerGame(gameId, newPlayer.username);
+        handleGameState(state);
+        serverListener.initialize(state.playerId, this);
         gameCommunication.initiateSingleplayerGame(gameId);
     }
 
