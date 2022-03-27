@@ -20,7 +20,6 @@ public class GameState {
     public String username;
     public String playerAnswer;
     public List<LeaderboardEntry> leaderboard;
-    public boolean halfTime;
 
     public List<Emote> emotes;
 
@@ -36,7 +35,6 @@ public class GameState {
      * @param player the specific player that the GameState is going to be sent to
      */
     public GameState(Game game, Player player) {
-        this.halfTime = false;
         this.stage = game.stage;
         this.question = game.getCurrentQuestion();
         this.isError = false;
@@ -80,7 +78,6 @@ public class GameState {
                 ", question=" + question +
                 ", isError=" + isError +
                 ", message='" + message + '\'' +
-                ", instruction='" + instruction + '\'' +
                 ", timerSyncLong=" + timerSyncLong +
                 ", duration=" + duration +
                 ", gameId=" + gameId +
@@ -88,10 +85,7 @@ public class GameState {
                 ", username='" + username + '\'' +
                 ", playerAnswer='" + playerAnswer + '\'' +
                 ", leaderboard=" + leaderboard +
-                ", halfTime=" + halfTime +
                 ", emotes=" + emotes +
-                ", timeToAnswer=" + timeToAnswer +
-                ", timeOfReceival=" + timeOfReceival +
                 '}';
     }
 }

@@ -100,11 +100,15 @@ public class QuestionCtrl {
     @FXML
     private AnchorPane root;
 
+    private Boolean[] pressedEmote = {false, false, false, false, false};
+
     private Timer timer;
 
     private GameState gameState;
 
     private String selectedAnswer;
+
+    private Timeline timeline;
 
 
     /**
@@ -114,25 +118,40 @@ public class QuestionCtrl {
      */
     void updateGameState(GameState gameState) {
         this.gameState = gameState;
+        switch(gameState.instruction){
+            case "questionPhase":
+                //TODO: Update question number based on current question
+                this.questionTitle.setText("Question 10");
+                this.questionText.setText(gameState.question.question);
 
-        //TODO: Update question number based on current question
-        this.questionTitle.setText("Question 10");
-        this.questionText.setText(gameState.question.question);
+                this.answer1.setText(gameState.question.answer);
+                this.answer2.setText(gameState.question.wrongAnswer1);
+                this.answer3.setText(gameState.question.wrongAnswer2);
+                
+                timeline = new Timeline( new KeyFrame(Duration.millis(1), e ->{
+                    long timeToDisplay = 10000 - (new Date().getTime() - gameState.timeOfReceival);
+                    questionTime.setText("Time left: " + timeToDisplay/1000.0 + " seconds");
+                }));
+                timeline.setCycleCount(100000);
+                timeline.play();
 
-        this.answer1.setText(gameState.question.answer);
-        this.answer2.setText(gameState.question.wrongAnswer1);
-        this.answer3.setText(gameState.question.wrongAnswer2);
+                answer1.setVisible(true);//in case an eliminate wrong answer power up was called in the previous round
+                answer2.setVisible(true);//we set everything visible
+                answer3.setVisible(true);
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1), e -> {//TODO
-            long timeToDisplay = 10000 - (new Date().getTime() - gameState.timeOfReceival);
-            questionTime.setText("Time left: " + timeToDisplay / 1000.0 + " seconds");
-        }));
-        timeline.setCycleCount(100000);
-        timeline.play();
+                break;
+            case "halfTimePowerUp":
+                this.gameState = gameState;
+                timeline = new Timeline( new KeyFrame(Duration.millis(1), e ->{
+                    long timeToDisplay = 10000 - (new Date().getTime() - gameState.timeOfReceival);
+                    questionTime.setText("Time left: " + timeToDisplay/1000.0 + " seconds");
+                }));
+                timeline.setCycleCount(100000);
+                timeline.play();
+                //TODO time is already being halved, but make it explicit to the client, so that it is easily noticeable
+                break;
+        }
 
-        answer1.setVisible(true);
-        answer2.setVisible(true);
-        answer3.setVisible(true);
 
         // Set emotes
         System.out.println(gameState.emotes);
@@ -169,37 +188,68 @@ public class QuestionCtrl {
     }
 
     /**
-     * Gets called when the angry emote is pressed.
+     * Gets called when the Angry emote is pressed.
      * Sends the emote to the server and stops further identical emotes until the next question.
      */
     @FXML
     void AngryEmotePressed(ActionEvent event) throws IOException, InterruptedException {
-        Emote emote = new Emote(Emote.Type.Angry, gameState.username, gameState.gameId);
-        AnswerCommunication.sendEmote(emote);
+        if (!pressedEmote[0]) {
+            Emote emote = new Emote(Emote.Type.Angry, gameState.username, gameState.gameId);
+            AnswerCommunication.sendEmote(emote);
+            pressedEmote[0] = true;
+        }
     }
 
+    /**
+     * Gets called when the LOL emote is pressed.
+     * Sends the emote to the server and stops further identical emotes until the next question.
+     */
     @FXML
     void LOLEmotePressed(ActionEvent event) throws IOException, InterruptedException {
-        Emote emote = new Emote(Emote.Type.LOL, gameState.username, gameState.gameId);
-        AnswerCommunication.sendEmote(emote);
+        if (!pressedEmote[1]) {
+            Emote emote = new Emote(Emote.Type.LOL, gameState.username, gameState.gameId);
+            AnswerCommunication.sendEmote(emote);
+            pressedEmote[1] = true;
+        }
     }
 
+    /**
+     * Gets called when the Sweat emote is pressed.
+     * Sends the emote to the server and stops further identical emotes until the next question.
+     */
     @FXML
     void SweatEmotePressed(ActionEvent event) throws IOException, InterruptedException {
-        Emote emote = new Emote(Emote.Type.Sweat, gameState.username, gameState.gameId);
-        AnswerCommunication.sendEmote(emote);
+        if (!pressedEmote[2]) {
+            Emote emote = new Emote(Emote.Type.Sweat, gameState.username, gameState.gameId);
+            AnswerCommunication.sendEmote(emote);
+            pressedEmote[2] = true;
+        }
     }
 
+    /**
+     * Gets called when the Clap emote is pressed.
+     * Sends the emote to the server and stops further identical emotes until the next question.
+     */
     @FXML
     void ClapEmotePressed(ActionEvent event) throws IOException, InterruptedException {
-        Emote emote = new Emote(Emote.Type.Clap, gameState.username, gameState.gameId);
-        AnswerCommunication.sendEmote(emote);
+        if (!pressedEmote[3]) {
+            Emote emote = new Emote(Emote.Type.Clap, gameState.username, gameState.gameId);
+            AnswerCommunication.sendEmote(emote);
+            pressedEmote[3] = true;
+        }
     }
 
+    /**
+     * Gets called when the Win emote is pressed.
+     * Sends the emote to the server and stops further identical emotes until the next question.
+     */
     @FXML
     void WinEmotePressed(ActionEvent event) throws IOException, InterruptedException {
-        Emote emote = new Emote(Emote.Type.Win, gameState.username, gameState.gameId);
-        AnswerCommunication.sendEmote(emote);
+        if (!pressedEmote[4]) {
+            Emote emote = new Emote(Emote.Type.Win, gameState.username, gameState.gameId);
+            AnswerCommunication.sendEmote(emote);
+            pressedEmote[4] = true;
+        }
     }
 
 
@@ -390,6 +440,12 @@ public class QuestionCtrl {
         answer1.setText(answerList.get(0));
         answer2.setText(answerList.get(1));
         answer3.setText(answerList.get(2));
+
+        //Also reset the emotes so they can be pressed again for the new question.
+
+        for (int i=0; i<5; i++){
+            pressedEmote[i] = false;
+        }
 
     }
 

@@ -18,7 +18,6 @@ package client.scenes;
 import client.Communication.GameCommunication;
 import client.Communication.ServerListener;
 import commons.GameState;
-import commons.Player;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -94,9 +93,14 @@ public class MainCtrl {
         primaryStage.show();
     }
 
-    public void joinGame(Player newPlayer) {
-        serverListener.initialize(newPlayer.id, this);
-        gameCommunication.joinGame(gameId, newPlayer.username);
+    public void joinGame(String username) {
+        GameState state = gameCommunication.joinGame(gameId, username);
+        handleGameState(state);
+        serverListener.initialize(state.playerId, this);
+    }
+
+    public boolean checkUsername(String username) throws IOException, InterruptedException {
+        return gameCommunication.checkUsername(gameId, username);
     }
 
     public void showOverview() {
@@ -148,20 +152,26 @@ public class MainCtrl {
     /**
      * Sends a request to the server to initiate the game with ID gameId
      */
-
     public void initiateGame() {
         gameCommunication.initiateGame(gameId);
     }
 
 
+    /**
+     * Function that gets called when the server is sending the player information using long polling.
+     * It performs different actions depending on the instruction in the gameState. These actions
+     * are handled using a switch case. If you use sendToPlayer() - the function that sends the gameState to this function -
+     * then, before sending, set the instruction and add a switch case for the instruction here, if the case does not
+     * exist already.
+     * @param gameState the gameState with the updated information
+     */
     public void handleGameState(GameState gameState) {
-//        System.out.println("GAME STATE: " + gameState);//debug
         String instruction = gameState.instruction;
         switch(instruction){
+            case "halfTimePowerUp"://called when a halfTimePowerUp is being used.
+                questionCtrl.updateGameState(gameState);
             case "updateEmotes":
                 questionCtrl.updateEmotes(gameState.emotes);
-            case "halfTimePowerUp":
-                //TODO client side halftime
                 break;
             case "joinGame"://called when the client joins
                 try {

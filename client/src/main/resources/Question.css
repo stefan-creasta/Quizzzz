@@ -98,3 +98,33 @@
 .leaderboard .rank-column {
     -fx-text-alignment: center;
 }
+
+.emotes {
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-border-width: 4;
+    -fx-border-color: #fbe44d;
+    -fx-background-color: #3b315a;
+    -fx-text-fill: white;
+}
+
+.emotes-text {
+    -fx-font-size: 12px;
+    -fx-text-fill: white;
+}
+
+.emotes .column-header {
+    -fx-background-color: #3b315a;
+}
+
+.emotes .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-size: 14;
+    -fx-padding: 15;
+}
+
+.emotes .table-cell {
+    -fx-background-color: #3b315a;
+    -fx-text-fill: white;
+    -fx-font-size: 12;
+}

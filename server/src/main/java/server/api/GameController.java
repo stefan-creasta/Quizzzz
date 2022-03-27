@@ -62,4 +62,8 @@ public class GameController {
         System.out.println("GetMapping players: " + players.size());
         return players;
     }
+    @GetMapping("/check/{id}")
+    public boolean checkUsername(@PathVariable long id, @RequestParam String username) throws IllegalArgumentException {
+        return service.checkUsername(id, username);
+    }
 }
