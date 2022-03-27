@@ -18,7 +18,6 @@ package client.scenes;
 import client.Communication.GameCommunication;
 import client.Communication.ServerListener;
 import commons.GameState;
-import commons.Player;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;

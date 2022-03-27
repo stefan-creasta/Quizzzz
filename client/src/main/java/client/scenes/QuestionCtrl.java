@@ -188,7 +188,7 @@ public class QuestionCtrl {
     }
 
     /**
-     * Gets called when the angry emote is pressed.
+     * Gets called when the Angry emote is pressed.
      * Sends the emote to the server and stops further identical emotes until the next question.
      */
     @FXML
@@ -200,6 +200,10 @@ public class QuestionCtrl {
         }
     }
 
+    /**
+     * Gets called when the LOL emote is pressed.
+     * Sends the emote to the server and stops further identical emotes until the next question.
+     */
     @FXML
     void LOLEmotePressed(ActionEvent event) throws IOException, InterruptedException {
         if (!pressedEmote[1]) {
@@ -209,6 +213,10 @@ public class QuestionCtrl {
         }
     }
 
+    /**
+     * Gets called when the Sweat emote is pressed.
+     * Sends the emote to the server and stops further identical emotes until the next question.
+     */
     @FXML
     void SweatEmotePressed(ActionEvent event) throws IOException, InterruptedException {
         if (!pressedEmote[2]) {
@@ -218,6 +226,10 @@ public class QuestionCtrl {
         }
     }
 
+    /**
+     * Gets called when the Clap emote is pressed.
+     * Sends the emote to the server and stops further identical emotes until the next question.
+     */
     @FXML
     void ClapEmotePressed(ActionEvent event) throws IOException, InterruptedException {
         if (!pressedEmote[3]) {
@@ -227,6 +239,10 @@ public class QuestionCtrl {
         }
     }
 
+    /**
+     * Gets called when the Win emote is pressed.
+     * Sends the emote to the server and stops further identical emotes until the next question.
+     */
     @FXML
     void WinEmotePressed(ActionEvent event) throws IOException, InterruptedException {
         if (!pressedEmote[4]) {
