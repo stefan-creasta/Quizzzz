@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 import static commons.GameState.Stage.QUESTION;
 
