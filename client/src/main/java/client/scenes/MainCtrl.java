@@ -18,6 +18,7 @@ package client.scenes;
 import client.Communication.GameCommunication;
 import client.Communication.ServerListener;
 import commons.GameState;
+import commons.Player;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -27,6 +28,8 @@ import java.io.IOException;
 import java.util.List;
 
 public class MainCtrl {
+
+    public boolean singleplayerGame;
 
     private Stage primaryStage;
 
@@ -50,6 +53,9 @@ public class MainCtrl {
     private QuestionCtrl questionCtrl;
     private Scene question;
 
+    private SplashScreenCtrl splashCtrl;
+    private Scene splash;
+
     private Scene adminInterface;
 
     private ServerListener serverListener;
@@ -64,7 +70,8 @@ public class MainCtrl {
                            Pair<AddPlayerCtrl, Parent> playerPair,
                            Pair<AdminInterfaceCtrl, Parent> adminInterfacePair,
                            GameCommunication gameCommunication,
-                           ServerListener serverListener) {
+                           ServerListener serverListener,
+                           Pair<SplashScreenCtrl, Parent> splashScreenPair) {
 
         this.gameCommunication = gameCommunication;
         this.serverListener = serverListener;
@@ -81,8 +88,9 @@ public class MainCtrl {
         this.timer = new Scene(timer.getValue());
 
 
-        this.questionCtrl = question.getKey();
         gameId = gameCommunication.createGame();
+
+        this.questionCtrl = question.getKey();
         this.question = new Scene(question.getValue());
 
         this.lobbyCtrl = lobbyPair.getKey();
@@ -91,9 +99,15 @@ public class MainCtrl {
         this.playerCtrl = playerPair.getKey();
         this.player = new Scene(playerPair.getValue());
 
+        this.splashCtrl = splashScreenPair.getKey();
+        this.splash = new Scene(splashScreenPair.getValue());
+
+        System.out.println("GAME ID: " + gameId);
+        showSplashScreen();
+        //showPlayer();
         this.adminInterface = new Scene(adminInterfacePair.getValue());
 
-        showPlayer();
+        //showPlayer();
         //showQuestion();
         primaryStage.show();
     }
@@ -126,6 +140,18 @@ public class MainCtrl {
         add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
     }
 
+    public void showSplashScreen() {
+        primaryStage.setTitle("SplashScreen");
+        primaryStage.setScene(splash);
+    }
+    public void chooseSingleplayer() {
+        singleplayerGame = true;
+        showPlayer();
+    }
+    public void chooseMultiplayer() {
+        singleplayerGame = false;
+        showPlayer();
+    }
     public void showPlayer() {
         primaryStage.setTitle("Adding a player");
         primaryStage.setScene(player);
@@ -166,6 +192,17 @@ public class MainCtrl {
         gameCommunication.initiateGame(gameId);
     }
 
+    /**
+     * Sends a request to the server to initiate and create a singleplayer game
+     */
+    public void initiateSingleplayerGame(Player newPlayer) {
+        gameId = gameCommunication.createSingleplayerGame();
+        GameState state = gameCommunication.joinSingleplayerGame(gameId, newPlayer.username);
+        handleGameState(state);
+        serverListener.initialize(state.playerId, this);
+        gameCommunication.initiateSingleplayerGame(gameId);
+    }
+
 
     /**
      * Function that gets called when the server is sending the player information using long polling.
@@ -192,6 +229,8 @@ public class MainCtrl {
                     e.printStackTrace();
                 }
                 break;
+            case "joinSingleplayerGame"://called when the client joins the singleplayer game
+                break;
             case "questionPhase"://called at the start of a question phase
                 questionCtrl.updateGameState(gameState);
                 showQuestion();
@@ -203,7 +242,6 @@ public class MainCtrl {
                 break;
             case "answerSubmitted":
                 break;
-
         }
     }
 }

@@ -18,6 +18,7 @@ package client.scenes;
 import client.Communication.GameCommunication;
 import client.Communication.ServerListener;
 import com.google.inject.Inject;
+import commons.Player;
 import jakarta.ws.rs.WebApplicationException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -50,22 +51,34 @@ public class AddPlayerCtrl {
     }
 
     public void play() throws IOException, InterruptedException {
-        String username = usernameField.getText();
-
-        if(mainCtrl.checkUsername(username) == true) {
-            try {
-                mainCtrl.joinGame(username);
-
-            } catch (WebApplicationException e) {
-
-                var alert = new Alert(Alert.AlertType.ERROR);
-                alert.initModality(Modality.APPLICATION_MODAL);
-                alert.setContentText(e.getMessage());
-                alert.showAndWait();
-                return;
-            }
-            mainCtrl.showLobby();
+        Player newPlayer = getPlayer();
+        //if the game is singleplayer, then the game can start
+        if(mainCtrl.singleplayerGame == true) {
+            mainCtrl.initiateSingleplayerGame(newPlayer);
+            mainCtrl.showQuestion();
         }
+        else {
+            if (mainCtrl.checkUsername(newPlayer.username) == true) {
+                try {
+                    mainCtrl.joinGame(newPlayer.username);
+
+                } catch (WebApplicationException e) {
+
+                    var alert = new Alert(Alert.AlertType.ERROR);
+                    alert.initModality(Modality.APPLICATION_MODAL);
+                    alert.setContentText(e.getMessage());
+                    alert.showAndWait();
+                    return;
+                }
+                mainCtrl.showLobby();
+            }
+        }
+    }
+
+    private Player getPlayer() {
+        var username = usernameField.getText();
+        clearFields();
+        return new Player(username, 0);
     }
 
     private void clearFields() {
