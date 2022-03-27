@@ -56,6 +56,8 @@ public class MainCtrl {
     private SplashScreenCtrl splashCtrl;
     private Scene splash;
 
+    private Scene adminInterface;
+
     private ServerListener serverListener;
 
     private long gameId;
@@ -66,6 +68,7 @@ public class MainCtrl {
                            Pair<CountdownTimer, Parent> timer,
                            Pair<LobbyCtrl, Parent> lobbyPair,
                            Pair<AddPlayerCtrl, Parent> playerPair,
+                           Pair<AdminInterfaceCtrl, Parent> adminInterfacePair,
                            GameCommunication gameCommunication,
                            ServerListener serverListener,
                            Pair<SplashScreenCtrl, Parent> splashScreenPair) {
@@ -102,6 +105,9 @@ public class MainCtrl {
         System.out.println("GAME ID: " + gameId);
         showSplashScreen();
         //showPlayer();
+        this.adminInterface = new Scene(adminInterfacePair.getValue());
+
+        showPlayer();
         //showQuestion();
         primaryStage.show();
     }
@@ -168,6 +174,11 @@ public class MainCtrl {
     public void showQuestion() {
         primaryStage.setTitle("Question");
         primaryStage.setScene(question);
+    }
+
+    public void showAdminInterface() {
+        primaryStage.setTitle("Admin Panel");
+        primaryStage.setScene(adminInterface);
     }
     
     public List<String> getPlayers() throws IOException, InterruptedException {
