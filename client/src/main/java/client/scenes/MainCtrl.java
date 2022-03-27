@@ -17,18 +17,14 @@ package client.scenes;
 
 import client.Communication.GameCommunication;
 import client.Communication.ServerListener;
-import commons.Emote;
 import commons.GameState;
 import commons.Player;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import java.io.IOException;
-import java.util.LinkedList;
 import java.util.List;
 
 public class MainCtrl {
