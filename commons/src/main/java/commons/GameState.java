@@ -78,7 +78,6 @@ public class GameState {
                 ", question=" + question +
                 ", isError=" + isError +
                 ", message='" + message + '\'' +
-                ", instruction='" + instruction + '\'' +
                 ", timerSyncLong=" + timerSyncLong +
                 ", duration=" + duration +
                 ", gameId=" + gameId +
@@ -86,10 +85,7 @@ public class GameState {
                 ", username='" + username + '\'' +
                 ", playerAnswer='" + playerAnswer + '\'' +
                 ", leaderboard=" + leaderboard +
-                ", halfTime=" + halfTime +
                 ", emotes=" + emotes +
-                ", timeToAnswer=" + timeToAnswer +
-                ", timeOfReceival=" + timeOfReceival +
                 '}';
     }
 }

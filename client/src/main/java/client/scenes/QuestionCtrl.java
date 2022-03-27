@@ -100,6 +100,8 @@ public class QuestionCtrl {
     @FXML
     private AnchorPane root;
 
+    private Boolean[] pressedEmote = {false, false, false, false, false};
+
     private Timer timer;
 
     private GameState gameState;
@@ -191,32 +193,47 @@ public class QuestionCtrl {
      */
     @FXML
     void AngryEmotePressed(ActionEvent event) throws IOException, InterruptedException {
-        Emote emote = new Emote(Emote.Type.Angry, gameState.username, gameState.gameId);
-        AnswerCommunication.sendEmote(emote);
+        if (!pressedEmote[0]) {
+            Emote emote = new Emote(Emote.Type.Angry, gameState.username, gameState.gameId);
+            AnswerCommunication.sendEmote(emote);
+            pressedEmote[0] = true;
+        }
     }
 
     @FXML
     void LOLEmotePressed(ActionEvent event) throws IOException, InterruptedException {
-        Emote emote = new Emote(Emote.Type.LOL, gameState.username, gameState.gameId);
-        AnswerCommunication.sendEmote(emote);
+        if (!pressedEmote[1]) {
+            Emote emote = new Emote(Emote.Type.LOL, gameState.username, gameState.gameId);
+            AnswerCommunication.sendEmote(emote);
+            pressedEmote[1] = true;
+        }
     }
 
     @FXML
     void SweatEmotePressed(ActionEvent event) throws IOException, InterruptedException {
-        Emote emote = new Emote(Emote.Type.Sweat, gameState.username, gameState.gameId);
-        AnswerCommunication.sendEmote(emote);
+        if (!pressedEmote[2]) {
+            Emote emote = new Emote(Emote.Type.Sweat, gameState.username, gameState.gameId);
+            AnswerCommunication.sendEmote(emote);
+            pressedEmote[2] = true;
+        }
     }
 
     @FXML
     void ClapEmotePressed(ActionEvent event) throws IOException, InterruptedException {
-        Emote emote = new Emote(Emote.Type.Clap, gameState.username, gameState.gameId);
-        AnswerCommunication.sendEmote(emote);
+        if (!pressedEmote[3]) {
+            Emote emote = new Emote(Emote.Type.Clap, gameState.username, gameState.gameId);
+            AnswerCommunication.sendEmote(emote);
+            pressedEmote[3] = true;
+        }
     }
 
     @FXML
     void WinEmotePressed(ActionEvent event) throws IOException, InterruptedException {
-        Emote emote = new Emote(Emote.Type.Win, gameState.username, gameState.gameId);
-        AnswerCommunication.sendEmote(emote);
+        if (!pressedEmote[4]) {
+            Emote emote = new Emote(Emote.Type.Win, gameState.username, gameState.gameId);
+            AnswerCommunication.sendEmote(emote);
+            pressedEmote[4] = true;
+        }
     }
 
 
@@ -407,6 +424,12 @@ public class QuestionCtrl {
         answer1.setText(answerList.get(0));
         answer2.setText(answerList.get(1));
         answer3.setText(answerList.get(2));
+
+        //Also reset the emotes so they can be pressed again for the new question.
+
+        for (int i=0; i<5; i++){
+            pressedEmote[i] = false;
+        }
 
     }
 
