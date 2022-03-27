@@ -278,9 +278,8 @@ public class GameService {
             System.out.println("Username already taken");
             return state;
         }
-        state = game.getState();
         for (Player otherPlayer : game.players) {
-            state.setPlayer(otherPlayer);
+            state = game.getState(otherPlayer);
             state.instruction = "joinGame";
             sendToPlayer(otherPlayer.id, state);
         }
@@ -343,12 +342,11 @@ public class GameService {
         stateInteger = 0;
 
         game.stage = GameState.Stage.QUESTION;
-        GameState state = game.getState();
 
         stateString = "QUESTION";
 
         for (Player player : game.players) {
-            state.setPlayer(player);
+            GameState state = game.getState(player);
             state.stage = QUESTION;
             state.timeOfReceival = new Date().getTime();//current time in milliseconds since some arbitrary time in the past
             player.timeOfReceival = state.timeOfReceival;
@@ -373,10 +371,9 @@ public class GameService {
         stateString = "INTERVAL";
 
         game.stage = GameState.Stage.INTERVAL;
-        GameState state = game.getState();
 
         for (Player player : game.players) {
-            state.setPlayer(player);
+            GameState state = game.getState(player);
             state.setPlayerAnswer(player.answer);
             state.instruction = "intervalPhase";
             sendToPlayer(player.id, state);
