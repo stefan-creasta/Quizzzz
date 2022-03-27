@@ -17,7 +17,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
@@ -88,14 +87,13 @@ public class QuestionCtrl {
     private TableColumn<LeaderboardEntry, String> leaderboardScores;
 
     @FXML
-    private TableView<Emote> emotes;
+    private TableView<EmoteEntry> emotes;
 
     @FXML
-    private TableColumn<Emote, String> emotesUsernameColumn;
+    private TableColumn<EmoteEntry, String> emotesUsernameColumn;
 
     @FXML
-    private TableColumn<Emote, String> emotesEmoteColumn;
-
+    private TableColumn<EmoteEntry, String> emotesEmoteColumn;
 
     @FXML
     private AnchorPane root;
@@ -153,10 +151,7 @@ public class QuestionCtrl {
         }
 
 
-        // Set emotes
-        System.out.println(gameState.emotes);
-        ObservableList<Emote> emoteEntries = FXCollections.observableList(gameState.emotes);
-        emotes.setItems(emoteEntries);
+
 
     }
 
@@ -391,9 +386,10 @@ public class QuestionCtrl {
         leaderboardUsernames.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().username));
         leaderboardScores.setCellValueFactory(e -> new SimpleStringProperty(Integer.toString(e.getValue().score)));
 
-        emotesEmoteColumn.setCellValueFactory(e -> new SimpleStringProperty(String.valueOf(e.getValue().type)));
-        emotesUsernameColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().username));
 
+        emotesUsernameColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().username));
+        emotesEmoteColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().type));
+        emotes.setPlaceholder(new Label(""));
         hideLeaderboard();
     }
 
@@ -489,7 +485,26 @@ public class QuestionCtrl {
     }
 
     public void updateEmotes(List<Emote> emoteEntries) {
-        ObservableList<Emote> emoteEntriesList = FXCollections.observableList(emoteEntries);
+        //TODO: Fix cell so that the image of the emote is displayed
+        List<EmoteEntry> emoteEntriesWithImage = new ArrayList<>();
+        for(Emote emote : emoteEntries) {
+
+            emoteEntriesWithImage.add(new EmoteEntry(emote.username, String.valueOf(emote.type)));
+        }
+        System.out.println(emoteEntriesWithImage);
+        ObservableList<EmoteEntry> emoteEntriesList = FXCollections.observableList(emoteEntriesWithImage);
         this.emotes.setItems(emoteEntriesList);
     }
+}
+
+class EmoteEntry {
+
+    public String username;
+    public String type;
+
+    public EmoteEntry(String username, String type) {
+        this.username = username;
+        this.type = type;
+    }
+
 }
