@@ -68,13 +68,21 @@ public class QuestionsImporter implements ApplicationRunner {
     public QuestionsImporter(QuestionService service) {
         this.service = service;
     }
+
+    /**
+     * Run as soon as the application starts and all the services, controllers are initialized.
+     *
+     * It reads the path relative to server/resources/images from the application option activitiesSource. If no
+     * such option is present no importing is done.
+     * @param args the Spring application arguments
+     * @throws IOException
+     */
     @Override
     public void run(ApplicationArguments args) throws IOException {
 
         if (args.containsOption(optionName)) {
             String optionValue = args.getOptionValues(optionName).get(0);
             logger.info("Detected the " + optionName + " application option. Importing the activities/questions from " + optionValue);
-            //service.resetId();
             try {
                 importQuestions(optionValue);
             }
@@ -87,7 +95,8 @@ public class QuestionsImporter implements ApplicationRunner {
         }
     }
 
-    /**imports activities from the given path
+    /**
+     * Imports activities from the given path.
      * Note that the path is expected to be under server/resources/images. If not so, loading the question images will
      * fail because the only public path being hosted is the server/resources/images for security reasons.
      * @param path the path relative to server/resources/images
