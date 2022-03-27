@@ -87,6 +87,9 @@ public class GameCommunication {
             e.printStackTrace();
         }
     }
+
+
+
     public List<String> getPlayers(long gameId) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/api/game/players/" + gameId))
@@ -96,5 +99,16 @@ public class GameCommunication {
         final ObjectMapper mapper = new ObjectMapper();
         final TypeReference<List<String>> typeRef = new TypeReference<>() {};
         return mapper.readValue(response.body(), typeRef);
+    }
+    public boolean checkUsername(long gameId, String username) throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/api/game/check/" + gameId + "?username=" + username))
+                .GET()
+                .build();
+        var response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        final ObjectMapper mapper = new ObjectMapper();
+        final TypeReference<Boolean> typeRef = new TypeReference<>() {};
+        boolean answer = mapper.readValue(response.body(), typeRef);
+        return answer;
     }
 }

@@ -99,6 +99,10 @@ public class MainCtrl {
         serverListener.initialize(state.playerId, this);
     }
 
+    public boolean checkUsername(String username) throws IOException, InterruptedException {
+        return gameCommunication.checkUsername(gameId, username);
+    }
+
     public void showOverview() {
         primaryStage.setTitle("Quotes: Overview");
         primaryStage.setScene(overview);
@@ -148,48 +152,47 @@ public class MainCtrl {
     /**
      * Sends a request to the server to initiate the game with ID gameId
      */
-
     public void initiateGame() {
         gameCommunication.initiateGame(gameId);
     }
 
-//        choose.set(e -> chooseCtrl.Button1Pressed(e));
 
-
-//        Scene scene = new Scene(ChooseAnswerCtrl.AnchorPane1, 640, 480);
-//        primaryStage.setScene(scene);
-//        primaryStage.show();
-
+    /**
+     * Function that gets called when the server is sending the player information using long polling.
+     * It performs different actions depending on the instruction in the gameState. These actions
+     * are handled using a switch case. If you use sendToPlayer() - the function that sends the gameState to this function -
+     * then, before sending, set the instruction and add a switch case for the instruction here, if the case does not
+     * exist already.
+     * @param gameState the gameState with the updated information
+     */
     public void handleGameState(GameState gameState) {
-        //if any other screen is displayed there is something wrong.
-
-        System.out.println("GAME STATE: " + gameState);
-
-        if (gameState.stage == GameState.Stage.LOBBY) {
-            questionCtrl.updateGameState(gameState);
-            try {
-                showLobby();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        } else {
-            if (gameState.stage == GameState.Stage.QUESTION && gameState.question != null) {
-                showQuestion(); //im not sure where to put this
+        String instruction = gameState.instruction;
+        switch(instruction){
+            case "halfTimePowerUp"://called when a halfTimePowerUp is being used.
+                questionCtrl.updateGameState(gameState);
+                break;
+            case "joinGame"://called when the client joins
+                try {
+                    showLobby();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case "questionPhase"://called at the start of a question phase
+                questionCtrl.updateGameState(gameState);
+                showQuestion();
                 questionCtrl.clearAnswer();
                 questionCtrl.setQuestion(gameState.question);
-            } else {
-//            showQuestion();
-                if (gameState.question == null) {
-                    questionCtrl.clearAnswer();
-                    questionCtrl.setQuestion(gameState.question);
-                }
-                if (gameState.stage == GameState.Stage.INTERVAL) {
-                    questionCtrl.markAnswer(gameState.question.answer, gameState.playerAnswer);
-                }
-                questionCtrl.syncTimer(gameState.timerSyncLong, gameState.duration);
-            }
+                break;
+            case "intervalPhase"://called at the start of an interval phase
+                questionCtrl.markAnswer(gameState.question.answer, gameState.playerAnswer);
+                break;
+            case "answerSubmitted":
+                break;
+
         }
+
     }
 }

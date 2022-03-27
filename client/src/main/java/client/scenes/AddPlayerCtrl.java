@@ -49,20 +49,22 @@ public class AddPlayerCtrl {
     }
 
     public void play() throws IOException, InterruptedException {
-        try {
-            String username = usernameField.getText();
-            mainCtrl.joinGame(username);
+        String username = usernameField.getText();
 
-        } catch (WebApplicationException e) {
+        if(mainCtrl.checkUsername(username) == true) {
+            try {
+                mainCtrl.joinGame(username);
 
-            var alert = new Alert(Alert.AlertType.ERROR);
-            alert.initModality(Modality.APPLICATION_MODAL);
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
-            return;
+            } catch (WebApplicationException e) {
+
+                var alert = new Alert(Alert.AlertType.ERROR);
+                alert.initModality(Modality.APPLICATION_MODAL);
+                alert.setContentText(e.getMessage());
+                alert.showAndWait();
+                return;
+            }
+            mainCtrl.showLobby();
         }
-        clearFields();
-        mainCtrl.showLobby();
     }
 
     private void clearFields() {

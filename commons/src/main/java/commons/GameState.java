@@ -12,6 +12,7 @@ public class GameState {
     //set to true if only the playerId needs to be processed.
     public boolean isError;
     public String message;
+    public String instruction;
     public long timerSyncLong;
     public long duration;
     public long gameId;
@@ -20,10 +21,14 @@ public class GameState {
     public String playerAnswer;
     public List<LeaderboardEntry> leaderboard;
 
+    public long timeToAnswer;//time it took them to answer in milliseconds
+    public long timeOfReceival;//time of receiving the question in milliseconds
+
     public GameState() {
 
     }
-    /**Create a GameState for a game tailored for a specific player. If player is null the constructor will skip setting the fields relevant to the player.
+    /**
+     * Create a GameState for a game tailored for a specific player. If player is null the constructor will skip setting the fields relevant to the player.
      * @param game the game
      * @param player the specific player that the GameState is going to be sent to
      */
@@ -33,6 +38,9 @@ public class GameState {
         this.isError = false;
         this.message = null;
         this.gameId = game.id;
+        timeOfReceival = -1;
+        timeToAnswer = -1;
+        instruction = "noInstruction";
 
         if (player != null) setPlayer(player);
 
