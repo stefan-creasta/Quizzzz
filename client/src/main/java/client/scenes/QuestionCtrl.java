@@ -427,8 +427,9 @@ public class QuestionCtrl {
         questionText.setText(q.question);
         if (q.questionImage != null) {
             try {
-                questionImage.setImage(ImageCommunication.getImage("https://localhost:8080/" + q.questionImage));
-            } catch (IOException e) {
+                questionImage.setImage(ImageCommunication.getImage("http://localhost:8080/" + q.questionImage));
+            }
+            catch (IOException e) {
                 System.out.println("Failed to set the question image.");
             }
         }

@@ -54,7 +54,7 @@ class QuestionsImporterTest {
 
         List<String> specAnswers = List.of("1200", "183", "300");
 
-        String rootPath = "http://localhost:8080/images/activity-bank-test/";
+        String rootPath = "images/activity-bank-test/";
         List<String> specQuestionImages = List.of(
                 rootPath + "38/hairdryer.png",
                 rootPath + "38/leafblower.png",

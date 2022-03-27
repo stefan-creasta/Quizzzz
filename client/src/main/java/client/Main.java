@@ -51,11 +51,13 @@ public class Main extends Application {
         var lobby = FXML.load(LobbyCtrl.class, "client", "scenes", "Lobby.fxml");
         var player = FXML.load(AddPlayerCtrl.class, "client", "scenes", "AddPlayer.fxml");
 
+        var adminInterface = FXML.load(AdminInterfaceCtrl.class, "client", "scenes", "AdminInterface.fxml");
+
         var serverListener = INJECTOR.getInstance(ServerListener.class);
         var gameCommunication = INJECTOR.getInstance(GameCommunication.class);
 
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        mainCtrl.initialize(primaryStage, overview, add,  question, timer, lobby, player, gameCommunication, serverListener);
+        mainCtrl.initialize(primaryStage, overview, add,  question, timer, lobby, player, adminInterface, gameCommunication, serverListener);
 
         this.serverListener = serverListener;
     }
