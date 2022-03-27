@@ -18,7 +18,6 @@ package client.scenes;
 import client.Communication.GameCommunication;
 import client.Communication.ServerListener;
 import com.google.inject.Inject;
-import commons.Player;
 import jakarta.ws.rs.WebApplicationException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -50,10 +49,11 @@ public class AddPlayerCtrl {
     }
 
     public void play() throws IOException, InterruptedException {
-        Player newPlayer = getPlayer();
-        if(mainCtrl.checkUsername(newPlayer.username) == true) {
+        String username = usernameField.getText();
+
+        if(mainCtrl.checkUsername(username) == true) {
             try {
-                mainCtrl.joinGame(newPlayer);
+                mainCtrl.joinGame(username);
 
             } catch (WebApplicationException e) {
 
@@ -65,12 +65,6 @@ public class AddPlayerCtrl {
             }
             mainCtrl.showLobby();
         }
-    }
-
-    private Player getPlayer() {
-        var username = usernameField.getText();
-        clearFields();
-        return new Player(username, 0);
     }
 
     private void clearFields() {
