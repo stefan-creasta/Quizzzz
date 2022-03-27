@@ -91,7 +91,7 @@ public class GameCommunication {
 
     public GameState joinSingleplayerGame(long gameId, String username) {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/api/game/join/singleplayer" + gameId + "?username=" + username))
+                .uri(URI.create("http://localhost:8080/api/game/join/singleplayer/" + gameId + "?username=" + username))
                 .GET()
                 .build();
         try {
