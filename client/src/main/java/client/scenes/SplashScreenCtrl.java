@@ -1,7 +1,6 @@
 package client.scenes;
 
 import com.google.inject.Inject;
-import javafx.fxml.FXML;
 
 public class SplashScreenCtrl {
     private MainCtrl mainCtrl;
