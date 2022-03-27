@@ -4,6 +4,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class Game {
     public List<Player> players;
     public boolean started;
     public GameState.Stage stage;
+    public List<Emote> emotes;
     private Game(){}
 
     public Game(List<Question> questions){
@@ -27,6 +29,7 @@ public class Game {
         this.currentQuestion = 0;
         this.started = false;
         this.stage = GameState.Stage.LOBBY;
+        this.emotes = new ArrayList<>();
     }
 
     public Question getCurrentQuestion() {

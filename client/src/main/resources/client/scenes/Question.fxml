@@ -52,5 +52,36 @@
             <TableColumn fx:id="leaderboardScores" editable="false" minWidth="0.0" prefWidth="141.01806640625" text="Score" />
         </columns>
       </TableView>
+      <Button fx:id="emoteAngry" layoutX="21.0" layoutY="443.0" mnemonicParsing="false" onAction="#AngryEmotePressed" prefHeight="38.0" prefWidth="70.0" style="-fx-padding: 0;" text="Angry">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Button>
+      <TableView fx:id="emotes" layoutX="771.0" layoutY="440.0" prefHeight="201.0" prefWidth="230.0" styleClass="emotes">
+        <columns>
+          <TableColumn fx:id="emotesUsernameColumn" editable="false" prefWidth="114.0" styleClass="username-column" text="Username" />
+          <TableColumn fx:id="emotesEmoteColumn" editable="false" prefWidth="85.5" styleClass="emote-column" text="Emote" />
+        </columns>
+      </TableView>
+      <Button fx:id="emoteLOL" layoutX="96.0" layoutY="443.0" mnemonicParsing="false" onAction="#LOLEmotePressed" prefHeight="38.0" prefWidth="70.0" style="-fx-padding: 0;" text="LOL">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Button>
+      <Button fx:id="emoteSweat" layoutX="21.0" layoutY="501.0" mnemonicParsing="false" onAction="#SweatEmotePressed" prefHeight="38.0" prefWidth="70.0" style="-fx-padding: 0;" text="Sweat">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Button>
+      <Button fx:id="clapEmote" layoutX="95.0" layoutY="501.0" mnemonicParsing="false" onAction="#ClapEmotePressed" prefHeight="38.0" prefWidth="70.0" style="-fx-padding: 0;" text="Clap">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Button>
+      <Button fx:id="emoteWin" layoutX="22.0" layoutY="558.0" mnemonicParsing="false" onAction="#WinEmotePressed" prefHeight="38.0" prefWidth="70.0" style="-fx-padding: 0;" text="Win">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

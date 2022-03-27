@@ -180,6 +180,8 @@ public class MainCtrl {
         switch(instruction){
             case "halfTimePowerUp"://called when a halfTimePowerUp is being used.
                 questionCtrl.updateGameState(gameState);
+            case "updateEmotes":
+                questionCtrl.updateEmotes(gameState.emotes);
                 break;
             case "joinGame"://called when the client joins
                 try {
@@ -203,6 +205,5 @@ public class MainCtrl {
                 break;
 
         }
-
     }
 }
