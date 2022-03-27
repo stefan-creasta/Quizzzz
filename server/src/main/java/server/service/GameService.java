@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import static commons.GameState.Stage.QUESTION;
 
@@ -22,6 +23,7 @@ public class GameService {
 
         /**
          * Gets the game with the according ID
+         *
          * @param id the ID of the game
          * @return the Game instance
          * @throws IllegalArgumentException
@@ -62,8 +64,9 @@ public class GameService {
         boolean existsById(long id) {
             return players.containsKey(id);
         }
+
         Map<Long, Player> getPlayers() {
-            return  players;
+            return players;
         }
     }
 
@@ -86,29 +89,29 @@ public class GameService {
     /**
      * Gets called when a player presses on a power up button.
      * The points the player gets from this answer will be doubled
+     *
      * @param playerID The ID of the player using the power up
-     * @param gameID the ID of the game the player is playing in
+     * @param gameID   the ID of the game the player is playing in
      */
-    public String doublePointsPowerUp(long playerID, long gameID){
+    public String doublePointsPowerUp(long playerID, long gameID) {
 
         Game g = gameRepository.getId(gameID);
         Player pl = null;
-        for(Player p: g.players){
-            if(p.id==playerID){
+        for (Player p : g.players) {
+            if (p.id == playerID) {
                 pl = p;
                 break;
             }
         }
-        try{
-            if(pl.doublePointsPower){//check if power up has been used already
+        try {
+            if (pl.doublePointsPower) {//check if power up has been used already
                 //TODO tell other users to showcase that someone used this power up
                 pl.doublePointsPower = false;
                 pl.shouldReceiveDouble = true;
                 return "doublePointsPowerUp___success";
             }
             return "doublePointsPowerUp___fail";//is returned when the player has already used the power up
-        }
-        catch(Exception exc){
+        } catch (Exception exc) {
             exc.printStackTrace();
         }
         return null;
@@ -117,38 +120,38 @@ public class GameService {
     /**
      * Gets called when a player tries to use an eliminate wrong answer power up. If the player has not used the power up before,
      * a random wrong answer gets sent to the client.
+     *
      * @param playerID The playerID of the client using the power up.
-     * @param gameID The gameID of the game that the client is playing in.
+     * @param gameID   The gameID of the game that the client is playing in.
      * @return a string saying whether the power up was successfully used and the wrong answer.
      */
-    public String eliminateWrongAnswerPowerUp(long playerID, long gameID){
+    public String eliminateWrongAnswerPowerUp(long playerID, long gameID) {
 
         Game g = gameRepository.getId(gameID);
         Player pl = null;
-        for(Player p: g.players){
-            if(p.id==playerID){
+        for (Player p : g.players) {
+            if (p.id == playerID) {
                 pl = p;
                 break;
             }
         }
-        try{
-            if(pl.eliminateAnswerPower){
+        try {
+            if (pl.eliminateAnswerPower) {
                 //TODO tell other users to showcase that someone used this power up
                 pl.eliminateAnswerPower = false;
                 Question q = g.questions.get(g.currentQuestion);
                 int randomIndex = new Random().nextInt(2);
                 String wrongAnswer;
 
-                if(randomIndex==0){
+                if (randomIndex == 0) {
                     wrongAnswer = q.wrongAnswer1;
-                }else{
+                } else {
                     wrongAnswer = q.wrongAnswer2;
                 }
                 return "eliminateWrongAnswerPowerUp___success___" + wrongAnswer;
             }
             return "eliminateWrongAnswerPowerUp___fail";//gets returned when the user has already used the power up
-        }
-        catch(Exception exc){
+        } catch (Exception exc) {
             exc.printStackTrace();
         }
         return null;
@@ -159,28 +162,29 @@ public class GameService {
      * all other players receive a message that their time is halved and the according changes take place on the client
      * side. On the server side, the time of every player, during which they are allowed to submit an answer is
      * changed accordingly.
+     *
      * @param playerID The playerID of the client using the power up.
-     * @param gameID The gameID of the game that the client is playing in.
+     * @param gameID   The gameID of the game that the client is playing in.
      * @return a string saying whether the power up was successfully used and the wrong answer.
      */
-    public String halfTimePowerUp(long playerID, long gameID){
+    public String halfTimePowerUp(long playerID, long gameID) {
 
         Game g = gameRepository.getId(gameID);
         Player pl = null;
-        for(Player p: g.players){
-            if(p.id==playerID){
+        for (Player p : g.players) {
+            if (p.id == playerID) {
                 pl = p;
                 break;
             }
         }
-        try{
-            if(pl.reduceTimePower){
+        try {
+            if (pl.reduceTimePower) {
                 //TODO tell other users to showcase that someone used this power up
                 pl.reduceTimePower = false;
                 //CLIENT SIDE EFFECT - Send to all other players except this player a message saying their time is halved
                 List<Player> players = g.players;
-                for(Player p:players){
-                    if(p.id!=playerID){
+                for (Player p : players) {
+                    if (p.id != playerID) {
                         GameState gState = g.getState();
                         gState.halfTime = true;
                         gState.instruction = "halfTimePowerUp";
@@ -193,13 +197,11 @@ public class GameService {
                 return "halfTimePowerUp___success___";
             }
             return "halfTimePowerUp___fail";//executes when the player has already used the power up
-        }
-        catch(Exception exc){
+        } catch (Exception exc) {
             exc.printStackTrace();
         }
         return null;
     }
-
 
 
     /**
@@ -214,6 +216,7 @@ public class GameService {
 
     /**
      * Gets a game from the gameRepository by its ID
+     *
      * @param id the id of the game
      * @return the game
      */
@@ -225,6 +228,7 @@ public class GameService {
      * Produce a gameId which the player client can join a game or its lobby with
      * This method can be used even if there is only one lobby that can be joined at a given moment. Then it would
      * return the gameId of the game that the player is wanted to join.
+     *
      * @return the gameId
      */
     public long createGame() {
@@ -242,7 +246,7 @@ public class GameService {
      * Register *one player* into a game with the given username. This will fail if the lobby of the game already
      * has a player with the given username.
      *
-     * @param gameId the id of the game to join
+     * @param gameId   the id of the game to join
      * @param username the username that the player wants to join with
      * @return the GameState to initially render the lobby or game screen
      * @throws IllegalArgumentException if the gameId is invalid.
@@ -288,9 +292,9 @@ public class GameService {
     public List<String> getPlayers(long id) {
         Map<Long, Player> players = playerRepository.getPlayers();
         List<String> playersForGame = new ArrayList<>();
-        for(Long playerId : players.keySet()) {
+        for (Long playerId : players.keySet()) {
             Player player = players.get(playerId);
-            if(player.gameId == id) {
+            if (player.gameId == id) {
                 playersForGame.add(player.username);
             }
         }
@@ -305,7 +309,6 @@ public class GameService {
 
         for (Player player : game.players) {
             GameState state = game.getState();
-
             state.setPlayer(player);
             state.stage = QUESTION;
             state.timeOfReceival = new Date().getTime();//current time in milliseconds since some arbitrary time in the past
@@ -361,11 +364,11 @@ public class GameService {
 
     /**
      * Send the game state to a player.
-     *
+     * <p>
      * Note that the connection is only available after the player makes a request to
      * /api/listen, therefore you can't just send new data to a player without some
      * delay in between!
-     *
+     * <p>
      * NOTE!!! to use the function, set the gameState's instruction field to some string instruction
      * and make a case in the switch statement for the instruction in handleGameState.
      *
@@ -382,24 +385,25 @@ public class GameService {
      * Gets called when a player clicks on the submit button for an answer. If they have not submitted an answer
      * already, their answer gets saved, as well as the time at which they answered so that the scoring later on
      * can be done according to the time of answering.
+     *
      * @param playerId The id of the player who answered
-     * @param ans The contents of the answer button they clicked - their answer
-     * @param gameId The id of the game they are playing
+     * @param ans      The contents of the answer button they clicked - their answer
+     * @param gameId   The id of the game they are playing
      */
     public void submitByPlayer(Long playerId, String ans, Long gameId) {
 
         Game g = gameRepository.getId(gameId);
         Player p;
         int pos = 0;
-        while(pos<g.players.size() && g.players.get(pos).id != playerId){
+        while (pos < g.players.size() && g.players.get(pos).id != playerId) {
             pos++;
         }
         p = g.players.get(pos);
-        if((p.answer == null || p.answer.isEmpty()&&g.stage==QUESTION)){
+        if ((p.answer == null || p.answer.isEmpty() && g.stage == QUESTION)) {
             p.answer = ans;
             GameState state = g.getState(p);
-            state.timeToAnswer = (long) ((new Date().getTime() - p.timeOfReceival)/1000.0);
-            p.timeToAnswer = (long) ((new Date().getTime() - p.timeOfReceival)/1000.0);
+            state.timeToAnswer = (long) ((new Date().getTime() - p.timeOfReceival) / 1000.0);
+            p.timeToAnswer = (long) ((new Date().getTime() - p.timeOfReceival) / 1000.0);
 
             System.out.println("it took user " + (double) p.timeToAnswer + " seconds to answer");//debug
             state.instruction = "answerSubmitted";
@@ -409,36 +413,57 @@ public class GameService {
 
     /**
      * Gets called when the server receives an emote from a player.
-     * @param ans the emote and gameId where the emote should be added.
+     *
+     * @param emote The emote that should be added to the game.
      */
-    public void addEmote(EmoteClass ans) {
-        Game g = gameRepository.getId(ans.gameId);
-        g.emotes[ans.emote.ordinal()]++;
+    public void addEmote(Emote emote) throws InterruptedException {
+        Game game = gameRepository.getId(emote.gameId);
+        game.emotes.add(emote);
+        for (Player player : game.players) {
+            GameState state = game.getState();
+            state.instruction = "updateEmotes";
+            sendToPlayer(player.id, state);
+        }
+        new Thread(() -> {
+            try {
+                Thread.sleep(5_000);
+                game.emotes.remove(emote);
+                for (Player player : game.players) {
+                    GameState state = game.getState();
+                    state.instruction = "updateEmotes";
+                    sendToPlayer(player.id, state);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
     }
 
     /**
      * Scores all players of a game at the end of the QUESTION phase of a gameState. Increases their score
      * depending on the correctness and speed of their answer.
+     *
      * @param g The game that is scored.
      */
     public void score(Game g) {
         System.out.println("Score function has been called:");
         Question q = g.questions.get(g.currentQuestion);
-        for(Player p: g.players){
+        for (Player p : g.players) {
             boolean inFunctionShouldReceive = false;
-            if(p.shouldReceiveDouble){
+            if (p.shouldReceiveDouble) {
                 p.shouldReceiveDouble = false;
                 inFunctionShouldReceive = true;
                 System.out.println("DOUBLE POINTS POWER UP TOOK PLACE IN SCORING");
             }
-            if(p.answer!=null && p.answer.equals(q.answer)) {
+            if (p.answer != null && p.answer.equals(q.answer)) {
                 long toAdd = (long) (10.0 - p.timeToAnswer);
-                if(inFunctionShouldReceive){
-                    toAdd = toAdd*2;
+                if (inFunctionShouldReceive) {
+                    toAdd = toAdd * 2;
                 }
                 System.out.println("ANSWER IS CORRECT");
                 System.out.println("Player with id " + p.id + " won that many points - " + toAdd);
-                p.score = p.score + toAdd*10;
+                p.score = p.score + toAdd * 10;
             }
             p.answer = null;
 

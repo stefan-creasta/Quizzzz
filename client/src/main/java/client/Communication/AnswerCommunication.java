@@ -3,7 +3,7 @@ package client.Communication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.reflect.TypeToken;
-import commons.EmoteClass;
+import commons.Emote;
 import commons.GameState;
 import commons.PlayerAnswer;
 import commons.Question;
@@ -71,12 +71,12 @@ public class AnswerCommunication {
      * @throws IOException
      * @throws InterruptedException
      */
-    public static void sendEmote(EmoteClass emote) throws IOException, InterruptedException {
+    public static void sendEmote(Emote emote) throws IOException, InterruptedException {
         var objectMapper = new ObjectMapper();
         String requestBody = objectMapper
                 .writeValueAsString(emote);
 
-        System.out.println("\nEmote sent to server:\n" + emote.emote.name());
+        System.out.println("\nEmote sent to server:\n" + emote.type);
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/api/answer/emote"))

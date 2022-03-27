@@ -17,14 +17,18 @@ package client.scenes;
 
 import client.Communication.GameCommunication;
 import client.Communication.ServerListener;
+import commons.Emote;
 import commons.GameState;
 import commons.Player;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 
 public class MainCtrl {
@@ -158,6 +162,8 @@ public class MainCtrl {
 //        System.out.println("GAME STATE: " + gameState);//debug
         String instruction = gameState.instruction;
         switch(instruction){
+            case "updateEmotes":
+                questionCtrl.updateEmotes(gameState.emotes);
             case "halfTimePowerUp":
                 //TODO client side halftime
                 break;
@@ -183,6 +189,5 @@ public class MainCtrl {
                 break;
 
         }
-
     }
 }

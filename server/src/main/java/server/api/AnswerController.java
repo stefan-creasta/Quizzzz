@@ -3,7 +3,8 @@ package server.api;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import commons.EmoteClass;
+import commons.Emote;
+
 import commons.PlayerAnswer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -40,9 +41,12 @@ public class AnswerController {
     public void postEmote(@RequestBody String item) {
         System.out.println(item);
 
-        EmoteClass ans =  gson.fromJson(item, new TypeToken<EmoteClass>(){}.getType());
-
-        gameService.addEmote(ans);
+        Emote emote =  gson.fromJson(item, new TypeToken<Emote>(){}.getType());
+        try {
+            gameService.addEmote(emote);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 
