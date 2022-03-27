@@ -107,7 +107,7 @@ public class MainCtrl {
         //showPlayer();
         this.adminInterface = new Scene(adminInterfacePair.getValue());
 
-        showPlayer();
+        //showPlayer();
         //showQuestion();
         primaryStage.show();
     }
