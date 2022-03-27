@@ -89,6 +89,12 @@ public class GameCommunication {
         return null;
     }
 
+    /**
+     * Sends the server the singleplayer game's ID that the user wants to join, together with the username they have chosen.
+     * @param gameId the ID of the singleplayer game, the user wants to join
+     * @param username The username that the client has chosen to join the singleplayer game with.
+     * @return the gameState to initially render the game with, returns null if an exception occurred.
+     */
     public GameState joinSingleplayerGame(long gameId, String username) {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/api/game/join/singleplayer/" + gameId + "?username=" + username))
@@ -146,7 +152,11 @@ public class GameCommunication {
         }
     }
 
-
+    /**
+     * Method which gets the list of players' usernames from the game with ID gameId
+     * @param gameId the game's ID
+     * @return a list of usernames
+     */
     public List<String> getPlayers(long gameId) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/api/game/players/" + gameId))
@@ -157,6 +167,13 @@ public class GameCommunication {
         final TypeReference<List<String>> typeRef = new TypeReference<>() {};
         return mapper.readValue(response.body(), typeRef);
     }
+
+    /**
+     * Method which checks whether the username has already been taken in a certain game
+     * @param gameId the game's ID
+     * @param username the username which needs to be checked
+     * @return true, if the username has not been taken and can be used, false otherwise
+     */
     public boolean checkUsername(long gameId, String username) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/api/game/check/" + gameId + "?username=" + username))
