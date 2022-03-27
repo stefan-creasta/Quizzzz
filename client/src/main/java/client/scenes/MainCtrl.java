@@ -18,7 +18,6 @@ package client.scenes;
 import client.Communication.GameCommunication;
 import client.Communication.ServerListener;
 import commons.GameState;
-import commons.Player;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -106,9 +105,10 @@ public class MainCtrl {
         primaryStage.show();
     }
 
-    public void joinGame(Player newPlayer) {
-        serverListener.initialize(newPlayer.id, this);
-        gameCommunication.joinGame(gameId, newPlayer.username);
+    public void joinGame(String username) {
+        GameState state = gameCommunication.joinGame(gameId, username);
+        handleGameState(state);
+        serverListener.initialize(state.playerId, this);
     }
 
     public boolean checkUsername(String username) throws IOException, InterruptedException {

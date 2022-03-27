@@ -3,7 +3,6 @@ package server.service;
 import commons.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.async.DeferredResult;
 
 import java.util.*;
 
@@ -12,8 +11,8 @@ import static commons.GameState.Stage.QUESTION;
 @Service
 public class GameService {
 
-
-    class GameRepository {
+    static class GameRepository {
+        static long idGenerator = 0;
         private Map<Long, Game> games;
 
         GameRepository() {
@@ -33,6 +32,7 @@ public class GameService {
 
         void save(Game game) {
             Objects.requireNonNull(game, "game cannot be null");
+            game.id = idGenerator++;
             games.put(game.id, game);
         }
 
@@ -46,8 +46,8 @@ public class GameService {
         }
     }
 
-
-    class PlayerRepository {
+    static class PlayerRepository {
+        static long idGenerator;
         private Map<Long, Player> players;
 
         PlayerRepository() {
@@ -61,6 +61,7 @@ public class GameService {
 
         void save(Player player) {
             Objects.requireNonNull(player, "player cannot be null");
+            player.id = idGenerator++;
             players.put(player.id, player);
         }
 
@@ -85,18 +86,21 @@ public class GameService {
     //currentGame is the game where new players will join. Basically the lobby
     private Game currentGame;
 
-    private Map<Long, DeferredResult<GameState>> playerConnections;
+    int stateInteger = -1;//0 if state is QUESTION, 1 if state is INTERVAL
 
     private final GameRepository gameRepository = new GameRepository();
     private final PlayerRepository playerRepository = new PlayerRepository();
     private final QuestionService questionService;
+    private final LongPollingService longPollingService;
+    private long timeOfSent;
 
     public String stateString = "";
 
     @Autowired
-    public GameService(QuestionService questionService) {
+    public GameService(QuestionService questionService, LongPollingService longPollingService) {
+        //make timeOfSent = -1 or 0 if awarding the proper amount of points is buggy
         this.questionService = questionService;
-        this.playerConnections = new HashMap<>();
+        this.longPollingService = longPollingService;
         createCurrentGame();
     }
 
@@ -286,9 +290,8 @@ public class GameService {
             System.out.println("Username already taken");
             return state;
         }
-        state = game.getState();
         for (Player otherPlayer : game.players) {
-            state.setPlayer(otherPlayer);
+            state = game.getState(otherPlayer);
             state.instruction = "joinGame";
             sendToPlayer(otherPlayer.id, state);
         }
@@ -375,13 +378,14 @@ public class GameService {
     }
     //methods that call each other back and forth to have a single game running.
     public void questionPhase(final Game game) {
+        stateInteger = 0;
+
+        game.stage = GameState.Stage.QUESTION;
 
         stateString = "QUESTION";
 
         for (Player player : game.players) {
-            GameState state = game.getState();
-
-            state.setPlayer(player);
+            GameState state = game.getState(player);
             state.stage = QUESTION;
             state.timeOfReceival = new Date().getTime();//current time in milliseconds since some arbitrary time in the past
             player.timeOfReceival = state.timeOfReceival;
@@ -405,11 +409,10 @@ public class GameService {
 
         stateString = "INTERVAL";
 
-        GameState state = game.getState();
+        game.stage = GameState.Stage.INTERVAL;
 
-        state.stage = GameState.Stage.INTERVAL;
         for (Player player : game.players) {
-            state.setPlayer(player);
+            GameState state = game.getState(player);
             state.setPlayerAnswer(player.answer);
             state.instruction = "intervalPhase";
             sendToPlayer(player.id, state);
@@ -432,10 +435,6 @@ public class GameService {
         return gameRepository.existsById(id);
     }
 
-    public void registerPlayerConnection(Long playerId, DeferredResult<GameState> result) {
-        playerConnections.put(playerId, result);
-    }
-
     /**
      * Send the game state to a player.
      *
@@ -450,9 +449,8 @@ public class GameService {
      * @param state
      */
     public void sendToPlayer(Long playerId, GameState state) {
-        DeferredResult<GameState> connection = playerConnections.get(playerId);
-        if (connection != null) if (!connection.setResult(state)) System.out.println("GAMESTATE WASN'T SENT!!!");//debug maybe
-        playerConnections.put(playerId, null);
+        longPollingService.sendToPlayer(playerId, state);
+        timeOfSent = System.nanoTime();
     }
 
     /**

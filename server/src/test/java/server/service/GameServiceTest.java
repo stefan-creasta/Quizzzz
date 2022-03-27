@@ -16,10 +16,11 @@ public class GameServiceTest {
     @Test
     public void realWorldTest() {
         QuestionService questionService = mock(QuestionService.class);
+        LongPollingService longPollingService = mock(LongPollingService.class);
         when(questionService.getAll()).thenReturn(List.of(
                 new Question("a", "b", "c", "d")
         ));
-        GameService service = new GameService(questionService);
+        GameService service = new GameService(questionService, longPollingService);
         long gameId = service.createGame();
         GameState state = service.joinGame(gameId, "group53");
         Game currentGame = service.getId(gameId);

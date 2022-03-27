@@ -18,7 +18,6 @@ package client.scenes;
 import client.Communication.GameCommunication;
 import client.Communication.ServerListener;
 import com.google.inject.Inject;
-import commons.Player;
 import jakarta.ws.rs.WebApplicationException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -72,12 +71,6 @@ public class AddPlayerCtrl {
                 mainCtrl.showLobby();
             }
         }
-    }
-
-    private Player getPlayer() {
-        var username = usernameField.getText();
-        clearFields();
-        return new Player(username, 0);
     }
 
     private void clearFields() {
