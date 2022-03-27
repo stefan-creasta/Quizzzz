@@ -255,6 +255,18 @@ public class GameService {
     }
 
     /**
+     * Produce a gameId which the player client can join a singleplayer game
+     * @return the gameId
+     */
+    public long createSingleplayerGame() {
+        List<Question> questions = new ArrayList<>();
+        questions = questionService.getAll();
+        Game singleplayerGame = new Game(questions);
+        gameRepository.save(singleplayerGame);
+        return singleplayerGame.id;
+    }
+
+    /**
      * Register *one player* into a game with the given username. This will fail if the lobby of the game already
      * has a player with the given username.
      *
@@ -284,6 +296,19 @@ public class GameService {
         return state;
     }
 
+    public GameState joinSingleplayerGame(long gameId, String username) throws IllegalArgumentException {
+        System.out.println("Username for player: " + username);
+        Player player = new Player(username, 0);
+        Game game = gameRepository.getId(gameId);
+        GameState state = game.getState(player);
+        game.addPlayer(player);
+        state = game.getState();
+        state.setPlayer(player);
+        state.instruction = "joinSinglePlayer";
+        sendToPlayer(player.id, state);
+        playerRepository.save(player);
+        return state;
+    }
     /**
      * Initiates a game. Do not allow other players to join and show the first question.
      * At the same time, it also creates a new current game (a new lobby)
@@ -299,6 +324,20 @@ public class GameService {
         game.stage = QUESTION;
         questionPhase(game);
         createCurrentGame();
+    }
+
+    /**
+     * Initiates a singleplayer game
+     * @param gameId the id of the game to initiat
+     * @throws IllegalArgumentException if the gameId is invalid.
+     */
+    public void initiateSingleplayerGame(long gameId) throws IllegalArgumentException {
+        Game game = gameRepository.getId(gameId);
+
+        if (game.started) return;
+        game.started = true;
+        game.stage = QUESTION;
+        questionPhase(game);
     }
 
     /**

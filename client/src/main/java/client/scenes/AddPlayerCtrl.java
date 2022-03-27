@@ -51,19 +51,26 @@ public class AddPlayerCtrl {
 
     public void play() throws IOException, InterruptedException {
         Player newPlayer = getPlayer();
-        if(mainCtrl.checkUsername(newPlayer.username) == true) {
-            try {
-                mainCtrl.joinGame(newPlayer);
+        //if the game is singleplayer, then the game can start
+        if(mainCtrl.singleplayerGame == true) {
+            mainCtrl.initiateSingleplayerGame(newPlayer);
+            mainCtrl.showQuestion();
+        }
+        else {
+            if (mainCtrl.checkUsername(newPlayer.username) == true) {
+                try {
+                    mainCtrl.joinGame(newPlayer);
 
-            } catch (WebApplicationException e) {
+                } catch (WebApplicationException e) {
 
-                var alert = new Alert(Alert.AlertType.ERROR);
-                alert.initModality(Modality.APPLICATION_MODAL);
-                alert.setContentText(e.getMessage());
-                alert.showAndWait();
-                return;
+                    var alert = new Alert(Alert.AlertType.ERROR);
+                    alert.initModality(Modality.APPLICATION_MODAL);
+                    alert.setContentText(e.getMessage());
+                    alert.showAndWait();
+                    return;
+                }
+                mainCtrl.showLobby();
             }
-            mainCtrl.showLobby();
         }
     }
 
