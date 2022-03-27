@@ -17,13 +17,18 @@ package client.scenes;
 
 import client.Communication.GameCommunication;
 import client.Communication.ServerListener;
+import commons.Emote;
 import commons.GameState;
+import commons.Player;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 
 public class MainCtrl {
@@ -170,6 +175,8 @@ public class MainCtrl {
         switch(instruction){
             case "halfTimePowerUp"://called when a halfTimePowerUp is being used.
                 questionCtrl.updateGameState(gameState);
+            case "updateEmotes":
+                questionCtrl.updateEmotes(gameState.emotes);
                 break;
             case "joinGame"://called when the client joins
                 try {
@@ -193,6 +200,5 @@ public class MainCtrl {
                 break;
 
         }
-
     }
 }

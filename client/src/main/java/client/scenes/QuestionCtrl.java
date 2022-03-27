@@ -13,6 +13,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -44,7 +45,17 @@ public class QuestionCtrl {
     @FXML
     private Button emoteAngry;
 
-    private boolean angryPressed;
+    @FXML
+    private Button emoteLOL;
+
+    @FXML
+    private Button emoteSweat;
+
+    @FXML
+    private Button emoteClap;
+
+    @FXML
+    private Button emoteWin;
 
     @FXML
     private Button doublePoints;
@@ -78,6 +89,16 @@ public class QuestionCtrl {
     private TableColumn<LeaderboardEntry, String> leaderboardScores;
 
     @FXML
+    private TableView<Emote> emotes;
+
+    @FXML
+    private TableColumn<Emote, String> emotesUsernameColumn;
+
+    @FXML
+    private TableColumn<Emote, String> emotesEmoteColumn;
+
+
+    @FXML
     private AnchorPane root;
 
     private Timer timer;
@@ -91,6 +112,7 @@ public class QuestionCtrl {
 
     /**
      * Updates the gameState for this particular client
+     *
      * @param gameState the new gameState
      */
     void updateGameState(GameState gameState) {
@@ -130,6 +152,11 @@ public class QuestionCtrl {
         }
 
 
+        // Set emotes
+        System.out.println(gameState.emotes);
+        ObservableList<Emote> emoteEntries = FXCollections.observableList(gameState.emotes);
+        emotes.setItems(emoteEntries);
+
     }
 
     //TODO: Send correct Game ID
@@ -137,6 +164,7 @@ public class QuestionCtrl {
     void Answer1Pressed(ActionEvent event) throws IOException, InterruptedException {
         selectedAnswer = answer1.getText();
     }
+
     //TODO: Send correct Game ID
     @FXML
     void Answer2Pressed(ActionEvent event) throws IOException, InterruptedException {
@@ -164,9 +192,34 @@ public class QuestionCtrl {
      */
     @FXML
     void AngryEmotePressed(ActionEvent event) throws IOException, InterruptedException {
-        EmoteClass e = new EmoteClass(gameState.gameId, EmoteClass.Emote.Angry);
-        AnswerCommunication.sendEmote(e);
+        Emote emote = new Emote(Emote.Type.Angry, gameState.username, gameState.gameId);
+        AnswerCommunication.sendEmote(emote);
     }
+
+    @FXML
+    void LOLEmotePressed(ActionEvent event) throws IOException, InterruptedException {
+        Emote emote = new Emote(Emote.Type.LOL, gameState.username, gameState.gameId);
+        AnswerCommunication.sendEmote(emote);
+    }
+
+    @FXML
+    void SweatEmotePressed(ActionEvent event) throws IOException, InterruptedException {
+        Emote emote = new Emote(Emote.Type.Sweat, gameState.username, gameState.gameId);
+        AnswerCommunication.sendEmote(emote);
+    }
+
+    @FXML
+    void ClapEmotePressed(ActionEvent event) throws IOException, InterruptedException {
+        Emote emote = new Emote(Emote.Type.Clap, gameState.username, gameState.gameId);
+        AnswerCommunication.sendEmote(emote);
+    }
+
+    @FXML
+    void WinEmotePressed(ActionEvent event) throws IOException, InterruptedException {
+        Emote emote = new Emote(Emote.Type.Win, gameState.username, gameState.gameId);
+        AnswerCommunication.sendEmote(emote);
+    }
+
 
     @FXML
     /**
@@ -177,15 +230,14 @@ public class QuestionCtrl {
     public void DoublePointsButtonPressed(ActionEvent event) throws IOException, InterruptedException {
         String result = PowerUpsCommunication.sendPowerUps("doublePointsPowerUp", gameState);
 
-        try{
-            if(result.split("___")[1].equals("success")){
+        try {
+            if (result.split("___")[1].equals("success")) {
                 //TODO tell user that the powerup has been used properly
-            }else{
+            } else {
                 System.out.println("doublePointsPowerUp has already been used before");
                 //TODO tell user power up is already used
             }
-        }
-        catch(Exception exc){
+        } catch (Exception exc) {
             exc.printStackTrace();
         }
 
@@ -200,27 +252,26 @@ public class QuestionCtrl {
     void EliminateWrongAnswerButtonPressed(ActionEvent event) throws IOException, InterruptedException {
         String result = PowerUpsCommunication.sendPowerUps("eliminateWrongAnswerPowerUp", gameState);
 
-        try{
-            if(result.split("___")[1].equals("success")){
+        try {
+            if (result.split("___")[1].equals("success")) {
                 String answer = result.split("___")[2];
-                if(answer1.getText().equals(answer)){
+                if (answer1.getText().equals(answer)) {
                     setVisible("answer1", false);//TODO dont forget to turn visible later if needed
                 }
-                if(answer2.getText().equals(answer)){
+                if (answer2.getText().equals(answer)) {
                     setVisible("answer2", false);//TODO dont forget to turn visible later if needed
                 }
-                if(answer3.getText().equals(answer)){
+                if (answer3.getText().equals(answer)) {
                     setVisible("answer3", false);//TODO dont forget to turn visible later if needed
                 }
 
             }
-            if(result.split("___")[1].equals("fail")){
+            if (result.split("___")[1].equals("fail")) {
                 System.out.println("eliminateWrongAnswerPowerUp has already been used before");
                 //TODO tell user that power up has already been used before
 
             }
-        }
-        catch(Exception exc){
+        } catch (Exception exc) {
             exc.printStackTrace();
         }
 
@@ -234,16 +285,14 @@ public class QuestionCtrl {
      */
     void HalfTimeButtonPressed(ActionEvent event) throws IOException, InterruptedException {
         String result = PowerUpsCommunication.sendPowerUps("halfTimePowerUp", gameState);
-        try{
-            if(result.split("___")[1].equals("success")){
+        try {
+            if (result.split("___")[1].equals("success")) {
                 System.out.println("halftime has been used but maybe not implemented yet");
                 //TODO show to user that power up is used
-            }
-            else {
+            } else {
                 System.out.println("halfTimePowerUp has already been used before");
             }
-        }
-        catch(Exception exc){
+        } catch (Exception exc) {
             exc.printStackTrace();
         }
 
@@ -282,7 +331,7 @@ public class QuestionCtrl {
 
         //comment/delete everything between these 2 comments ->
 
-        timer = new Timer(0,5);
+        timer = new Timer(0, 5);
 //        Timeline timeline= new Timeline( new KeyFrame(Duration.millis(1), e ->{
 ////            questionTime.setText(timer.toTimerDisplayString());
 //        }));
@@ -310,17 +359,21 @@ public class QuestionCtrl {
         leaderboardUsernames.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().username));
         leaderboardScores.setCellValueFactory(e -> new SimpleStringProperty(Integer.toString(e.getValue().score)));
 
+        emotesEmoteColumn.setCellValueFactory(e -> new SimpleStringProperty(String.valueOf(e.getValue().type)));
+        emotesUsernameColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().username));
+
         hideLeaderboard();
     }
 
 
     /**
      * Makes an FXML element visible/invisible
+     *
      * @param variableName the fxml ID of the element
-     * @param should whether the element should become visible, or invisible
+     * @param should       whether the element should become visible, or invisible
      */
-    public void setVisible(String variableName, boolean should){
-        switch(variableName){
+    public void setVisible(String variableName, boolean should) {
+        switch (variableName) {
             case "answer1":
                 answer1.setVisible(should);
                 break;
@@ -343,8 +396,7 @@ public class QuestionCtrl {
         if (q.questionImage != null) {
             try {
                 questionImage.setImage(ImageCommunication.getImage("https://localhost:8080/" + q.questionImage));
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 System.out.println("Failed to set the question image.");
             }
         }
@@ -357,8 +409,6 @@ public class QuestionCtrl {
         answer2.setText(answerList.get(1));
         answer3.setText(answerList.get(2));
 
-        // Enable emotes for the new question
-        angryPressed = false;
     }
 
     public void markAnswer(String correct, String ofplayer) {
@@ -397,5 +447,10 @@ public class QuestionCtrl {
 
     public void hideLeaderboard() {
         leaderboard.setVisible(false);
+    }
+
+    public void updateEmotes(List<Emote> emoteEntries) {
+        ObservableList<Emote> emoteEntriesList = FXCollections.observableList(emoteEntries);
+        this.emotes.setItems(emoteEntriesList);
     }
 }

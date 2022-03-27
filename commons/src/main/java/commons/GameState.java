@@ -21,6 +21,8 @@ public class GameState {
     public String playerAnswer;
     public List<LeaderboardEntry> leaderboard;
 
+    public List<Emote> emotes;
+
     public long timeToAnswer;//time it took them to answer in milliseconds
     public long timeOfReceival;//time of receiving the question in milliseconds
 
@@ -45,6 +47,9 @@ public class GameState {
         if (player != null) setPlayer(player);
 
         this.leaderboard = new ArrayList<>();
+
+        this.emotes = game.emotes;
+
         for (Player lobbyPlayer : game.players) {
             this.leaderboard.add(new LeaderboardEntry(lobbyPlayer.username, (int) lobbyPlayer.score));
         }
@@ -73,6 +78,7 @@ public class GameState {
                 ", question=" + question +
                 ", isError=" + isError +
                 ", message='" + message + '\'' +
+                ", instruction='" + instruction + '\'' +
                 ", timerSyncLong=" + timerSyncLong +
                 ", duration=" + duration +
                 ", gameId=" + gameId +
@@ -80,6 +86,10 @@ public class GameState {
                 ", username='" + username + '\'' +
                 ", playerAnswer='" + playerAnswer + '\'' +
                 ", leaderboard=" + leaderboard +
+                ", halfTime=" + halfTime +
+                ", emotes=" + emotes +
+                ", timeToAnswer=" + timeToAnswer +
+                ", timeOfReceival=" + timeOfReceival +
                 '}';
     }
 }
