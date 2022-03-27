@@ -53,7 +53,7 @@ public class QuestionsImporter implements ApplicationRunner {
             String wrongAnswer1 = String.format("%.0f", factors.get(0) * consumption_in_wh);
             String wrongAnswer2 = String.format("%.0f", factors.get(1) * consumption_in_wh);
             var imageRelativeURI = URI.create(image_path.replace(" ", "%20"));
-            String imageURL = imageURIRoot.resolve(imageRelativeURI).toURL().toString();
+            String imageURL = imageURIRoot.resolve(imageRelativeURI).toURL().toString().replace("http://localhost:8080/images/", "images/");
             Question q = new Question(id, title,answer,wrongAnswer1,wrongAnswer2);
             q.questionImage = imageURL;
             return q;
@@ -68,14 +68,21 @@ public class QuestionsImporter implements ApplicationRunner {
     public QuestionsImporter(QuestionService service) {
         this.service = service;
     }
+
+    /**
+     * Run as soon as the application starts and all the services, controllers are initialized.
+     *
+     * It reads the path relative to server/resources/images from the application option activitiesSource. If no
+     * such option is present no importing is done.
+     * @param args the Spring application arguments
+     * @throws IOException
+     */
     @Override
     public void run(ApplicationArguments args) throws IOException {
 
         if (args.containsOption(optionName)) {
             String optionValue = args.getOptionValues(optionName).get(0);
             logger.info("Detected the " + optionName + " application option. Importing the activities/questions from " + optionValue);
-            service.deleteAll();
-            //service.resetId();
             try {
                 importQuestions(optionValue);
             }
@@ -88,7 +95,8 @@ public class QuestionsImporter implements ApplicationRunner {
         }
     }
 
-    /**imports activities from the given path
+    /**
+     * Imports activities from the given path.
      * Note that the path is expected to be under server/resources/images. If not so, loading the question images will
      * fail because the only public path being hosted is the server/resources/images for security reasons.
      * @param path the path relative to server/resources/images
@@ -105,6 +113,7 @@ public class QuestionsImporter implements ApplicationRunner {
         );
         final URI imageURIRoot = URI.create("http://localhost:8080/images/" + path + "/");
         final List<String> malformed = new LinkedList<>();
+        service.deleteAll();
         activities.stream().map(x -> {
             try {
                 return x.toQuestion(imageURIRoot, service);

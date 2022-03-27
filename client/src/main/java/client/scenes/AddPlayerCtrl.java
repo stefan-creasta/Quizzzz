@@ -19,6 +19,7 @@ import client.Communication.GameCommunication;
 import client.Communication.ServerListener;
 import com.google.inject.Inject;
 import jakarta.ws.rs.WebApplicationException;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
@@ -82,5 +83,9 @@ public class AddPlayerCtrl {
             default:
                 break;
         }
+    }
+
+    public void adminPanel(ActionEvent actionEvent) {
+        mainCtrl.showAdminInterface();
     }
 }
