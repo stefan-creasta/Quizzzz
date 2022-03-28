@@ -20,6 +20,7 @@ import client.Communication.ServerListener;
 import com.google.inject.Inject;
 import commons.Player;
 import jakarta.ws.rs.WebApplicationException;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
@@ -50,24 +51,33 @@ public class AddPlayerCtrl {
     }
 
     public void play() throws IOException, InterruptedException {
-        try {
-            Player newPlayer = getPlayer();
-            mainCtrl.joinGame(newPlayer);
-
-        } catch (WebApplicationException e) {
-
-            var alert = new Alert(Alert.AlertType.ERROR);
-            alert.initModality(Modality.APPLICATION_MODAL);
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
-            return;
+        Player newPlayer = getPlayer();
+        //if the game is singleplayer, then the game can start
+        if(mainCtrl.singleplayerGame == true) {
+            mainCtrl.initiateSingleplayerGame(newPlayer);
+            mainCtrl.showQuestion();
         }
-        clearFields();
-        mainCtrl.showLobby();
+        else {
+            if (mainCtrl.checkUsername(newPlayer.username) == true) {
+                try {
+                    mainCtrl.joinGame(newPlayer.username);
+
+                } catch (WebApplicationException e) {
+
+                    var alert = new Alert(Alert.AlertType.ERROR);
+                    alert.initModality(Modality.APPLICATION_MODAL);
+                    alert.setContentText(e.getMessage());
+                    alert.showAndWait();
+                    return;
+                }
+                mainCtrl.showLobby();
+            }
+        }
     }
 
     private Player getPlayer() {
         var username = usernameField.getText();
+        clearFields();
         return new Player(username, 0);
     }
 
@@ -86,5 +96,9 @@ public class AddPlayerCtrl {
             default:
                 break;
         }
+    }
+
+    public void adminPanel(ActionEvent actionEvent) {
+        mainCtrl.showAdminInterface();
     }
 }

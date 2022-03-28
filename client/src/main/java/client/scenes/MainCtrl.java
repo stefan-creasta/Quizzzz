@@ -30,6 +30,8 @@ import java.util.List;
 
 public class MainCtrl {
 
+    public boolean singleplayerGame;
+
     private Stage primaryStage;
 
     private QuoteOverviewCtrl overviewCtrl;
@@ -52,6 +54,11 @@ public class MainCtrl {
     private QuestionCtrl questionCtrl;
     private Scene question;
 
+    private SplashScreenCtrl splashCtrl;
+    private Scene splash;
+
+    private Scene adminInterface;
+
     private ServerListener serverListener;
 
     private long gameId;
@@ -62,8 +69,10 @@ public class MainCtrl {
                            Pair<CountdownTimer, Parent> timer,
                            Pair<LobbyCtrl, Parent> lobbyPair,
                            Pair<AddPlayerCtrl, Parent> playerPair,
+                           Pair<AdminInterfaceCtrl, Parent> adminInterfacePair,
                            GameCommunication gameCommunication,
-                           ServerListener serverListener) {
+                           ServerListener serverListener,
+                           Pair<SplashScreenCtrl, Parent> splashScreenPair) {
 
         this.gameCommunication = gameCommunication;
         this.serverListener = serverListener;
@@ -80,8 +89,9 @@ public class MainCtrl {
         this.timer = new Scene(timer.getValue());
 
 
-        this.questionCtrl = question.getKey();
         gameId = gameCommunication.createGame();
+
+        this.questionCtrl = question.getKey();
         this.question = new Scene(question.getValue());
 
         this.lobbyCtrl = lobbyPair.getKey();
@@ -90,14 +100,27 @@ public class MainCtrl {
         this.playerCtrl = playerPair.getKey();
         this.player = new Scene(playerPair.getValue());
 
-        showPlayer();
+        this.splashCtrl = splashScreenPair.getKey();
+        this.splash = new Scene(splashScreenPair.getValue());
+
+        System.out.println("GAME ID: " + gameId);
+        showSplashScreen();
+        //showPlayer();
+        this.adminInterface = new Scene(adminInterfacePair.getValue());
+
+        //showPlayer();
         //showQuestion();
         primaryStage.show();
     }
 
-    public void joinGame(Player newPlayer) {
-        serverListener.initialize(newPlayer.id, this);
-        gameCommunication.joinGame(gameId, newPlayer.username);
+    public void joinGame(String username) {
+        GameState state = gameCommunication.joinGame(gameId, username);
+        handleGameState(state);
+        serverListener.initialize(state.playerId, this);
+    }
+
+    public boolean checkUsername(String username) throws IOException, InterruptedException {
+        return gameCommunication.checkUsername(gameId, username);
     }
 
     public void showOverview() {
@@ -118,6 +141,18 @@ public class MainCtrl {
         add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
     }
 
+    public void showSplashScreen() {
+        primaryStage.setTitle("SplashScreen");
+        primaryStage.setScene(splash);
+    }
+    public void chooseSingleplayer() {
+        singleplayerGame = true;
+        showPlayer();
+    }
+    public void chooseMultiplayer() {
+        singleplayerGame = false;
+        showPlayer();
+    }
     public void showPlayer() {
         primaryStage.setTitle("Adding a player");
         primaryStage.setScene(player);
@@ -140,6 +175,11 @@ public class MainCtrl {
     public void showQuestion() {
         primaryStage.setTitle("Question");
         primaryStage.setScene(question);
+    }
+
+    public void showAdminInterface() {
+        primaryStage.setTitle("Admin Panel");
+        primaryStage.setScene(adminInterface);
     }
     
     public List<String> getPlayers() throws IOException, InterruptedException {
@@ -169,48 +209,60 @@ public class MainCtrl {
     /**
      * Sends a request to the server to initiate the game with ID gameId
      */
-
     public void initiateGame() {
         gameCommunication.initiateGame(gameId);
     }
 
-//        choose.set(e -> chooseCtrl.Button1Pressed(e));
+    /**
+     * Sends a request to the server to initiate and create a singleplayer game
+     */
+    public void initiateSingleplayerGame(Player newPlayer) {
+        gameId = gameCommunication.createSingleplayerGame();
+        GameState state = gameCommunication.joinSingleplayerGame(gameId, newPlayer.username);
+        handleGameState(state);
+        serverListener.initialize(state.playerId, this);
+        gameCommunication.initiateSingleplayerGame(gameId);
+    }
 
 
-//        Scene scene = new Scene(ChooseAnswerCtrl.AnchorPane1, 640, 480);
-//        primaryStage.setScene(scene);
-//        primaryStage.show();
-
+    /**
+     * Function that gets called when the server is sending the player information using long polling.
+     * It performs different actions depending on the instruction in the gameState. These actions
+     * are handled using a switch case. If you use sendToPlayer() - the function that sends the gameState to this function -
+     * then, before sending, set the instruction and add a switch case for the instruction here, if the case does not
+     * exist already.
+     * @param gameState the gameState with the updated information
+     */
     public void handleGameState(GameState gameState) {
-        //if any other screen is displayed there is something wrong.
-
-        System.out.println("GAME STATE: " + gameState);
-
-        if (gameState.stage == GameState.Stage.LOBBY) {
-            questionCtrl.updateGameState(gameState);
-            try {
-                showLobby();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        } else {
-            if (gameState.stage == GameState.Stage.QUESTION && gameState.question != null) {
-                showQuestion(); //im not sure where to put this
+        String instruction = gameState.instruction;
+        switch(instruction){
+            case "halfTimePowerUp"://called when a halfTimePowerUp is being used.
+                questionCtrl.updateGameState(gameState);
+            case "updateEmotes":
+                questionCtrl.updateEmotes(gameState.emotes);
+                break;
+            case "joinGame"://called when the client joins
+                try {
+                    showLobby();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case "joinSingleplayerGame"://called when the client joins the singleplayer game
+                break;
+            case "questionPhase"://called at the start of a question phase
+                questionCtrl.updateGameState(gameState);
+                showQuestion();
                 questionCtrl.clearAnswer();
                 questionCtrl.setQuestion(gameState.question);
-            } else {
-//            showQuestion();
-                if (gameState.question == null) {
-                    questionCtrl.clearAnswer();
-                    questionCtrl.setQuestion(gameState.question);
-                }
-                if (gameState.stage == GameState.Stage.INTERVAL) {
-                    questionCtrl.markAnswer(gameState.question.answer, gameState.playerAnswer);
-                }
-                questionCtrl.syncTimer(gameState.timerSyncLong, gameState.duration);
-            }
+                break;
+            case "intervalPhase"://called at the start of an interval phase
+                questionCtrl.markAnswer(gameState.question.answer, gameState.playerAnswer);
+                break;
+            case "answerSubmitted":
+                break;
         }
     }
 }

@@ -30,11 +30,19 @@ public class GameController {
 
     @PostMapping("/create")
     /**
-     * Produces a gameID that the player can join a game/lobby with and returns it.
+     * Produces a gameID such that the player can join a game/lobby with and returns it.
      * If a lobby is already open, it will return the ID of that lobby.
      */
     public long createGame(){
         return service.createGame();
+    }
+
+    @PostMapping("create/singleplayer")
+    /**
+     * Produces a gameId such that the player can join a singleplayer game and returns it
+     */
+    public long createSingleplayerGame() {
+        return service.createSingleplayerGame();
     }
 
     @GetMapping("/join/{id}")
@@ -46,7 +54,15 @@ public class GameController {
     public GameState joinGame(@PathVariable long id, @RequestParam String username) throws IllegalArgumentException {
         return service.joinGame(id, username);
     }
-
+    @GetMapping("/join/singleplayer/{id}")
+    @ResponseStatus(code = HttpStatus.NOT_FOUND)
+    /**
+     * Registers the player to the singleplayer game.
+     * @return the gameState to initially render the game screen.
+     */
+    public GameState joinSingleplayerGame(@PathVariable long id, @RequestParam String username) throws IllegalArgumentException {
+        return service.joinSingleplayerGame(id, username);
+    }
     @PostMapping("/init/{id}")
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
     /**
@@ -61,6 +77,14 @@ public class GameController {
      * @param id the game's id
      * @return the list of usernames
      */
+    @PostMapping("/init/singleplayer/{id}")
+    @ResponseStatus(code = HttpStatus.NOT_FOUND)
+    /**
+     * Initiates the singleplayer game with the id provided.
+     */
+    public void initiateSingpleplayerGame(@PathVariable long id) throws IllegalArgumentException{
+        service.initiateSingleplayerGame(id);
+    }
     @GetMapping("/players/{id}")
     public List<String> getPlayers(@PathVariable long id) {
         System.out.println(id);
@@ -78,5 +102,9 @@ public class GameController {
     public List<LeaderboardEntry> getLeaderboard(@PathVariable long id) {
         List<LeaderboardEntry> leaderboard = service.getLeaderboard(id);
         return leaderboard;
+    }
+    @GetMapping("/check/{id}")
+    public boolean checkUsername(@PathVariable long id, @RequestParam String username) throws IllegalArgumentException {
+        return service.checkUsername(id, username);
     }
 }

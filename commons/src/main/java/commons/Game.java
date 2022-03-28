@@ -4,6 +4,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class Game {
     public List<Player> players;
     public boolean started;
     public GameState.Stage stage;
+    public List<Emote> emotes;
     private Game(){}
 
     public Game(List<Question> questions){
@@ -27,6 +29,7 @@ public class Game {
         this.currentQuestion = 0;
         this.started = false;
         this.stage = GameState.Stage.LOBBY;
+        this.emotes = new ArrayList<>();
     }
 
     public Question getCurrentQuestion() {
@@ -46,7 +49,8 @@ public class Game {
         return true;
     }
 
-    /**Get the current GameState that needs to be processed by a specific player client.
+    /**
+     * Get the current GameState that needs to be processed by a specific player client.
      * @param player the specific player that the GameState is going to be sent to
      * @return
      */
@@ -54,8 +58,9 @@ public class Game {
         return new GameState(this, player);
     }
 
-    /**et the current GameState.
-     * @return
+    /**
+     * Get the current GameState.
+     * @return the current GameState
      */
     public GameState getState() {
         return new GameState(this, null);

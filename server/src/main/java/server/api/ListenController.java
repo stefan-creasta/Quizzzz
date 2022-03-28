@@ -4,14 +4,16 @@ import commons.GameState;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
-import server.service.GameService;
+import server.service.LongPollingService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/listen")
 public class ListenController {
-    GameService service;
+    LongPollingService service;
 
-    public ListenController(GameService service) {
+    public ListenController(LongPollingService service) {
         this.service = service;
     }
 
@@ -25,9 +27,9 @@ public class ListenController {
      */
     @GetMapping("")
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    public DeferredResult<GameState> getListen(@RequestParam Long playerId) throws IllegalArgumentException {
+    public DeferredResult<List<GameState>> getListen(@RequestParam Long playerId) throws IllegalArgumentException {
         if (playerId == null) throw new IllegalArgumentException();
-        DeferredResult<GameState> result = new DeferredResult<GameState>(30000L);
+        DeferredResult<List<GameState>> result = new DeferredResult<>(30000L);
         service.registerPlayerConnection(playerId, result);
         System.out.println(result.getResult());
         return result;

@@ -12,45 +12,76 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" prefHeight="600.0" prefWidth="1000.0" styleClass="main" stylesheets="@Question.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.QuestionCtrl">
+<AnchorPane fx:id="root" prefHeight="600.0" prefWidth="1000.0" styleClass="main" stylesheets="@../../Question.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.QuestionCtrl">
    <children>
-      <Label fx:id="questionTitle" alignment="CENTER" layoutX="57.0" layoutY="56.0" prefWidth="300.0" stylesheets="@Question.css" text="Question 1" textAlignment="CENTER">
+      <Label fx:id="questionTitle" alignment="CENTER" layoutX="57.0" layoutY="56.0" prefWidth="300.0" stylesheets="@../../Question.css" text="Question 1" textAlignment="CENTER">
          <styleClass>
             <String fx:value="question-title" />
             <String fx:value="custom-text" />
          </styleClass>
       </Label>
-      <Label fx:id="questionText" alignment="CENTER" layoutX="58.0" layoutY="129.0" prefWidth="300.0" stylesheets="@Question.css" text="What is the maximum amount of energy that can be spend by a car in a week. You can assume that the car is running non-stop.:33" textAlignment="CENTER" wrapText="true">
+      <Label fx:id="questionText" alignment="CENTER" layoutX="58.0" layoutY="129.0" prefWidth="300.0" stylesheets="@../../Question.css" text="What is the maximum amount of energy that can be spend by a car in a week. You can assume that the car is running non-stop.:33" textAlignment="CENTER" wrapText="true">
          <styleClass>
             <String fx:value="question-description" />
             <String fx:value="custom-text" />
          </styleClass>
       </Label>
-      <Button fx:id="answer1" layoutX="80.0" layoutY="370.0" mnemonicParsing="false" onAction="#Answer1Pressed" stylesheets="@Question.css" text="Answer 1" />
-      <Button fx:id="answer2" layoutX="291.0" layoutY="370.0" mnemonicParsing="false" onAction="#Answer2Pressed" stylesheets="@Question.css" text="Answer 2" />
-      <Button fx:id="answer3" layoutX="501.0" layoutY="370.0" mnemonicParsing="false" onAction="#Answer3Pressed" stylesheets="@Question.css" text="Answer 3" />
-      <Button fx:id="submit" layoutX="756.0" layoutY="370.0" mnemonicParsing="false" onAction="#SubmitPressed" stylesheets="@Question.css" text="Submit" />
+      <Button fx:id="answer1" layoutX="80.0" layoutY="370.0" mnemonicParsing="false" onAction="#Answer1Pressed" stylesheets="@../../Question.css" text="Answer 1" />
+      <Button fx:id="answer2" layoutX="291.0" layoutY="370.0" mnemonicParsing="false" onAction="#Answer2Pressed" stylesheets="@../../Question.css" text="Answer 2" />
+      <Button fx:id="answer3" layoutX="501.0" layoutY="370.0" mnemonicParsing="false" onAction="#Answer3Pressed" stylesheets="@../../Question.css" text="Answer 3" />
+      <Button fx:id="submit" layoutX="756.0" layoutY="370.0" mnemonicParsing="false" onAction="#SubmitPressed" stylesheets="@../../Question.css" text="Submit" />
       <ImageView fx:id="questionImage" fitHeight="241.0" fitWidth="290.0" layoutX="389.0" layoutY="57.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../images/image 2.png" />
          </image>
       </ImageView>
       <BorderPane layoutX="713.0" layoutY="58.0" prefHeight="247.0" prefWidth="253.0" styleClass="powerup-border" />
-      <Button fx:id="doublePoints" layoutX="724.0" layoutY="77.0" mnemonicParsing="false" onAction="#DoublePointsButtonPressed" prefWidth="230.0" stylesheets="@Question.css" text="Double points" />
-      <Button fx:id="eliminateWrongAnswer" layoutX="724.0" layoutY="156.0" mnemonicParsing="false" onAction="#EliminateWrongAnswerButtonPressed" prefWidth="230.0" style="-fx-font-size: 16; -fx-padding: 15;" stylesheets="@Question.css" text="Eliminate wrong answer">
+      <Button fx:id="doublePoints" layoutX="724.0" layoutY="77.0" mnemonicParsing="false" onAction="#DoublePointsButtonPressed" prefWidth="230.0" stylesheets="@../../Question.css" text="Double points" />
+      <Button fx:id="eliminateWrongAnswer" layoutX="724.0" layoutY="156.0" mnemonicParsing="false" onAction="#EliminateWrongAnswerButtonPressed" prefWidth="230.0" style="-fx-font-size: 16; -fx-padding: 15;" stylesheets="@../../Question.css" text="Eliminate wrong answer">
          <font>
             <Font size="8.0" />
          </font></Button>
-      <Button fx:id="halfTime" layoutX="724.0" layoutY="235.0" mnemonicParsing="false" onAction="#HalfTimeButtonPressed" prefWidth="230.0" stylesheets="@Question.css" text="Half time" />
+      <Button fx:id="halfTime" layoutX="724.0" layoutY="235.0" mnemonicParsing="false" onAction="#HalfTimeButtonPressed" prefWidth="230.0" stylesheets="@../../Question.css" text="Half time" />
       <Label layoutX="711.0" layoutY="27.0" styleClass="leaderboard-text" text="Hold Tab to see Leaderboard" textFill="WHITE" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="40.0" layoutX="223.0" layoutY="462.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="loading-bar" width="529.0" />
       <Label fx:id="questionTime" layoutX="372.0" layoutY="527.0" styleClass="time-left" text="Time left: 7 seconds" />
-      <TableView fx:id="leaderboard" layoutX="208.0" layoutY="37.0" prefHeight="526.0" prefWidth="598.0">
+      <TableView fx:id="leaderboard" layoutX="266.0" layoutY="86.0" prefHeight="412.0" prefWidth="479.0" styleClass="leaderboard">
         <columns>
-          <TableColumn fx:id="leaderboardRanks" editable="false" prefWidth="78.40000915527344" text="Rank" />
-            <TableColumn fx:id="leaderboardUsernames" editable="false" minWidth="0.0" prefWidth="368.79998779296875" text="Username" />
-            <TableColumn fx:id="leaderboardScores" editable="false" minWidth="0.0" prefWidth="148.79998779296875" text="Score" />
+          <TableColumn fx:id="leaderboardRanks" editable="false" prefWidth="117.55978393554688" text="Rank" />
+            <TableColumn fx:id="leaderboardUsernames" editable="false" minWidth="0.0" prefWidth="207.94021606445312" text="Username" />
+            <TableColumn fx:id="leaderboardScores" editable="false" minWidth="0.0" prefWidth="141.01806640625" text="Score" />
         </columns>
       </TableView>
+      <Button fx:id="emoteAngry" layoutX="21.0" layoutY="443.0" mnemonicParsing="false" onAction="#AngryEmotePressed" prefHeight="38.0" prefWidth="70.0" style="-fx-padding: 0;" text="Angry">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Button>
+      <TableView fx:id="emotes" layoutX="771.0" layoutY="440.0" prefHeight="201.0" prefWidth="230.0" styleClass="emotes">
+        <columns>
+          <TableColumn fx:id="emotesUsernameColumn" editable="false" prefWidth="114.0" styleClass="username-column" text="Username" />
+          <TableColumn fx:id="emotesEmoteColumn" editable="false" prefWidth="85.5" styleClass="emote-column" text="Emote" />
+        </columns>
+      </TableView>
+      <Button fx:id="emoteLOL" layoutX="96.0" layoutY="443.0" mnemonicParsing="false" onAction="#LOLEmotePressed" prefHeight="38.0" prefWidth="70.0" style="-fx-padding: 0;" text="LOL">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Button>
+      <Button fx:id="emoteSweat" layoutX="21.0" layoutY="501.0" mnemonicParsing="false" onAction="#SweatEmotePressed" prefHeight="38.0" prefWidth="70.0" style="-fx-padding: 0;" text="Sweat">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Button>
+      <Button fx:id="clapEmote" layoutX="95.0" layoutY="501.0" mnemonicParsing="false" onAction="#ClapEmotePressed" prefHeight="38.0" prefWidth="70.0" style="-fx-padding: 0;" text="Clap">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Button>
+      <Button fx:id="emoteWin" layoutX="22.0" layoutY="558.0" mnemonicParsing="false" onAction="#WinEmotePressed" prefHeight="38.0" prefWidth="70.0" style="-fx-padding: 0;" text="Win">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
