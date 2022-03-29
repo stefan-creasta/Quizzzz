@@ -98,7 +98,7 @@ public class QuestionsImporter implements ApplicationRunner {
                     } else if (this.consumption_in_wh < b.consumption_in_wh && b.consumption_in_wh > c.consumption_in_wh) {
                         answer = b.title;
                         wrongAnswer1 = this.title;
-                        wrongAnswer2 = b.title;
+                        wrongAnswer2 = c.title;
                     } else {
                         answer = c.title;
                         wrongAnswer1 = b.title;
