@@ -26,7 +26,7 @@ public class QuestionsImporter implements ApplicationRunner {
 
     public static class Activity {
         @JsonIgnore
-        final List<Double> factors = new LinkedList<>(List.of(.25, .5, 2., 3.));
+        final List<Double> factors = new LinkedList<>(List.of(.25, .5, 2., 3.));//TODO add more factors to make it more random
         public String id;
         public double consumption_in_wh;
         public String image_path;
@@ -40,75 +40,84 @@ public class QuestionsImporter implements ApplicationRunner {
             long id;
 
             //TODO: Check if an activity with the JSON id exists in the database
-            if (false) {
-                //TODO: If so, get its already existing id here so we can use it and not risk duplicate entries.
-            }
-            else {
-                while (service.existsById(questionIdGenerator))
-                    questionIdGenerator++;
-                id = questionIdGenerator;
-            }
+            while (service.existsById(questionIdGenerator))
+                questionIdGenerator++;
+            id = questionIdGenerator;
+
             Collections.shuffle(factors);
 
             int qtype = rand.nextInt(4);
             Question q = null;
-            if (qtype == 0) { // Case for 'Instead of ..., you could ...'
-                Activity b = getEqualEnergy(this, activities);
-                if (this.id.equals(b.id))
-                    qtype = 1;
-                else {
-                    String answer = b.title;
+
+            String imageURL;
+            URI imageRelativeURI;
+            String answer;
+            String wrongAnswer1;
+            String wrongAnswer2;
+            Activity b;
+            Activity c;
+
+            switch(qtype){
+                case 0: // Case for 'Instead of ..., you could ...'
+                    b = getEqualEnergy(this, activities);
+                    if (this.id.equals(b.id))
+                        qtype = 1;
+                    else {
+                        answer = b.title;
+                        b = getDiffEnergy(this, activities);
+                        wrongAnswer1 = b.title;
+                        c = getDiffEnergy(this, activities);
+                        while (c.id.equals(b.id))
+                            c = getDiffEnergy(this, activities);
+                        wrongAnswer2 = c.title;
+                        imageRelativeURI = URI.create(image_path.replace(" ", "%20"));
+                        imageURL = imageURIRoot.resolve(imageRelativeURI).toURL().toString().replace("http://localhost:8080/images/", "images/");
+                        q = new Question(id, "Instead of '" + title + "', you could:", answer, wrongAnswer1, wrongAnswer2, 0 + "");
+                        q.questionImage = imageURL;
+                    }
+                    break;
+                case 1: // Case for 'How much energy does it take to ...?', MC version
+                    answer = String.format("%.0f", consumption_in_wh);
+                    wrongAnswer1 = String.format("%.0f", factors.get(rand.nextInt(4)) * consumption_in_wh);
+                    wrongAnswer2 = String.format("%.0f", factors.get(rand.nextInt(4)) * consumption_in_wh);
+                    imageRelativeURI = URI.create(image_path.replace(" ", "%20"));
+                    imageURL = imageURIRoot.resolve(imageRelativeURI).toURL().toString().replace("http://localhost:8080/images/", "images/");
+                    q = new Question(id, title,answer,wrongAnswer1,wrongAnswer2, 1 + "");
+                    q.questionImage = imageURL;
+                    break;
+                case 2:// Case for 'What requires more energy?'
                     b = getDiffEnergy(this, activities);
-                    String wrongAnswer1 = b.title;
-                    Activity c = getDiffEnergy(this, activities);
+                    c = getDiffEnergy(this, activities);
                     while (c.id.equals(b.id))
                         c = getDiffEnergy(this, activities);
-                    String wrongAnswer2 = c.title;
-                    var imageRelativeURI = URI.create(image_path.replace(" ", "%20"));
-                    String imageURL = imageURIRoot.resolve(imageRelativeURI).toURL().toString().replace("http://localhost:8080/images/", "images/");
-                    q = new Question(id, "Instead of '" + title + "', you could:", answer, wrongAnswer1, wrongAnswer2, 0 + "");
+
+
+
+                    if (this.consumption_in_wh > b.consumption_in_wh && this.consumption_in_wh > c.consumption_in_wh) {
+                        answer = this.title;
+                        wrongAnswer1 = b.title;
+                        wrongAnswer2 = b.title;
+                    } else if (this.consumption_in_wh < b.consumption_in_wh && b.consumption_in_wh > c.consumption_in_wh) {
+                        answer = b.title;
+                        wrongAnswer1 = this.title;
+                        wrongAnswer2 = b.title;
+                    } else {
+                        answer = c.title;
+                        wrongAnswer1 = b.title;
+                        wrongAnswer2 = this.title;
+                    }
+                    // TODO modify the image shown for this question type
+                    imageRelativeURI = URI.create(image_path.replace(" ", "%20"));
+                    imageURL = imageURIRoot.resolve(imageRelativeURI).toURL().toString().replace("http://localhost:8080/images/", "images/");
+                    q = new Question(id, "What requires more energy", answer, wrongAnswer1, wrongAnswer2, "2");
                     q.questionImage = imageURL;
-                }
+                    break;
+                case 3:// Case for 'How much energy does it take?' Open question
+                    //TODO
+                    break;
             }
-            if (qtype == 1) { // Case for 'How much energy does it take to ...?', MC version
-                String answer = String.format("%.0f", consumption_in_wh);
-                String wrongAnswer1 = String.format("%.0f", factors.get(rand.nextInt(4)) * consumption_in_wh);
-                String wrongAnswer2 = String.format("%.0f", factors.get(rand.nextInt(4)) * consumption_in_wh);
-                var imageRelativeURI = URI.create(image_path.replace(" ", "%20"));
-                String imageURL = imageURIRoot.resolve(imageRelativeURI).toURL().toString().replace("http://localhost:8080/images/", "images/");
-                q = new Question(id, title,answer,wrongAnswer1,wrongAnswer2, 1 + "");
-                q.questionImage = imageURL;
-            }
-            if (qtype == 2) { // Case for 'What requires more energy?'
-                Activity b = getDiffEnergy(this, activities);
-                Activity c = getDiffEnergy(this, activities);
-                while (c.id.equals(b.id))
-                    c = getDiffEnergy(this, activities);
-                String answer;
-                String wrongAnswer1;
-                String wrongAnswer2;
-                if (this.consumption_in_wh > b.consumption_in_wh && this.consumption_in_wh > c.consumption_in_wh) {
-                    answer = this.title;
-                    wrongAnswer1 = b.title;
-                    wrongAnswer2 = b.title;
-                } else if (this.consumption_in_wh < b.consumption_in_wh && b.consumption_in_wh > c.consumption_in_wh) {
-                    answer = b.title;
-                    wrongAnswer1 = this.title;
-                    wrongAnswer2 = b.title;
-                } else {
-                    answer = c.title;
-                    wrongAnswer1 = b.title;
-                    wrongAnswer2 = this.title;
-                }
-                // TODO modify the image shown for this question type
-                var imageRelativeURI = URI.create(image_path.replace(" ", "%20"));
-                String imageURL = imageURIRoot.resolve(imageRelativeURI).toURL().toString().replace("http://localhost:8080/images/", "images/");
-                q = new Question(id, "What requires more energy", answer, wrongAnswer1, wrongAnswer2, "2");
-                q.questionImage = imageURL;
-            }
-            if (qtype == 3) { // Case for 'How much energy does it take?' Open question
-                // TODO
-            }
+
+            
             return q;
         }
 
