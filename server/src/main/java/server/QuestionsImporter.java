@@ -88,15 +88,12 @@ public class QuestionsImporter implements ApplicationRunner {
                 case 2:// Case for 'What requires more energy?'
                     b = getDiffEnergy(this, activities);
                     c = getDiffEnergy(this, activities);
-                    while (c.id.equals(b.id))
+                    while (c.consumption_in_wh == b.consumption_in_wh)
                         c = getDiffEnergy(this, activities);
-
-
-
                     if (this.consumption_in_wh > b.consumption_in_wh && this.consumption_in_wh > c.consumption_in_wh) {
                         answer = this.title;
                         wrongAnswer1 = b.title;
-                        wrongAnswer2 = b.title;
+                        wrongAnswer2 = c.title;
                     } else if (this.consumption_in_wh < b.consumption_in_wh && b.consumption_in_wh > c.consumption_in_wh) {
                         answer = b.title;
                         wrongAnswer1 = this.title;
