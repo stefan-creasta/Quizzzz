@@ -127,9 +127,17 @@ public class QuestionCtrl {
                 this.questionTitle.setText("Question 10");
                 this.questionText.setText(gameState.question.question);
 
-                this.answer1.setText(gameState.question.answer);
-                this.answer2.setText(gameState.question.wrongAnswer1);
-                this.answer3.setText(gameState.question.wrongAnswer2);
+                if(!gameState.question.type.equals("3")){
+                    this.answer1.setText(gameState.question.answer);
+                    this.answer2.setText(gameState.question.wrongAnswer1);
+                    this.answer3.setText(gameState.question.wrongAnswer2);
+                    answer1.setVisible(true);
+                    answer2.setVisible(true);
+                    answer3.setVisible(true);
+                }else{
+                    answerTextBox.clear();
+                    answerTextBox.setVisible(true);
+                }
                 
                 timeline = new Timeline( new KeyFrame(Duration.millis(1), e ->{
                     long timeToDisplay = 10000 - (new Date().getTime() - gameState.timeOfReceival);
@@ -138,16 +146,8 @@ public class QuestionCtrl {
                 timeline.setCycleCount(100000);
                 timeline.play();
 
-                if(halfTimeWasUsed) {//TODO and type of question is MC
-                    halfTimeWasUsed = false;
-                    answer1.setVisible(true);//in case an eliminate wrong answer power up was called in the previous round
-                    answer2.setVisible(true);//we set everything visible
-                    answer3.setVisible(true);
-                }
-
                 break;
             case "halfTimePowerUp":
-                this.gameState = gameState;
                 timeline = new Timeline( new KeyFrame(Duration.millis(1), e ->{
                     long timeToDisplay = 10000 - (new Date().getTime() - gameState.timeOfReceival);
                     questionTime.setText("Time left: " + String.format("%.3f", timeToDisplay/1000.0) + " seconds");
