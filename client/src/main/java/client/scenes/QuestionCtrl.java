@@ -98,6 +98,9 @@ public class QuestionCtrl {
     @FXML
     private AnchorPane root;
 
+    @FXML
+    private TextField answerTextBox;
+
     private Boolean[] pressedEmote = {false, false, false, false, false};
 
     private Timer timer;
@@ -107,6 +110,8 @@ public class QuestionCtrl {
     private String selectedAnswer;
 
     private Timeline timeline;
+
+    public boolean halfTimeWasUsed = false;
 
 
     /**
@@ -128,21 +133,24 @@ public class QuestionCtrl {
                 
                 timeline = new Timeline( new KeyFrame(Duration.millis(1), e ->{
                     long timeToDisplay = 10000 - (new Date().getTime() - gameState.timeOfReceival);
-                    questionTime.setText("Time left: " + timeToDisplay/1000.0 + " seconds");
+                    questionTime.setText("Time left: " + String.format("%.3f", timeToDisplay/1000.0) + " seconds");
                 }));
                 timeline.setCycleCount(100000);
                 timeline.play();
 
-                answer1.setVisible(true);//in case an eliminate wrong answer power up was called in the previous round
-                answer2.setVisible(true);//we set everything visible
-                answer3.setVisible(true);
+                if(halfTimeWasUsed) {//TODO and type of question is MC
+                    halfTimeWasUsed = false;
+                    answer1.setVisible(true);//in case an eliminate wrong answer power up was called in the previous round
+                    answer2.setVisible(true);//we set everything visible
+                    answer3.setVisible(true);
+                }
 
                 break;
             case "halfTimePowerUp":
                 this.gameState = gameState;
                 timeline = new Timeline( new KeyFrame(Duration.millis(1), e ->{
                     long timeToDisplay = 10000 - (new Date().getTime() - gameState.timeOfReceival);
-                    questionTime.setText("Time left: " + timeToDisplay/1000.0 + " seconds");
+                    questionTime.setText("Time left: " + String.format("%.3f", timeToDisplay/1000.0) + " seconds");
                 }));
                 timeline.setCycleCount(100000);
                 timeline.play();
@@ -179,7 +187,13 @@ public class QuestionCtrl {
      * Sends the answer to the server, together with the gameState
      */
     public void SubmitPressed(ActionEvent actionEvent) throws IOException, InterruptedException {
-        AnswerCommunication.sendAnswer(selectedAnswer, gameState);
+        if(answer1.isVisible()){//if we have an MC question
+            AnswerCommunication.sendAnswer(selectedAnswer, gameState);
+        }else if(answerTextBox.isVisible()){//if we have an open question
+            selectedAnswer = answerTextBox.getText();
+            AnswerCommunication.sendAnswer(selectedAnswer, gameState);
+        }
+
     }
 
     /**

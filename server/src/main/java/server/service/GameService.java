@@ -87,8 +87,6 @@ public class GameService {
     //currentGame is the game where new players will join. Basically the lobby
     private Game currentGame;
 
-    int stateInteger = -1;//0 if state is QUESTION, 1 if state is INTERVAL
-
     private final GameRepository gameRepository = new GameRepository();
     private final PlayerRepository playerRepository = new PlayerRepository();
     private final QuestionService questionService;
@@ -99,7 +97,6 @@ public class GameService {
 
     @Autowired
     public GameService(QuestionService questionService, LongPollingService longPollingService) {
-        //make timeOfSent = -1 or 0 if awarding the proper amount of points is buggy
         this.questionService = questionService;
         this.longPollingService = longPollingService;
         createCurrentGame();
@@ -250,13 +247,6 @@ public class GameService {
      * @return the gameId
      */
     public long createGame() {
-        //TODO: Example questions till question import is fixed
-        //List<Question> questions = questionService.getAll();
-
-        //List<Question> questions = new ArrayList<>();
-        //questions = questionService.getAll();
-        //Game g = new Game(questions);
-        //gameRepository.save(g);
         return currentGame.id;
     }
 
@@ -333,7 +323,7 @@ public class GameService {
 
     /**
      * Initiates a singleplayer game
-     * @param gameId the id of the game to initiat
+     * @param gameId the id of the game to initiate
      * @throws IllegalArgumentException if the gameId is invalid.
      */
     public void initiateSingleplayerGame(long gameId) throws IllegalArgumentException {
@@ -380,7 +370,6 @@ public class GameService {
     }
     //methods that call each other back and forth to have a single game running.
     public void questionPhase(final Game game) {
-        stateInteger = 0;
 
         game.stage = GameState.Stage.QUESTION;
 
