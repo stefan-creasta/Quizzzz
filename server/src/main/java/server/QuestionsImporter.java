@@ -72,15 +72,15 @@ public class QuestionsImporter implements ApplicationRunner {
             }
             if (qtype == 1) { // Case for 'How much energy does it take to ...?'
                 String answer = String.format("%.0f", consumption_in_wh);
-                String wrongAnswer1 = String.format("%.0f", factors.get(rand.nextInt()%4) * consumption_in_wh);
-                String wrongAnswer2 = String.format("%.0f", factors.get(rand.nextInt()%4) * consumption_in_wh);
+                String wrongAnswer1 = String.format("%.0f", factors.get(rand.nextInt(4)) * consumption_in_wh);
+                String wrongAnswer2 = String.format("%.0f", factors.get(rand.nextInt(4)) * consumption_in_wh);
                 var imageRelativeURI = URI.create(image_path.replace(" ", "%20"));
                 String imageURL = imageURIRoot.resolve(imageRelativeURI).toURL().toString().replace("http://localhost:8080/images/", "images/");
                 q = new Question(id, title,answer,wrongAnswer1,wrongAnswer2);
                 q.questionImage = imageURL;
             }
             if (qtype == 2) {
-                // TODO
+
             }
             return q;
         }
