@@ -50,7 +50,7 @@ public class QuestionsImporter implements ApplicationRunner {
             }
             Collections.shuffle(factors);
 
-            int qtype = rand.nextInt(2);
+            int qtype = rand.nextInt(4);
             Question q = null;
             if (qtype == 0) { // Case for 'Instead of ..., you could ...'
                 Activity b = getEqualEnergy(this, activities);
@@ -79,8 +79,35 @@ public class QuestionsImporter implements ApplicationRunner {
                 q = new Question(id, title,answer,wrongAnswer1,wrongAnswer2, 1 + "");
                 q.questionImage = imageURL;
             }
-            if (qtype == 2) {
-
+            if (qtype == 2) { // Case for 'What requires more energy?'
+                Activity b = getDiffEnergy(this, activities);
+                Activity c = getDiffEnergy(this, activities);
+                while (c.id.equals(b.id))
+                    c = getDiffEnergy(this, activities);
+                String answer;
+                String wrongAnswer1;
+                String wrongAnswer2;
+                if (this.consumption_in_wh > b.consumption_in_wh && this.consumption_in_wh > c.consumption_in_wh) {
+                    answer = this.title;
+                    wrongAnswer1 = b.title;
+                    wrongAnswer2 = b.title;
+                } else if (this.consumption_in_wh < b.consumption_in_wh && b.consumption_in_wh > c.consumption_in_wh) {
+                    answer = b.title;
+                    wrongAnswer1 = this.title;
+                    wrongAnswer2 = b.title;
+                } else {
+                    answer = c.title;
+                    wrongAnswer1 = b.title;
+                    wrongAnswer2 = this.title;
+                }
+                // TODO modify the image shown for this question type
+                var imageRelativeURI = URI.create(image_path.replace(" ", "%20"));
+                String imageURL = imageURIRoot.resolve(imageRelativeURI).toURL().toString().replace("http://localhost:8080/images/", "images/");
+                q = new Question(id, "What requires more energy", answer, wrongAnswer1, wrongAnswer2);
+                q.questionImage = imageURL;
+            }
+            if (qtype == 3) { // Case for 'How much energy does it take?' Open question
+                // TODO
             }
             return q;
         }
