@@ -42,6 +42,7 @@ public class QuestionsImporter implements ApplicationRunner {
             //TODO: Check if an activity with the JSON id exists in the database
             while (service.existsById(questionIdGenerator))
                 questionIdGenerator++;
+
             id = questionIdGenerator;
 
             Collections.shuffle(factors);
@@ -110,11 +111,14 @@ public class QuestionsImporter implements ApplicationRunner {
                     q.questionImage = imageURL;
                     break;
                 case 3:// Case for 'How much energy does it take?' Open question
-                    //TODO
+                    answer = String.format("%.0f", consumption_in_wh);
+                    imageRelativeURI = URI.create(image_path.replace(" ", "%20"));
+                    imageURL = imageURIRoot.resolve(imageRelativeURI).toURL().toString().replace("http://localhost:8080/images/", "images/");
+                    q = new Question(id, title, answer,null,null,"3");
+                    q.questionImage = imageURL;
                     break;
             }
 
-            
             return q;
         }
 
