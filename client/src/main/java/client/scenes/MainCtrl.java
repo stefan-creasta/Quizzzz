@@ -238,7 +238,7 @@ public class MainCtrl {
                 questionCtrl.setQuestion(gameState.question);
                 break;
             case "intervalPhase"://called at the start of an interval phase
-                questionCtrl.markAnswer(gameState.question.answer, gameState.playerAnswer);
+                questionCtrl.markAnswer(gameState.question.answer, gameState.playerAnswer, gameState.question.type);
                 break;
             case "answerSubmitted":
                 break;

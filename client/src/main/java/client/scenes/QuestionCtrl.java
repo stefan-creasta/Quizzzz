@@ -467,15 +467,19 @@ public class QuestionCtrl {
 
     }
 
-    public void markAnswer(String correct, String ofplayer) {
-        for (Button answer : List.of(answer1, answer2, answer3)) {
-            answer.getStyleClass().removeAll("wrong", "right", "default");
-            if (answer.getText().equals(correct)) {
-                answer.getStyleClass().add("right");
-            } else if (answer.getText().equals(ofplayer)) {
-                answer.getStyleClass().add("wrong");
-            } else {
-                answer.getStyleClass().add("default");
+    public void markAnswer(String correct, String ofplayer, String type) {
+        if (type.equals("3")) {
+            answerTextBox.setText(correct);
+        } else {
+            for (Button answer : List.of(answer1, answer2, answer3)) {
+                answer.getStyleClass().removeAll("wrong", "right", "default");
+                if (answer.getText().equals(correct)) {
+                    answer.getStyleClass().add("right");
+                } else if (answer.getText().equals(ofplayer)) {
+                    answer.getStyleClass().add("wrong");
+                } else {
+                    answer.getStyleClass().add("default");
+                }
             }
         }
     }
