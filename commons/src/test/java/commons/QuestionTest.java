@@ -12,31 +12,32 @@ class QuestionTest {
 
     @Test
     void testEquals() {
-        Question q1 = new Question("a","a","a","a");
+        Question q1 = new Question(0,"a","a","a", "a" , "1");
         assertEquals(q1, q1);
     }
     @Test
     void testNotEquals() {
-        Question q1 = new Question("a","a","a","a");
-        Question q2 = new Question("a","a","a","b");
+        Question q1 = new Question(0,"a","a","a", "a" , "1");
+        Question q2 = new Question(1,"a","a","a", "a" , "1");
         assertNotEquals(q1, q2);
     }
 
     @Test
     void testHashCode() {
-        Question q1 = new Question("a","a","a","a");
-        assertEquals(-1190977743, HashCodeBuilder.reflectionHashCode(q1));
+        Question q1 = new Question(0,"a","a","a", "a" , "1");
+        assertEquals(-1116569146, HashCodeBuilder.reflectionHashCode(q1));
     }
 
     @Test
     void testToString() {
-        Question q1 = new Question("a","a","a","a");
+        Question q1 = new Question(0,"a","a","a", "a" , "1");
         assertLinesMatch(List.of(
                 "commons.Question@[0-9a-f]*\\[",
                 "  answer=a",
                 "  id=0",
                 "  question=a",
                 "  questionImage=<null>",
+                "  type=1",
                 "  wrongAnswer1=a",
                 "  wrongAnswer2=a",
         "]"
