@@ -202,7 +202,7 @@ public class GameService {
                         GameState gState = g.getState();
                         gState.timeOfReceival = p.timeOfReceival;
                         double toReduce = 0.5;//alter percentages if you want to by changing the double
-                        gState.timeOfReceival = (long) (gState.timeOfReceival - (10000 - (new Date().getTime() - gState.timeOfReceival))*toReduce);
+                        gState.timeOfReceival = gState.timeOfReceival - (10000 - (new Date().getTime() - gState.timeOfReceival))*toReduce;
                         p.timeOfReceival = gState.timeOfReceival;
                         gState.instruction = "halfTimePowerUp";
                         sendToPlayer(p.id, gState);
@@ -465,8 +465,8 @@ public class GameService {
         if((p.answer == null || p.answer.isEmpty())&&stateString.equals("QUESTION")){
 
             p.answer = ans;
-            p.timeToAnswer = (long) ((new Date().getTime() - p.timeOfReceival)/1000.0);
-            System.out.println("it took user " + (double) p.timeToAnswer + " seconds to answer");//debug
+            p.timeToAnswer = (new Date().getTime() - p.timeOfReceival)/1000.0;
+            System.out.println("it took user " + p.timeToAnswer + " seconds to answer");//debug
 
         }
     }
@@ -510,23 +510,58 @@ public class GameService {
         System.out.println("Score function has been called:");
         Question q = g.questions.get(g.currentQuestion);
         for (Player p : g.players) {
-            boolean inFunctionShouldReceive = false;
-            if (p.shouldReceiveDouble) {
-                p.shouldReceiveDouble = false;
-                inFunctionShouldReceive = true;
-                System.out.println("DOUBLE POINTS POWER UP TOOK PLACE IN SCORING");
-            }
-            if (p.answer != null && p.answer.equals(q.answer)) {
-                long toAdd = (long) (10.0 - p.timeToAnswer);
-                if (inFunctionShouldReceive) {
-                    toAdd = toAdd * 2;
+            if(q.type.equals("3")){//Open-ended
+                System.out.println("this question is open ended");//debug
+                boolean inFunctionShouldReceive = false;//check if double points was used
+                if (p.shouldReceiveDouble) {
+                    p.shouldReceiveDouble = false;
+                    inFunctionShouldReceive = true;
+                    System.out.println("DOUBLE POINTS POWER UP TOOK PLACE IN SCORING");
                 }
-                System.out.println("ANSWER IS CORRECT");
-                System.out.println("Player with id " + p.id + " won that many points - " + toAdd);
-                p.score = p.score + toAdd * 10;
-            }
-            p.answer = null;
+                if (p.answer != null) {
+                    double pAnswer = Integer.parseInt(p.answer);
+                    double qAnswer = Integer.parseInt(q.answer);
+                    double difference = Math.abs(pAnswer - qAnswer);
+                    System.out.println("Player with id " + p.id + "has this answer " + pAnswer + " and the question answer is " + q.answer);
+                    double toAdd = 0;
+                    if(difference < qAnswer/2){//award points only in this case
+                        System.out.println("player with id " + p.id + " will get awarded for the open question");
+                        double maxPoints = 10.0 - p.timeToAnswer;
+                        System.out.println("max points user should get are " + maxPoints);
+                        double ratio = (qAnswer - difference)/qAnswer;
+                        System.out.println("the ratio is " + ratio);
+                        toAdd = ratio*maxPoints;
+                        if (inFunctionShouldReceive) {
+                            toAdd = toAdd*2;
+                        }
+                        System.out.println("toadd is " + toAdd);
 
+                        p.score = p.score + toAdd * 10;
+                    }
+                    System.out.println("Player with id " + p.id + " won that many points - " + toAdd);
+                }
+
+            }else {//Multiple Choice
+                System.out.println("this question is MC");//debug
+                boolean inFunctionShouldReceive = false;//check if double points was used
+                if (p.shouldReceiveDouble) {
+                    p.shouldReceiveDouble = false;
+                    inFunctionShouldReceive = true;
+                    System.out.println("DOUBLE POINTS POWER UP TOOK PLACE IN SCORING");
+                }
+                double toAdd = 0;
+                if (p.answer != null && p.answer.equals(q.answer)) {
+                    toAdd = 10.0 - p.timeToAnswer;
+                    if (inFunctionShouldReceive) {
+                        toAdd = toAdd * 2;
+                    }
+                    System.out.println("ANSWER IS CORRECT");
+                    p.score = p.score + toAdd * 10;
+                }
+                System.out.println("Player with id " + p.id + " won that many points - " + toAdd);
+            }
+
+            p.answer = null;
         }
     }
 }

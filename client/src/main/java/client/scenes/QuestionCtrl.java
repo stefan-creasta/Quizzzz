@@ -140,7 +140,7 @@ public class QuestionCtrl {
                 }
                 
                 timeline = new Timeline( new KeyFrame(Duration.millis(1), e ->{
-                    long timeToDisplay = 10000 - (new Date().getTime() - gameState.timeOfReceival);
+                    double timeToDisplay = 10000 - (new Date().getTime() - gameState.timeOfReceival);
                     questionTime.setText("Time left: " + String.format("%.3f", timeToDisplay/1000.0) + " seconds");
                 }));
                 timeline.setCycleCount(100000);
@@ -149,7 +149,7 @@ public class QuestionCtrl {
                 break;
             case "halfTimePowerUp":
                 timeline = new Timeline( new KeyFrame(Duration.millis(1), e ->{
-                    long timeToDisplay = 10000 - (new Date().getTime() - gameState.timeOfReceival);
+                    double timeToDisplay = 10000 - (new Date().getTime() - gameState.timeOfReceival);
                     questionTime.setText("Time left: " + String.format("%.3f", timeToDisplay/1000.0) + " seconds");
                 }));
                 timeline.setCycleCount(100000);
