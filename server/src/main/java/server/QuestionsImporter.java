@@ -16,14 +16,14 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.nio.file.Paths;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Component
 public class QuestionsImporter implements ApplicationRunner {
     static long questionIdGenerator = 0;
+
+    public List<Activity> activities = null;
+
     public static class Activity {
         @JsonIgnore
         final List<Double> factors = new LinkedList<>(List.of(.25, .5, 2., 3.));
@@ -32,10 +32,11 @@ public class QuestionsImporter implements ApplicationRunner {
         public String image_path;
         public String title;
         public String source;
+        public Random rand = new Random();
 
         public Activity() {};
 
-        Question toQuestion(URI imageURIRoot, QuestionService service) throws MalformedURLException, UnsupportedEncodingException {
+        Question toQuestion(URI imageURIRoot, QuestionService service, List<Activity> activities) throws MalformedURLException, UnsupportedEncodingException {
             long id;
 
             //TODO: Check if an activity with the JSON id exists in the database
@@ -49,14 +50,70 @@ public class QuestionsImporter implements ApplicationRunner {
             }
             Collections.shuffle(factors);
 
-            String answer = String.format("%.0f", consumption_in_wh);
-            String wrongAnswer1 = String.format("%.0f", factors.get(0) * consumption_in_wh);
-            String wrongAnswer2 = String.format("%.0f", factors.get(1) * consumption_in_wh);
-            var imageRelativeURI = URI.create(image_path.replace(" ", "%20"));
-            String imageURL = imageURIRoot.resolve(imageRelativeURI).toURL().toString().replace("http://localhost:8080/images/", "images/");
-            Question q = new Question(id, title,answer,wrongAnswer1,wrongAnswer2);
-            q.questionImage = imageURL;
+            int qtype = rand.nextInt(2);
+            Question q = null;
+            if (qtype == 0) { // Case for 'Instead of ..., you could ...'
+                Activity b = getEqualEnergy(this, activities);
+                if (this.id.equals(b.id))
+                    qtype = 1;
+                else {
+                    String answer = b.title;
+                    b = getDiffEnergy(this, activities);
+                    String wrongAnswer1 = b.title;
+                    Activity c = getDiffEnergy(this, activities);
+                    while (c.id.equals(b.id))
+                        c = getDiffEnergy(this, activities);
+                    String wrongAnswer2 = c.title;
+                    var imageRelativeURI = URI.create(image_path.replace(" ", "%20"));
+                    String imageURL = imageURIRoot.resolve(imageRelativeURI).toURL().toString().replace("http://localhost:8080/images/", "images/");
+                    q = new Question(id, "Instead of '" + title + "', you could:", answer, wrongAnswer1, wrongAnswer2);
+                    q.questionImage = imageURL;
+                }
+            }
+            if (qtype == 1) { // Case for 'How much energy does it take to ...?'
+                String answer = String.format("%.0f", consumption_in_wh);
+                String wrongAnswer1 = String.format("%.0f", factors.get(rand.nextInt()%4) * consumption_in_wh);
+                String wrongAnswer2 = String.format("%.0f", factors.get(rand.nextInt()%4) * consumption_in_wh);
+                var imageRelativeURI = URI.create(image_path.replace(" ", "%20"));
+                String imageURL = imageURIRoot.resolve(imageRelativeURI).toURL().toString().replace("http://localhost:8080/images/", "images/");
+                q = new Question(id, title,answer,wrongAnswer1,wrongAnswer2);
+                q.questionImage = imageURL;
+            }
+            if (qtype == 2) {
+                // TODO
+            }
             return q;
+        }
+
+        /**
+         * Function that returns an activity with the same energy consumption as a given one.
+         * @param a Activity for which we want to find an equal.
+         * @return Activity with the same energy consumption as activity a.
+         */
+        public Activity getEqualEnergy(Activity a, List<Activity> activities) {
+            Random random = new Random();
+            Activity b = activities.get(random.nextInt(activities.size()));
+            int count = 0;
+            while ((a.id.equals(b.id) || a.consumption_in_wh != b.consumption_in_wh) && count<200) {
+                b = activities.get(random.nextInt(activities.size()));
+                count++;
+            }
+            if (count == 200)
+                return a;
+            return b;
+        }
+
+        /**
+         * Function that returns an activity with different energy consumption than a given one.
+         * @param a Activity for which we want to find a random different activity.
+         * @return Activity with a different energy consumption than activity a.
+         */
+        public Activity getDiffEnergy(Activity a, List<Activity> activities) {
+            Random random = new Random();
+            Activity b = activities.get(random.nextInt(activities.size()));
+            while (a.consumption_in_wh == b.consumption_in_wh)
+                b = activities.get(random.nextInt(activities.size()));
+            return b;
         }
     }
 
@@ -107,7 +164,7 @@ public class QuestionsImporter implements ApplicationRunner {
             throw new IllegalArgumentException();
         questionIdGenerator = 0;
         ObjectMapper mapper = new ObjectMapper();
-        List<Activity> activities = mapper.readValue(
+        activities = mapper.readValue(
             Paths.get("server/resources/images", path, "activities.json").toUri().toURL(),
             new TypeReference<>() {}
         );
@@ -116,7 +173,7 @@ public class QuestionsImporter implements ApplicationRunner {
         service.deleteAll();
         activities.stream().map(x -> {
             try {
-                return x.toQuestion(imageURIRoot, service);
+                return x.toQuestion(imageURIRoot, service, activities);
             } catch (MalformedURLException e) {
                 malformed.add(x.id);
             } catch (UnsupportedEncodingException e) {
