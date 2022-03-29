@@ -66,17 +66,17 @@ public class QuestionsImporter implements ApplicationRunner {
                     String wrongAnswer2 = c.title;
                     var imageRelativeURI = URI.create(image_path.replace(" ", "%20"));
                     String imageURL = imageURIRoot.resolve(imageRelativeURI).toURL().toString().replace("http://localhost:8080/images/", "images/");
-                    q = new Question(id, "Instead of '" + title + "', you could:", answer, wrongAnswer1, wrongAnswer2);
+                    q = new Question(id, "Instead of '" + title + "', you could:", answer, wrongAnswer1, wrongAnswer2, 0 + "");
                     q.questionImage = imageURL;
                 }
             }
-            if (qtype == 1) { // Case for 'How much energy does it take to ...?'
+            if (qtype == 1) { // Case for 'How much energy does it take to ...?', MC version
                 String answer = String.format("%.0f", consumption_in_wh);
                 String wrongAnswer1 = String.format("%.0f", factors.get(rand.nextInt(4)) * consumption_in_wh);
                 String wrongAnswer2 = String.format("%.0f", factors.get(rand.nextInt(4)) * consumption_in_wh);
                 var imageRelativeURI = URI.create(image_path.replace(" ", "%20"));
                 String imageURL = imageURIRoot.resolve(imageRelativeURI).toURL().toString().replace("http://localhost:8080/images/", "images/");
-                q = new Question(id, title,answer,wrongAnswer1,wrongAnswer2);
+                q = new Question(id, title,answer,wrongAnswer1,wrongAnswer2, 1 + "");
                 q.questionImage = imageURL;
             }
             if (qtype == 2) {

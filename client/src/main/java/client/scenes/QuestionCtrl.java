@@ -192,6 +192,8 @@ public class QuestionCtrl {
         }else if(answerTextBox.isVisible()){//if we have an open question
             selectedAnswer = answerTextBox.getText();
             AnswerCommunication.sendAnswer(selectedAnswer, gameState);
+        }else{
+            throw new IllegalArgumentException("we messed up the submitPressed function logic :(");
         }
 
     }
@@ -367,19 +369,7 @@ public class QuestionCtrl {
         root.addEventFilter(KeyEvent.KEY_PRESSED, this::KeyPressed);
         root.addEventFilter(KeyEvent.KEY_RELEASED, this::KeyReleased);
 
-        //remember to stop timeline everytime a Question phase starts
-
-
-        //comment/delete everything between these 2 comments ->
-
         timer = new Timer(0, 5);
-//        Timeline timeline= new Timeline( new KeyFrame(Duration.millis(1), e ->{
-////            questionTime.setText(timer.toTimerDisplayString());
-//        }));
-//        timeline.setCycleCount((int)timer.getDurationLong()/1000);
-//        timeline.play();
-
-        // <- comment/delete everything between these 2 comments later
 
         leaderboardRanks.setCellFactory(e -> {
             TableCell<LeaderboardEntry, String> indexCell = new TableCell<>();
@@ -433,9 +423,14 @@ public class QuestionCtrl {
         timer.synchronize(syncLong);
     }
 
+    /**
+     * Sets the new Question for the Question phase.
+     * @param q the new Question
+     */
     public void setQuestion(Question q) {
-        questionText.setText(q.question);
-        if (q.questionImage != null) {
+        questionText.setText(q.question);//sets the question Text
+
+        if (q.questionImage != null) {//sets the Image
             try {
                 questionImage.setImage(ImageCommunication.getImage("http://localhost:8080/" + q.questionImage));
             }
@@ -443,18 +438,30 @@ public class QuestionCtrl {
                 System.out.println("Failed to set the question image.");
             }
         }
-        List<String> answerList = new LinkedList<>(List.of(q.answer, q.wrongAnswer1, q.wrongAnswer2));
 
-        Collections.shuffle(answerList);
+        try{
+            if(!q.type.equals("3")){//if this is a MC question
+                List<String> answerList = new LinkedList<>(List.of(q.answer, q.wrongAnswer1, q.wrongAnswer2));
+                Collections.shuffle(answerList);
+                clearAnswer();
+                answer1.setText(answerList.get(0));
+                answer2.setText(answerList.get(1));
+                answer3.setText(answerList.get(2));
+                answerTextBox.setVisible(false);
+            }else{//if this is an open question
+                answer1.setVisible(false);
+                answer2.setVisible(false);
+                answer3.setVisible(false);
+                clearAnswer();
+                answerTextBox.setVisible(true);
+            }
+        }
+        catch(Exception exc){
+            exc.printStackTrace();
+            System.out.println("null pointer again????");
+        }
 
-        clearAnswer();
-        answer1.setText(answerList.get(0));
-        answer2.setText(answerList.get(1));
-        answer3.setText(answerList.get(2));
-
-        //Also reset the emotes so they can be pressed again for the new question.
-
-        for (int i=0; i<5; i++){
+        for (int i=0; i<5; i++){//Reset the emotes so they can be pressed again for the new question.
             pressedEmote[i] = false;
         }
 

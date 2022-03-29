@@ -26,6 +26,8 @@ public class Question {
     public String wrongAnswer2;
     @Column(name = "QUESTION_IMAGE")
     public String questionImage;
+    @Column(name = "TYPE")
+    public String type;
 
     private Question(){}
 
@@ -48,6 +50,15 @@ public class Question {
         this.answer = a;
         this.wrongAnswer1 = w1;
         this.wrongAnswer2 = w2;
+    }
+
+    public Question(long id, String q, String a, String w1, String w2, String type){
+        this.id = id;
+        this.question = q;
+        this.answer = a;
+        this.wrongAnswer1 = w1;
+        this.wrongAnswer2 = w2;
+        this.type = type;
     }
 
     @Override
