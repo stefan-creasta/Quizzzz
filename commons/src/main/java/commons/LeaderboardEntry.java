@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Date;
 
-import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
+import static org.apache.commons.lang3.builder.ToStringStyle.SIMPLE_STYLE;
 
 /**class to hold entries of a leaderboard
  */
@@ -61,6 +61,6 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
+        return ToStringBuilder.reflectionToString(this, SIMPLE_STYLE);
     }
 }
