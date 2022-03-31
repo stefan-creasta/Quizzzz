@@ -42,9 +42,10 @@ class LeaderboardEntryTest {
         Date d = new Date(3, 3, 3);
         //when(d.equals(d)).thenReturn(true);
         LeaderboardEntry l1 = new LeaderboardEntry("abc", 2, d);
+        LeaderboardEntry l4 = new LeaderboardEntry("abc", 2, d);
         LeaderboardEntry l2 = new LeaderboardEntry("cbd", 1, d);
         LeaderboardEntry l3 = new LeaderboardEntry("abc", 1, d);
-        assertTrue(l1.equals(l1));
+        assertTrue(l1.equals(l4));
         assertFalse(l1.equals(l2));
         assertFalse(l1.equals(l3));
     }
@@ -60,9 +61,14 @@ class LeaderboardEntryTest {
     void testToString() {
         Date d = new GregorianCalendar(3, 3, 3).getTime();
         LeaderboardEntry l2 = new LeaderboardEntry("abc", 2, d);
-        assertEquals(l2.toString(),"Tue Apr 03 00:00:00 CET 3,2,abc");
+        System.out.println(l2);
+        assertEquals(l2.toString(),"[\n" +
+                "date=Tue Apr 03 00:00:00 CET 3,\n" +
+                "score=2\n" +
+                "username=abc\n" +
+                "]");
 //        assertLinesMatch(List.of(
-//                "commons.LeaderboardEntry@[0-9a-f]*\\[",
+//                "\\[",
 //                "  date=" + d,
 //                "  score=2",
 //                "  username=abc",
