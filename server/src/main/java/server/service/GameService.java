@@ -421,15 +421,27 @@ public class GameService {
         }
         score(game);
         //switch to question phase 5 seconds later so the player has time to see the correctness of their answer
-        if (game.progressGame()) {
+
             new Thread(() -> {
                 try {
                     Thread.sleep(5_000);
-                    questionPhase(game);
+                        if (game.currentQuestion + 1 < game.questions.size()) {
+                        game.progressGame();
+                        questionPhase(game);
+                    } else {
+                        endingPhase(game);
+                    }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }).start();
+    }
+
+    public void endingPhase(final Game game) {
+        for (Player player : game.players) {
+            GameState state = game.getState(player);
+            state.instruction = "endingPhase";
+            sendToPlayer(player.id, state);
         }
     }
 
