@@ -224,7 +224,7 @@ public class GameService {
      */
     private void createCurrentGame() {
         List<Question> questions = new ArrayList<>();
-        questions = questionService.getAll();
+        questions = questionService.getRandom();
         currentGame = new Game(questions);
         gameRepository.save(currentGame);
     }
@@ -256,7 +256,7 @@ public class GameService {
      */
     public long createSingleplayerGame() {
         List<Question> questions = new ArrayList<>();
-        questions = questionService.getAll();
+        questions = questionService.getRandom();
         Game singleplayerGame = new Game(questions);
         gameRepository.save(singleplayerGame);
         return singleplayerGame.id;
