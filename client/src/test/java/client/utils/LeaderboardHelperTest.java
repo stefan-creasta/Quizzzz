@@ -1,4 +1,4 @@
-package client.scenes;
+package client.utils;
 
 import commons.LeaderboardEntry;
 import org.junit.jupiter.api.Test;
@@ -10,11 +10,11 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class GameEndingCtrlTest {
+class LeaderboardHelperTest {
 
     @Test
     void testPrepareLeaderboard() {
-        GameEndingCtrl ctrl = new GameEndingCtrl(null, null);
+        LeaderboardHelper helper = new LeaderboardHelper();
 
         List<LeaderboardEntry> testLeaderboard = new LinkedList<>();
 
@@ -27,7 +27,7 @@ class GameEndingCtrlTest {
             score -= 100;
         }
 
-        var result = ctrl.prepareLeaderboard(testLeaderboard, "G");
+        var result = helper.prepareLeaderboard(testLeaderboard, "G");
 
         var spec = new LinkedList<LeaderboardEntry>(List.of(
                 new LeaderboardEntry("A", 1500, date),
