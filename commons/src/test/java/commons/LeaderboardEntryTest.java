@@ -61,18 +61,11 @@ class LeaderboardEntryTest {
     void testToString() {
         Date d = new GregorianCalendar(3, 3, 3).getTime();
         LeaderboardEntry l2 = new LeaderboardEntry("abc", 2, d);
-        System.out.println(l2);
         assertEquals(l2.toString(),"[\n" +
                 "date=Tue Apr 03 00:00:00 CET 3,\n" +
                 "score=2\n" +
                 "username=abc\n" +
                 "]");
-//        assertLinesMatch(List.of(
-//                "\\[",
-//                "  date=" + d,
-//                "  score=2",
-//                "  username=abc",
-//                "]"
-//        ), Arrays.asList(l2.toString().split(System.lineSeparator())));
+
     }
 }
