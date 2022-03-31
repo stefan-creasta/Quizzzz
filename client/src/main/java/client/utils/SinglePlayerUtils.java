@@ -41,7 +41,7 @@ public class SinglePlayerUtils {
      */
     public List<LeaderboardEntry> readLeaderboardInGame() {
         try {
-            data = new Scanner(new File(filename)).useDelimiter("");
+            data = new Scanner(new File(filename));
         } catch (IOException e) {
             e.printStackTrace();
         }
