@@ -13,7 +13,7 @@ public class QuestionControllerTest {
 
     QuestionService service = mock(QuestionService.class);
     QuestionController controller = new QuestionController(service);
-    Question question = new Question("question", "answer", "wrong1", "wrong2");
+    Question question = new Question(0, "question", "answer", "wrong1", "wrong2", "1");
 
     @Test
     void getByIdTest1() {
@@ -38,7 +38,7 @@ public class QuestionControllerTest {
     @Test
     void isQuestionValidTest(){
         assertTrue(isQuestionValid(question));
-        assertFalse(isQuestionValid(new Question("", "1", "2", "3")));
+        assertFalse(isQuestionValid(new Question(0, "", "answer", "wrong1", "wrong2", "1")));
     }
 
 

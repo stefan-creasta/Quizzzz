@@ -14,7 +14,7 @@ public class QuestionServiceTest {
 
     QuestionRepository qRepo = mock(QuestionRepository.class);
     QuestionService qService = new QuestionService(qRepo);
-    Question question = new Question("question", "answer", "wrong1", "wrong2");
+    Question question = new Question(0, "question", "answer", "wrong1", "wrong2", "1");
 
     @BeforeEach
     public void setup(){

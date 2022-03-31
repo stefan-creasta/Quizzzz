@@ -31,13 +31,13 @@ public class Question {
 
     private Question(){}
 
-    public Question(String q, String a, String w1, String w2) {
-        this.question = q;
-        this.answer = a;
-        this.wrongAnswer1 = w1;
-        this.wrongAnswer2 = w2;
-        this.questionImage = null;
-    }
+//    public Question(String q, String a, String w1, String w2) {
+//        this.question = q;
+//        this.answer = a;
+//        this.wrongAnswer1 = w1;
+//        this.wrongAnswer2 = w2;
+//        this.questionImage = null;
+//    }
 
 //    public Question(String q, String a, String w1, String w2, String qi) {
 //        this(q, a, w1, w2);

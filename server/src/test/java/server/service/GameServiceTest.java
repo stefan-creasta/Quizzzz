@@ -18,7 +18,7 @@ public class GameServiceTest {
         QuestionService questionService = mock(QuestionService.class);
         LongPollingService longPollingService = mock(LongPollingService.class);
         when(questionService.getAll()).thenReturn(List.of(
-                new Question("a", "b", "c", "d")
+                new Question(0, "question", "answer", "wrong1", "wrong2", "1")
         ));
         GameService service = new GameService(questionService, longPollingService);
         long gameId = service.createGame();
