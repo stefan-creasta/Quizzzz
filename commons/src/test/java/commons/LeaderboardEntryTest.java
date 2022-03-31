@@ -40,12 +40,10 @@ class LeaderboardEntryTest {
     @Test
     void testEquals() {
         Date d = new Date(3, 3, 3);
-        //when(d.equals(d)).thenReturn(true);
         LeaderboardEntry l1 = new LeaderboardEntry("abc", 2, d);
-        LeaderboardEntry l4 = new LeaderboardEntry("abc", 2, d);
         LeaderboardEntry l2 = new LeaderboardEntry("cbd", 1, d);
         LeaderboardEntry l3 = new LeaderboardEntry("abc", 1, d);
-        assertTrue(l1.equals(l4));
+        assertTrue(l1.equals(l1));
         assertFalse(l1.equals(l2));
         assertFalse(l1.equals(l3));
     }
@@ -66,6 +64,5 @@ class LeaderboardEntryTest {
                 "score=2\n" +
                 "username=abc\n" +
                 "]");
-
     }
 }
