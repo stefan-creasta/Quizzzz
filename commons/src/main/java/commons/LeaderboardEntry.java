@@ -6,6 +6,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import java.util.Date;
 
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
@@ -20,6 +21,9 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
     public int score;
     public Date date;
 
+    @Transient
+    public int rank;
+
     private LeaderboardEntry() {
         this(null, 0);
     }
@@ -32,6 +36,7 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
         username = un;
         score = s;
         date = d;
+        rank = -1;
     }
 
     /**compares the entry to another. When a list of entries is sorted in ascending order the first items will be the

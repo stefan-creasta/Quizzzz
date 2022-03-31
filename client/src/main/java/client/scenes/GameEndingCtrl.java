@@ -37,7 +37,6 @@ public class GameEndingCtrl {
 
     @FXML
     public void initialize() {
-        leaderboardHelper.setTopN(5);
         leaderboardHelper.setRankColumnCellFactory(leaderboardRanks);
         leaderboardHelper.setUsernameColumnCellFactory(leaderboardUsernames);
         leaderboardHelper.setScoreColumnCellFactory(leaderboardScores);

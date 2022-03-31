@@ -2,18 +2,13 @@ package client.utils;
 
 import commons.LeaderboardEntry;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import static javafx.beans.binding.Bindings.createObjectBinding;
-
 public class LeaderboardHelper {
-    private final List<LeaderboardEntry> completeLeaderboard = new LinkedList<>();
-    private int topN = 5;
+    private int topN = -1;
 
     public LeaderboardHelper() {}
 
@@ -29,26 +24,7 @@ public class LeaderboardHelper {
      * @param column the rank TableColumn
      */
     public void setRankColumnCellFactory(TableColumn<LeaderboardEntry, String> column) {
-        column.setCellFactory(e -> {
-            TableCell<LeaderboardEntry, String> indexCell = new TableCell<>();
-            var rowProperty = indexCell.tableRowProperty();
-            var rowBinding = createObjectBinding(() -> {
-                TableRow<LeaderboardEntry> row = rowProperty.get();
-                if (row != null) {
-                    //This is why completeLeaderboard needs to be final.
-                    int rowIndex = completeLeaderboard.indexOf(row.getItem());
-                    if (row.getItem() == null) {
-                        return "";
-                    }
-                    else if (rowIndex < row.getTableView().getItems().size()) {
-                        return "#" + Integer.toString(rowIndex + 1);
-                    }
-                }
-                return null;
-            }, rowProperty);
-            indexCell.textProperty().bind(rowBinding);
-            return indexCell;
-        });
+        column.setCellValueFactory(e -> new SimpleStringProperty(e.getValue() == null ? "" : ("#" + e.getValue().rank)));
     }
 
     /**
@@ -74,22 +50,28 @@ public class LeaderboardHelper {
      * @return
      */
     public List<LeaderboardEntry> prepareLeaderboard(List<LeaderboardEntry> entries, String currentUsername) {
-        //This variable cannot be set because it needs to be final.
-        completeLeaderboard.removeIf(x -> true);
-        entries.forEach(completeLeaderboard::add);
-        List<LeaderboardEntry> displayedLeaderboard = new LinkedList<>(
-                entries.subList(0, Math.min(entries.size(), topN))
-        );
-        LeaderboardEntry localPlayerEntry = entries.stream().filter(
-                x -> x.username.equals(currentUsername)
-        ).findFirst().get();
-
-        if (!displayedLeaderboard.contains(localPlayerEntry)) {
-            if (entries.indexOf(localPlayerEntry) != topN)
-                //null is displayed as "..."
-                displayedLeaderboard.add(null);
-            displayedLeaderboard.add(localPlayerEntry);
+        for (int i = 0; i < entries.size(); i++) {
+            entries.get(i).rank = i + 1;
         }
-        return displayedLeaderboard;
+
+        if (topN == -1) {
+            return new LinkedList<>(entries);
+        }
+        else {
+            List<LeaderboardEntry> displayedLeaderboard = new LinkedList<>(
+                    entries.subList(0, Math.min(entries.size(), topN))
+            );
+            LeaderboardEntry localPlayerEntry = entries.stream().filter(
+                    x -> x.username.equals(currentUsername)
+            ).findFirst().get();
+
+            if (!displayedLeaderboard.contains(localPlayerEntry)) {
+                if (entries.indexOf(localPlayerEntry) != topN)
+                    //null is displayed as "..."
+                    displayedLeaderboard.add(null);
+                displayedLeaderboard.add(localPlayerEntry);
+            }
+            return displayedLeaderboard;
+        }
     }
 }
