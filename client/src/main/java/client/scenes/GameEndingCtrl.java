@@ -66,9 +66,11 @@ public class GameEndingCtrl {
     public void newGame(ActionEvent actionEvent) {
         mainCtrl.exitGame();
         if (mainCtrl.singleplayerGame) {
+            mainCtrl.setupSingleplayerGame();
             mainCtrl.initiateSingleplayerGame(new commons.Player(mainCtrl.getCurrentUsername(), 0));
         }
         else {
+            mainCtrl.setupMultiplayerGame();
             mainCtrl.joinGame(mainCtrl.getCurrentUsername());
         }
     }

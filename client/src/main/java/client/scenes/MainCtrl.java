@@ -118,8 +118,17 @@ public class MainCtrl {
         primaryStage.show();
     }
 
-    public void joinGame(String username) {
+    public void setupSingleplayerGame() {
+        singleplayerGame = true;
+        gameId = gameCommunication.createSingleplayerGame();
+    }
+
+    public void setupMultiplayerGame() {
+        singleplayerGame = false;
         gameId = gameCommunication.createGame();
+    }
+
+    public void joinGame(String username) {
         GameState state = gameCommunication.joinGame(gameId, username);
         handleGameState(state);
         serverListener.initialize(state.playerId, this);
@@ -127,6 +136,9 @@ public class MainCtrl {
     }
 
     public boolean checkUsername(String username) throws IOException, InterruptedException {
+        //In case the game that is being checked against is initiated in between username checks, accept the username
+        // for the new game. Therefore, we are resetting the multiplayer gameId each time a username attempt is made.
+        if (!singleplayerGame) setupMultiplayerGame();
         return gameCommunication.checkUsername(gameId, username);
     }
 
@@ -153,11 +165,11 @@ public class MainCtrl {
         primaryStage.setScene(splash);
     }
     public void chooseSingleplayer() {
-        singleplayerGame = true;
+        setupSingleplayerGame();
         showPlayer();
     }
     public void chooseMultiplayer() {
-        singleplayerGame = false;
+        setupMultiplayerGame();
         showPlayer();
     }
     public void showPlayer() {
