@@ -39,6 +39,7 @@ class LeaderboardHelperTest {
                 new LeaderboardEntry("G", 900, date)
         ));
         spec.add(5, null);
+        for (int i = 0; i < 7; i++) if (spec.get(i) != null) spec.get(i).rank = i + 1;
         assertEquals(spec, result);
     }
 
