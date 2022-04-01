@@ -69,6 +69,15 @@ public class QuestionCtrl {
     private Button halfTime;
 
     @FXML
+    private Label playerScore;
+
+    @FXML
+    private Label playerUsername;
+
+    @FXML
+    private Label playerRank;
+
+    @FXML
     private ImageView questionImage;
 
     @FXML
@@ -400,8 +409,6 @@ public class QuestionCtrl {
         });
         leaderboardUsernames.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().username));
         leaderboardScores.setCellValueFactory(e -> new SimpleStringProperty(Integer.toString(e.getValue().score)));
-
-
         emotesUsernameColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().username));
         emotesEmoteColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().type));
         emotes.setPlaceholder(new Label(""));
@@ -489,6 +496,7 @@ public class QuestionCtrl {
 
             ObservableList<LeaderboardEntry> entries = FXCollections.observableList(leaderboardEntries);
             leaderboard.setItems(entries);
+            updateCurrentPlayer(gameState);
             allLeaderboard.setVisible(true);
         }
         // if the current list of player in the lobby is one then the current game is  in single player mode
@@ -552,6 +560,15 @@ public class QuestionCtrl {
         System.out.println(emoteEntriesWithImage);
         ObservableList<EmoteEntry> emoteEntriesList = FXCollections.observableList(emoteEntriesWithImage);
         this.emotes.setItems(emoteEntriesList);
+    }
+    public void updateCurrentPlayer(GameState state){
+        for (LeaderboardEntry e: leaderboardEntries){
+            if(e.username.equals(state.username)){
+                playerUsername.setText(e.username);
+                playerScore.setText(String.valueOf(e.score));
+            }
+        }
+
     }
 }
 
