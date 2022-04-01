@@ -1,0 +1,33 @@
+- fix agenda - Anton is notetaker, not Alex
+- stand up meeting - everyone tells what they did
+- reviewing demo:
+- username bug, needs to be fixed
+- ending game in 20 questions feature not yet implemented
+- importing images works good
+- question counter works perfectly
+- question types - do not need some specific distinction as long as the requirements are met
+- check admin panel requirements, maybe we need to add more functionality
+- fix issue descriptions - copy paste from merge requests, definition of done should be better
+- smaller size commits, right now we are comitting too much code at once
+- JavaDoc is okay
+- do more testing, not enough
+- on clientside test only logic
+- normally test once per method
+- close issues with merge requests, right now we are not doing it
+- comments on gitlab - Jort needs more comments
+- server side, client side distribution - everyone is good
+- gameService, QuestionCtrl - redistribute them in smaller classes, methods in smaller methods
+- rework code of conduct
+- start working on clip, presentation
+- deadline for reflection assignment this Friday
+- trial on video, can arrange extra meeting next week, we do not have one planned
+don't spend too much time editing it, only for structure
+- will get QnA schedule soon - the oopp presentations in week 10
+- buddycheck deadline - next Friday
+- will get video requirements soon, staff is working on it
+- video : what makes our project the best,
+- grades can be separate - if TA say so, mostly 1 grade for the group in our case, though
+- we are doing well progress-wise
+- focus hard on presentation
+- reference material possible??
+- let Natalia know when we want to have the trial ASAP
