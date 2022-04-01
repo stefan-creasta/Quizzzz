@@ -113,7 +113,9 @@
     -fx-background-color: #3b315a;
     -fx-text-fill: white;
 }
-
+.allStats{
+    -fx-background-color: transparent;
+}
 .emotes {
     -fx-background-color: transparent;
 }

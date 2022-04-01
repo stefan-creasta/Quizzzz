@@ -4,11 +4,8 @@ import client.Communication.AnswerCommunication;
 import client.Communication.ImageCommunication;
 import client.Communication.PowerUpsCommunication;
 import com.google.inject.Inject;
-import commons.GameState;
-import commons.LeaderboardEntry;
-import commons.Question;
-import commons.*;
 import commons.Timer;
+import commons.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.SimpleStringProperty;
@@ -21,6 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
@@ -123,7 +121,6 @@ public class QuestionCtrl {
     private String selectedAnswer;
 
     private List<LeaderboardEntry> leaderboardEntries;
-
 
     private final MainCtrl mainCtrl;
 
@@ -562,13 +559,30 @@ public class QuestionCtrl {
         this.emotes.setItems(emoteEntriesList);
     }
     public void updateCurrentPlayer(GameState state){
-        for (LeaderboardEntry e: leaderboardEntries){
-            if(e.username.equals(state.username)){
+//        TablePosition pos = leaderboard.getSelectionModel().getSelectedCells().get(0);
+//        int row = pos.getRow();
+//        System.out.println(pos);
+        for (LeaderboardEntry e: leaderboardEntries) {
+            if (e.username.equals(state.username)) {
                 playerUsername.setText(e.username);
                 playerScore.setText(String.valueOf(e.score));
-            }
-        }
 
+            }
+
+        }
+//        for (int i=0;i<leaderboard.getItems().size();i++ ) {
+//            LeaderboardEntry item = leaderboard.getItems().get(i);
+//
+//            String rankString = leaderboardRanks.getCellObservableValue(item).getValue();
+//            System.out.println(rankString);
+//        }
+        // Item here is the table view type:
+        LeaderboardEntry item = leaderboard.getItems().get(0);
+
+        TableColumn col = leaderboard.getColumns().get(0);
+
+        // this gives the value in the selected cell:
+        String data = (String) col.getCellObservableValue(item).getValue();
     }
 }
 
