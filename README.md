@@ -58,7 +58,7 @@ Assuming that the activity bank to be imported resides under the server director
 `[project-root]\server\resources\images\activity-bank\activities.json`\
 exists, one needs to add `--activitiesSource=activity-bank` as a command line argument to the Spring run configuration or to a copy of it, as seen below.
 
-![](resources/readme-server-run-import.png)
+![](readme-server-run-import.png)
 
 ### Starting the Client
 
