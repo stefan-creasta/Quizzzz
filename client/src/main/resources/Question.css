@@ -69,7 +69,13 @@
     -fx-padding: 10 30 10 30;
     -fx-background-radius: 999px;
 }
-
+/*.allStats{*/
+/*    -fx-border-width: 4;*/
+/*}*/
+*.split-pane-divider {
+    -fx-padding: 0 1 0 1;
+    -fx-background-color: transparent;
+}
 .leaderboard {
     -fx-border-radius: 6;
     -fx-background-radius: 6;
@@ -97,6 +103,15 @@
 
 .leaderboard .rank-column {
     -fx-text-alignment: center;
+}
+
+.playerStats{
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-border-width: 4;
+    -fx-border-color: #fbe44d;
+    -fx-background-color: #3b315a;
+    -fx-text-fill: white;
 }
 
 .emotes {

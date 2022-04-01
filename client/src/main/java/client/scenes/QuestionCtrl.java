@@ -81,6 +81,9 @@ public class QuestionCtrl {
     private Label questionTime;
 
     @FXML
+    private SplitPane allLeaderboard;
+
+    @FXML
     private TableView<LeaderboardEntry> leaderboard;
 
     @FXML
@@ -486,7 +489,7 @@ public class QuestionCtrl {
 
             ObservableList<LeaderboardEntry> entries = FXCollections.observableList(leaderboardEntries);
             leaderboard.setItems(entries);
-            leaderboard.setVisible(true);
+            allLeaderboard.setVisible(true);
         }
         // if the current list of player in the lobby is one then the current game is  in single player mode
         if (mainCtrl.getPlayers().size() ==1){
@@ -494,7 +497,7 @@ public class QuestionCtrl {
 
             ObservableList<LeaderboardEntry> entries = FXCollections.observableList(leaderboardEntries);
             leaderboard.setItems(entries);
-            leaderboard.setVisible(true);
+            allLeaderboard.setVisible(true);
 
         }
     }
@@ -506,7 +509,7 @@ public class QuestionCtrl {
     }
 
     public void hideLeaderboard() {
-        leaderboard.setVisible(false);
+        allLeaderboard.setVisible(false);
     }
 
     /**
