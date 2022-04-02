@@ -23,8 +23,8 @@ public class GameState {
 
     public List<Emote> emotes;
 
-    public long timeToAnswer;//time it took them to answer in milliseconds
-    public long timeOfReceival;//time of receiving the question in milliseconds
+    public double timeToAnswer;//time it took them to answer in milliseconds
+    public double timeOfReceival;//time of receiving the question in milliseconds
 
     public GameState() {
 
