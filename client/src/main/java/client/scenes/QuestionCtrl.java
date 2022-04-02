@@ -486,7 +486,6 @@ public class QuestionCtrl {
     }
 
     public void showLeaderboard() {
-        try{
             // if the current list of player in the lobby is one then the current game is in multiplayer mode
         if (mainCtrl.singleplayerGame == false) {
             updateMultilayerLeaderboards();
@@ -498,19 +497,14 @@ public class QuestionCtrl {
             allLeaderboard.setVisible(true);
         }
         // if the current list of player in the lobby is one then the current game is  in single player mode
-        if (mainCtrl.getPlayers().size() ==1){
+        if (mainCtrl.singleplayerGame == true){
             updateSingleplayerLeaderboards();
 
             ObservableList<LeaderboardEntry> entries = FXCollections.observableList(leaderboardEntries);
             leaderboard.setItems(entries);
+            updateCurrentPlayer(gameState);
             allLeaderboard.setVisible(true);
 
-        }
-    }
-        catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
     }
 
