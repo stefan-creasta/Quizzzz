@@ -103,6 +103,12 @@ public class QuestionCtrl {
     @FXML
     private TextField answerTextBox;
 
+    @FXML
+    private ProgressBar timeBar;
+
+    @FXML
+    private Label scoreLabel;
+
     private Boolean[] pressedEmote = {false, false, false, false, false};
 
     private Timer timer;
@@ -150,17 +156,25 @@ public class QuestionCtrl {
                 timeline = new Timeline( new KeyFrame(Duration.millis(1), e ->{
                     double timeToDisplay = 10000 - (new Date().getTime() - gameState.timeOfReceival);
                     questionTime.setText("Time left: " + String.format("%.3f", timeToDisplay/1000.0) + " seconds");
+                    timeBar.setProgress(timeToDisplay/10000.0);
                 }));
-                timeline.setCycleCount(100000);
+                timeline.setCycleCount(10000);
                 timeline.play();
 
                 break;
             case "halfTimePowerUp":
                 timeline = new Timeline( new KeyFrame(Duration.millis(1), e ->{
                     double timeToDisplay = 10000 - (new Date().getTime() - gameState.timeOfReceival);
-                    questionTime.setText("Time left: " + String.format("%.3f", timeToDisplay/1000.0) + " seconds");
+                    if(timeToDisplay < 0){
+                        questionTime.setText("Time left: 0.000 seconds");
+                        timeBar.setProgress(0);
+                    }else{
+                        questionTime.setText("Time left: " + String.format("%.3f", timeToDisplay / 1000.0) + " seconds");
+                        timeBar.setProgress(timeToDisplay / 10000.0);
+                    }
+
                 }));
-                timeline.setCycleCount(100000);
+                timeline.setCycleCount(10000);
                 timeline.play();
                 //TODO time is already being halved, but make it explicit to the client, so that it is easily noticeable
                 break;
