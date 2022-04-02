@@ -488,9 +488,10 @@ public class QuestionCtrl {
     public void showLeaderboard() {
         try{
             // if the current list of player in the lobby is one then the current game is in multiplayer mode
-        if (mainCtrl.getPlayers().size() > 1) {
+        if (mainCtrl.singleplayerGame == false) {
             updateMultilayerLeaderboards();
 
+            System.out.println("SIZE FOR LEADERBOARD: " + leaderboardEntries.size());
             ObservableList<LeaderboardEntry> entries = FXCollections.observableList(leaderboardEntries);
             leaderboard.setItems(entries);
             updateCurrentPlayer(gameState);
@@ -570,8 +571,8 @@ public class QuestionCtrl {
                 playerUsername.setText(e.username);
                 playerScore.setText(String.valueOf(e.score));
                 playerRank.setText("#"+ String.valueOf(i + 1));
+                break;
             }
-
         }
     }
 }
