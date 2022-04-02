@@ -26,7 +26,7 @@ public class QuestionsImporter implements ApplicationRunner {
 
     public static class Activity {
         @JsonIgnore
-        final List<Double> factors = new LinkedList<>(List.of(.25, .5, 2., 3.));//TODO add more factors to make it more random
+        final List<Double> factors = new LinkedList<>(List.of(.25, .33, .4, .5, .66, .75, 1.25, 1.5, 2., 2.5, 3., 4.));
         public String id;
         public double consumption_in_wh;
         public String image_path;
@@ -79,8 +79,10 @@ public class QuestionsImporter implements ApplicationRunner {
                     break;
                 case 1: // Case for 'How much energy does it take to ...?', MC version
                     answer = String.format("%.0f", consumption_in_wh);
-                    wrongAnswer1 = String.format("%.0f", factors.get(rand.nextInt(4)) * consumption_in_wh);
-                    wrongAnswer2 = String.format("%.0f", factors.get(rand.nextInt(4)) * consumption_in_wh);
+                    int r1 = rand.nextInt(12);
+                    int p = rand.nextInt(11);
+                    wrongAnswer1 = String.format("%.0f", factors.get(r1) * consumption_in_wh);
+                    wrongAnswer2 = String.format("%.0f", factors.get((r1+p+1)%12) * consumption_in_wh);
                     imageRelativeURI = URI.create(image_path.replace(" ", "%20"));
                     imageURL = imageURIRoot.resolve(imageRelativeURI).toURL().toString().replace("http://localhost:8080/images/", "images/");
                     q = new Question(id, title,answer,wrongAnswer1,wrongAnswer2, 1 + "");
