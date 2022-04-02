@@ -137,6 +137,9 @@ public class QuestionCtrl {
         this.gameState = gameState;
         switch(gameState.instruction){
             case "questionPhase":
+                timeBar.setVisible(true);
+                questionTime.setVisible(true);
+                scoreLabel.setVisible(false);
                 //TODO: Update question number based on current question
                 this.questionTitle.setText("Question 10");
                 this.questionText.setText(gameState.question.question);
@@ -178,6 +181,11 @@ public class QuestionCtrl {
                 timeline.play();
                 //TODO time is already being halved, but make it explicit to the client, so that it is easily noticeable
                 break;
+            case "score":
+                timeBar.setVisible(false);
+                questionTime.setVisible(false);
+                scoreLabel.setText("You received: " + String.format("%.2f", gameState.thisScored) + " points!");
+                scoreLabel.setVisible(true);
         }
 
 

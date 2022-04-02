@@ -44,7 +44,6 @@
          </font></Button>
       <Button fx:id="halfTime" layoutX="724.0" layoutY="235.0" mnemonicParsing="false" onAction="#HalfTimeButtonPressed" prefWidth="230.0" stylesheets="@../../Question.css" text="Half time" />
       <Label layoutX="711.0" layoutY="27.0" styleClass="leaderboard-text" text="Hold Tab to see Leaderboard" textFill="WHITE" />
-      <Label fx:id="questionTime" layoutX="372.0" layoutY="527.0" styleClass="time-left" text="Time left: 7 seconds" />
       <TableView fx:id="leaderboard" layoutX="266.0" layoutY="86.0" prefHeight="412.0" prefWidth="479.0" styleClass="leaderboard">
         <columns>
           <TableColumn fx:id="leaderboardRanks" editable="false" prefWidth="117.55978393554688" text="Rank" />
@@ -84,6 +83,8 @@
          </font>
       </Button>
       <TextField fx:id="answerTextBox" layoutX="338.0" layoutY="352.0" prefHeight="70.0" prefWidth="243.0" promptText="Insert answer" />
-      <ProgressBar fx:id="timeBar" layoutX="235.0" layoutY="462.0" prefHeight="38.0" prefWidth="543.0" progress="1.0" />
+      <ProgressBar fx:id="timeBar" layoutX="250.0" layoutY="464.0" prefHeight="38.0" prefWidth="508.0" progress="1.0" />
+      <Label fx:id="questionTime" layoutX="372.0" layoutY="527.0" styleClass="time-left" text="Time left: 7 seconds" />
+      <Label fx:id="scoreLabel" layoutX="240.0" layoutY="471.0" prefHeight="118.0" prefWidth="521.0" styleClass="time-left" text="You scored x points" />
    </children>
 </AnchorPane>
