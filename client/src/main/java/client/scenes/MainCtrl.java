@@ -39,7 +39,7 @@ public class MainCtrl {
     private AddQuoteCtrl addCtrl;
     private Scene add;
 
-    private AddPlayerCtrl playerCtrl;
+    public AddPlayerCtrl playerCtrl;
     private Scene player;
 
     private LobbyCtrl lobbyCtrl;
@@ -125,13 +125,13 @@ public class MainCtrl {
 
     public void setupMultiplayerGame() {
         singleplayerGame = false;
-        gameId = gameCommunication.createGame();
+        gameId = gameCommunication.createGame(playerCtrl.serverString);
     }
 
     public void joinGame(String username) {
-        GameState state = gameCommunication.joinGame(gameId, username);
+        GameState state = gameCommunication.joinGame(gameId, username, playerCtrl.serverString);
         handleGameState(state);
-        serverListener.initialize(state.playerId, this);
+        serverListener.initialize(state.playerId, this, playerCtrl.serverString);
         currentUsername = username;
     }
 
@@ -139,7 +139,7 @@ public class MainCtrl {
         //In case the game that is being checked against is initiated in between username checks, accept the username
         // for the new game. Therefore, we are resetting the multiplayer gameId each time a username attempt is made.
         if (!singleplayerGame) setupMultiplayerGame();
-        return gameCommunication.checkUsername(gameId, username);
+        return gameCommunication.checkUsername(gameId, username, playerCtrl.serverString);
     }
 
     public void showOverview() {
@@ -207,7 +207,7 @@ public class MainCtrl {
     }
     
     public List<String> getPlayers() throws IOException, InterruptedException {
-        return gameCommunication.getPlayers(gameId);
+        return gameCommunication.getPlayers(gameId, playerCtrl.serverString);
     }
 
     public String getCurrentUsername() {
@@ -218,7 +218,7 @@ public class MainCtrl {
      * Sends a request to the server to initiate the game with ID gameId
      */
     public void initiateGame() {
-        gameCommunication.initiateGame(gameId);
+        gameCommunication.initiateGame(gameId, playerCtrl.serverString);
     }
 
     /**
@@ -233,12 +233,13 @@ public class MainCtrl {
      */
     public void initiateSingleplayerGame(Player newPlayer) {
         gameId = gameCommunication.createSingleplayerGame();
-        GameState state = gameCommunication.joinSingleplayerGame(gameId, newPlayer.username);
+        GameState state = gameCommunication.joinSingleplayerGame(gameId, newPlayer.username, playerCtrl.serverString);
         handleGameState(state);
-        serverListener.initialize(state.playerId, this);
-        gameCommunication.initiateSingleplayerGame(gameId);
+        serverListener.initialize(state.playerId, this, playerCtrl.serverString);
+        gameCommunication.initiateSingleplayerGame(gameId, playerCtrl.serverString);
         currentUsername = newPlayer.username;
     }
+
 
 
     /**
@@ -272,7 +273,7 @@ public class MainCtrl {
                 questionCtrl.updateGameState(gameState);
                 showQuestion();
                 questionCtrl.clearAnswer();
-                questionCtrl.setQuestion(gameState.question);
+                questionCtrl.setQuestion(gameState.question, playerCtrl.serverString);
                 break;
             case "intervalPhase"://called at the start of an interval phase
                 questionCtrl.markAnswer(gameState.question.answer, gameState.playerAnswer, gameState.question.type);

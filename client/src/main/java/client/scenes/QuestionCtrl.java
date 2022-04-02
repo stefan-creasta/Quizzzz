@@ -17,6 +17,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
+
+import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
@@ -113,6 +115,12 @@ public class QuestionCtrl {
 
     public boolean halfTimeWasUsed = false;
 
+    private MainCtrl mainCtrl;
+
+    @Inject
+    public QuestionCtrl(MainCtrl mainCtrl) {
+        this.mainCtrl = mainCtrl;
+    }
 
     /**
      * Updates the gameState for this particular client
@@ -188,10 +196,10 @@ public class QuestionCtrl {
      */
     public void SubmitPressed(ActionEvent actionEvent) throws IOException, InterruptedException {
         if(answer1.isVisible()){//if we have an MC question
-            AnswerCommunication.sendAnswer(selectedAnswer, gameState);
+            AnswerCommunication.sendAnswer(selectedAnswer, gameState, mainCtrl.playerCtrl.serverString);
         }else if(answerTextBox.isVisible()){//if we have an open question
             selectedAnswer = answerTextBox.getText();
-            AnswerCommunication.sendAnswer(selectedAnswer, gameState);
+            AnswerCommunication.sendAnswer(selectedAnswer, gameState, mainCtrl.playerCtrl.serverString);
         }else{
             throw new IllegalArgumentException("we messed up the submitPressed function logic :(");
         }
@@ -206,7 +214,7 @@ public class QuestionCtrl {
     void AngryEmotePressed(ActionEvent event) throws IOException, InterruptedException {
         if (!pressedEmote[0]) {
             Emote emote = new Emote(Emote.Type.Angry, gameState.username, gameState.gameId);
-            AnswerCommunication.sendEmote(emote);
+            AnswerCommunication.sendEmote(emote, mainCtrl.playerCtrl.serverString);
             pressedEmote[0] = true;
         }
     }
@@ -219,7 +227,7 @@ public class QuestionCtrl {
     void LOLEmotePressed(ActionEvent event) throws IOException, InterruptedException {
         if (!pressedEmote[1]) {
             Emote emote = new Emote(Emote.Type.LOL, gameState.username, gameState.gameId);
-            AnswerCommunication.sendEmote(emote);
+            AnswerCommunication.sendEmote(emote, mainCtrl.playerCtrl.serverString);
             pressedEmote[1] = true;
         }
     }
@@ -232,7 +240,7 @@ public class QuestionCtrl {
     void SweatEmotePressed(ActionEvent event) throws IOException, InterruptedException {
         if (!pressedEmote[2]) {
             Emote emote = new Emote(Emote.Type.Sweat, gameState.username, gameState.gameId);
-            AnswerCommunication.sendEmote(emote);
+            AnswerCommunication.sendEmote(emote, mainCtrl.playerCtrl.serverString);
             pressedEmote[2] = true;
         }
     }
@@ -245,7 +253,7 @@ public class QuestionCtrl {
     void ClapEmotePressed(ActionEvent event) throws IOException, InterruptedException {
         if (!pressedEmote[3]) {
             Emote emote = new Emote(Emote.Type.Clap, gameState.username, gameState.gameId);
-            AnswerCommunication.sendEmote(emote);
+            AnswerCommunication.sendEmote(emote, mainCtrl.playerCtrl.serverString);
             pressedEmote[3] = true;
         }
     }
@@ -258,7 +266,7 @@ public class QuestionCtrl {
     void WinEmotePressed(ActionEvent event) throws IOException, InterruptedException {
         if (!pressedEmote[4]) {
             Emote emote = new Emote(Emote.Type.Win, gameState.username, gameState.gameId);
-            AnswerCommunication.sendEmote(emote);
+            AnswerCommunication.sendEmote(emote, mainCtrl.playerCtrl.serverString);
             pressedEmote[4] = true;
         }
     }
@@ -271,7 +279,7 @@ public class QuestionCtrl {
      * up is used and all players are alerted.
      */
     public void DoublePointsButtonPressed(ActionEvent event) throws IOException, InterruptedException {
-        String result = PowerUpsCommunication.sendPowerUps("doublePointsPowerUp", gameState);
+        String result = PowerUpsCommunication.sendPowerUps("doublePointsPowerUp", gameState, mainCtrl.playerCtrl.serverString);
 
         try {
             if (result.split("___")[1].equals("success")) {
@@ -293,7 +301,7 @@ public class QuestionCtrl {
      * and the wrong answer button is made invisible and inaccessible. Also other players are alerted.
      */
     void EliminateWrongAnswerButtonPressed(ActionEvent event) throws IOException, InterruptedException {
-        String result = PowerUpsCommunication.sendPowerUps("eliminateWrongAnswerPowerUp", gameState);
+        String result = PowerUpsCommunication.sendPowerUps("eliminateWrongAnswerPowerUp", gameState, mainCtrl.playerCtrl.serverString);
 
         try {
             if (result.split("___")[1].equals("success")) {
@@ -327,7 +335,7 @@ public class QuestionCtrl {
      * and the time of all other players is halved.//TODO finish
      */
     void HalfTimeButtonPressed(ActionEvent event) throws IOException, InterruptedException {
-        String result = PowerUpsCommunication.sendPowerUps("halfTimePowerUp", gameState);
+        String result = PowerUpsCommunication.sendPowerUps("halfTimePowerUp", gameState, mainCtrl.playerCtrl.serverString);
         try {
             if (result.split("___")[1].equals("success")) {
                 System.out.println("halftime has been used but maybe not implemented yet");
@@ -423,16 +431,21 @@ public class QuestionCtrl {
         timer.synchronize(syncLong);
     }
 
+
+
     /**
      * Sets the new Question for the Question phase.
      * @param q the new Question
      */
-    public void setQuestion(Question q) {
+    public void setQuestion(Question q, String serverString) {
         questionText.setText(q.question);//sets the question Text
 
         if (q.questionImage != null) {//sets the Image
             try {
-                questionImage.setImage(ImageCommunication.getImage("http://localhost:8080/" + q.questionImage));
+                System.out.println("serverString is: " + serverString);
+                System.out.println("serverString is: " + serverString);
+                System.out.println("serverString is: " + serverString);
+                questionImage.setImage(ImageCommunication.getImage(serverString + "/" + q.questionImage));
             }
             catch (IOException e) {
                 System.out.println("Failed to set the question image.");

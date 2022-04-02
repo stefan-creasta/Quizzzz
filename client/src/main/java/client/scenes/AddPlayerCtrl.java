@@ -19,6 +19,7 @@ import client.Communication.GameCommunication;
 import client.Communication.ServerListener;
 import com.google.inject.Inject;
 import commons.Player;
+import commons.Question;
 import jakarta.ws.rs.WebApplicationException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -33,6 +34,7 @@ public class AddPlayerCtrl {
     private final MainCtrl mainCtrl;
     private final ServerListener serverListener;
     private final GameCommunication gameCommunication;
+    public String serverString = "not_initialized";
 
     @FXML
     private TextField usernameField;
@@ -40,7 +42,7 @@ public class AddPlayerCtrl {
     private TextField serverField;
 
     @Inject
-    public AddPlayerCtrl( MainCtrl mainCtrl, ServerListener serverListener, GameCommunication gameCommunication) {
+    public AddPlayerCtrl(MainCtrl mainCtrl, ServerListener serverListener, GameCommunication gameCommunication) {
         this.mainCtrl = mainCtrl;
         this.serverListener = serverListener;
         this.gameCommunication = gameCommunication;
@@ -58,6 +60,8 @@ public class AddPlayerCtrl {
     }
 
     public void play() throws IOException, InterruptedException {
+        serverString = serverField.getText();
+        // here instead of in the multplayer clause
         Player newPlayer = getPlayer();
         //if the game is singleplayer, then the game can start
         if(mainCtrl.singleplayerGame) {
