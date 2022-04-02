@@ -46,7 +46,7 @@
       <Label layoutX="711.0" layoutY="27.0" styleClass="leaderboard-text" text="Hold Tab to see Leaderboard" textFill="WHITE" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="40.0" layoutX="223.0" layoutY="462.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="loading-bar" width="529.0" />
       <Label fx:id="questionTime" layoutX="372.0" layoutY="527.0" styleClass="time-left" text="Time left: 7 seconds" />
-      <SplitPane fx:id="allLeaderboard" dividerPositions="0.8652522935779818" layoutX="300.0" layoutY="150.0" orientation="VERTICAL" prefHeight="350.0" prefWidth="488.0" styleClass="allStats">
+      <SplitPane fx:id="allLeaderboard" dividerPositions="0.8652522935779818" layoutX="300.0" layoutY="121.0" orientation="VERTICAL" prefHeight="379.0" prefWidth="488.0" styleClass="allStats">
         <items>
             <TableView fx:id="leaderboard" prefHeight="266.0" prefWidth="478.0" styleClass="leaderboard">
               <columns>
@@ -55,7 +55,7 @@
                   <TableColumn fx:id="leaderboardScores" editable="false" minWidth="0.0" prefWidth="157.60000000000002" text="Score" />
               </columns>
             </TableView>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="74.0" prefWidth="478.0" styleClass="playerStats">
+          <AnchorPane fx:id="playerPosition" minHeight="0.0" minWidth="0.0" prefHeight="74.0" prefWidth="478.0" styleClass="playerStats">
                <children>
                   <Label fx:id="playerRank" layoutX="7.0" layoutY="-4.0" prefHeight="54.0" prefWidth="147.0" text="#3" textAlignment="CENTER" textFill="WHITE">
                      <font>

@@ -12,10 +12,12 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
@@ -65,6 +67,9 @@ public class QuestionCtrl {
 
     @FXML
     private Button halfTime;
+
+    @FXML
+    private AnchorPane playerPosition;
 
     @FXML
     private Label playerScore;
@@ -409,9 +414,9 @@ public class QuestionCtrl {
         emotesUsernameColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().username));
         emotesEmoteColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().type));
         emotes.setPlaceholder(new Label(""));
+        leaderboard.addEventFilter(ScrollEvent.ANY, Event::consume);
         hideLeaderboard();
-        }
-
+    }
 
     /**
      * Makes an FXML element visible/invisible
@@ -493,7 +498,6 @@ public class QuestionCtrl {
             System.out.println("SIZE FOR LEADERBOARD: " + leaderboardEntries.size());
             ObservableList<LeaderboardEntry> entries = FXCollections.observableList(leaderboardEntries);
             leaderboard.setItems(entries);
-            updateCurrentPlayer(gameState);
             allLeaderboard.setVisible(true);
         }
         // if the current list of player in the lobby is one then the current game is  in single player mode
@@ -522,6 +526,28 @@ public class QuestionCtrl {
         try {
             leaderboardEntries = mainCtrl.getMultiplayerLeaderboards();
             Collections.sort(leaderboardEntries);
+            List<LeaderboardEntry> auxiliarList = new ArrayList<>();
+            for(int i = 0; i <= 4 && i < leaderboardEntries.size(); i++) {
+                auxiliarList.add(leaderboardEntries.get(i));
+            }
+            int currentPlayerPosition = -1;
+            for(int i = 0; i < leaderboardEntries.size(); i++) {
+                if(gameState.username.equals(leaderboardEntries.get(i).username)) {
+                    currentPlayerPosition = i;
+                    break;
+                }
+            }
+            System.out.println("PLAYER POSITION E: " + currentPlayerPosition);
+            if(currentPlayerPosition != -1) {
+                if(currentPlayerPosition <= 4) {
+                    System.out.println("PLAYER POSITION E FALS");
+                    playerPosition.setVisible(false);
+                }
+                else {
+                    updateCurrentPlayer(gameState);
+                }
+            }
+            leaderboardEntries = auxiliarList;
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
