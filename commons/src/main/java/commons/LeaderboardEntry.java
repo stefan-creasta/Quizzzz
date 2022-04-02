@@ -2,13 +2,10 @@ package commons;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Date;
-
-import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 /**class to hold entries of a leaderboard
  */
@@ -61,6 +58,8 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
+        return String.format(  "[\n"+"date="+this.date+ ",\n" +
+                                "score="+this.score +"\n"+
+                                "username="+this.username+"\n"+"]");
     }
 }
