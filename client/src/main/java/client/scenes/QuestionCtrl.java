@@ -379,7 +379,7 @@ public class QuestionCtrl {
 
         //comment/delete everything between these 2 comments ->
 
-        timer = new Timer(0, 5);
+//        timer = new Timer(0, 5);
 //        Timeline timeline= new Timeline( new KeyFrame(Duration.millis(1), e ->{
 ////            questionTime.setText(timer.toTimerDisplayString());
 //        }));
@@ -569,7 +569,7 @@ public class QuestionCtrl {
             if (e.username.equals(state.username)) {
                 playerUsername.setText(e.username);
                 playerScore.setText(String.valueOf(e.score));
-                playerRank.setText(String.valueOf(i + 1));
+                playerRank.setText("#"+ String.valueOf(i + 1));
             }
 
         }
