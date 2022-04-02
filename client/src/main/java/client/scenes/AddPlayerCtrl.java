@@ -19,7 +19,6 @@ import client.Communication.GameCommunication;
 import client.Communication.ServerListener;
 import com.google.inject.Inject;
 import commons.Player;
-import commons.Question;
 import jakarta.ws.rs.WebApplicationException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
