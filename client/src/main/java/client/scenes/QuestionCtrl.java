@@ -558,10 +558,12 @@ public class QuestionCtrl {
         ObservableList<EmoteEntry> emoteEntriesList = FXCollections.observableList(emoteEntriesWithImage);
         this.emotes.setItems(emoteEntriesList);
     }
+
+    /**
+     * Allows the current user to see their own scores and ranks at the bottom of the leaderboard
+     * @param state
+     */
     public void updateCurrentPlayer(GameState state){
-//        TablePosition pos = leaderboard.getSelectionModel().getSelectedCells().get(0);
-//        int row = pos.getRow();
-//        System.out.println(pos);
         for (int i = 0; i < leaderboardEntries.size(); i++) {
             LeaderboardEntry e = leaderboardEntries.get(i);
             if (e.username.equals(state.username)) {
@@ -571,20 +573,6 @@ public class QuestionCtrl {
             }
 
         }
-//        for (int i=0;i<leaderboard.getItems().size();i++ ) {
-//            LeaderboardEntry item = leaderboard.getItems().get(i);
-//
-//            String rankString = leaderboardRanks.getCellObservableValue(item).getValue();
-//            System.out.println(rankString);
-//        }
-        // Item here is the table view type:
-        /**LeaderboardEntry item = leaderboard.getItems().get(0);
-
-        TableColumn col = leaderboard.getColumns().get(0);
-
-        // this gives the value in the selected cell:
-        String data = (String) col.getCellObservableValue(item).getValue();
-         */
     }
 }
 
