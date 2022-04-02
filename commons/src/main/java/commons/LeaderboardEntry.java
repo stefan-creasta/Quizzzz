@@ -2,10 +2,14 @@ package commons;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import java.util.Date;
+
+import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 /**class to hold entries of a leaderboard
  */
@@ -16,6 +20,9 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
 
     public int score;
     public Date date;
+
+    @Transient
+    public int rank;
 
     private LeaderboardEntry() {
         this(null, 0);
@@ -29,6 +36,7 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
         username = un;
         score = s;
         date = d;
+        rank = -1;
     }
 
     /**compares the entry to another. When a list of entries is sorted in ascending order the first items will be the
@@ -58,8 +66,7 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
 
     @Override
     public String toString() {
-        return String.format(  "[\n"+"date="+this.date+ ",\n" +
-                                "score="+this.score +"\n"+
-                                "username="+this.username+"\n"+"]");
+        return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
     }
+
 }

@@ -22,7 +22,7 @@ public class AdminInterfaceCtrl {
     }
 
     public void back(ActionEvent actionEvent) {
-        mainCtrl.showPlayer();
+        mainCtrl.showSplashScreen();
     }
 
     public void importQuestions(ActionEvent actionEvent) {

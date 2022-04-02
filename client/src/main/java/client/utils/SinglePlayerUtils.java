@@ -47,12 +47,14 @@ public class SinglePlayerUtils {
         }
         entries = new ArrayList<>();
         while (data.hasNextLine()) {
-            String objectName, dateString, username,stuff,scoring;
+            String objectName, dateString, username,stuff,scoring,ranks;
             String[] date;
             String[] scoreLine;
             Integer score;
             objectName = data.nextLine();
-            dateString = data.nextLine().split("=")[1];
+            dateString = data.nextLine();
+            ranks = data.nextLine();
+
             score = Integer.parseInt(data.nextLine().split("=")[1]);
             username = data.nextLine().split("=")[1];
             stuff = data.nextLine();

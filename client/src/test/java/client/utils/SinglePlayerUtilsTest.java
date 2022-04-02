@@ -1,14 +1,12 @@
-package client.Utils;
+package client.utils;
 
-import client.utils.SinglePlayerUtils;
 import commons.LeaderboardEntry;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class SinglePlayerUtilsTest {
     @Test
@@ -35,7 +33,7 @@ class SinglePlayerUtilsTest {
         list.add(l3);
         SinglePlayerUtils utils = new SinglePlayerUtils();
         List<LeaderboardEntry> test = utils.readLeaderboardInGame();
-        assertEquals(list.get(1).toString(),test.get(1).toString());
+        assertTrue(list.get(1).username.equals((test.get(1)).username));
 
     }
 
