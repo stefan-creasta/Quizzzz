@@ -6,10 +6,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -25,6 +26,8 @@ public class LobbyCtrl implements Initializable {
     private Button startButton;
     @FXML
     private Button leaveButton;
+    @FXML
+    private AnchorPane mainPane;
     @FXML
     private TableView<String> table;
     @FXML
@@ -64,5 +67,17 @@ public class LobbyCtrl implements Initializable {
         mainCtrl.initiateGame();
         mainCtrl.showQuestion();
         //System.out.println(lobbyCommunication.getPlayers().size());
+    }
+
+    @FXML
+    public void leaveGame() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Exit game");
+        alert.setHeaderText("You're about to exit the game!");
+        alert.setContentText("Are you sure?");
+        if(alert.showAndWait().get() == ButtonType.OK) {
+            Stage stage = (Stage)mainPane.getScene().getWindow();
+            stage.close();
+        }
     }
 }

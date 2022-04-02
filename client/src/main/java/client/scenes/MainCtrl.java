@@ -22,6 +22,8 @@ import commons.LeaderboardEntry;
 import commons.Player;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -117,6 +119,10 @@ public class MainCtrl {
         //showPlayer();
         //showQuestion();
         primaryStage.show();
+        primaryStage.setOnCloseRequest(event -> {
+            event.consume();
+            exitGame(primaryStage);
+        });
     }
 
     public void setupSingleplayerGame() {
@@ -304,6 +310,16 @@ public class MainCtrl {
                 break;
             case "answerSubmitted":
                 break;
+        }
+    }
+
+    public void exitGame(Stage stage) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Exit game");
+        alert.setHeaderText("You're about to exit the game!");
+        alert.setContentText("Are you sure?");
+        if(alert.showAndWait().get() == ButtonType.OK) {
+            stage.close();
         }
     }
 }
