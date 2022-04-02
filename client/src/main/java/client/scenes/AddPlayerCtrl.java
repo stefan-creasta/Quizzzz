@@ -36,6 +36,8 @@ public class AddPlayerCtrl {
 
     @FXML
     private TextField usernameField;
+    @FXML
+    private TextField serverField;
 
     @Inject
     public AddPlayerCtrl( MainCtrl mainCtrl, ServerListener serverListener, GameCommunication gameCommunication) {
@@ -44,20 +46,26 @@ public class AddPlayerCtrl {
         this.gameCommunication = gameCommunication;
     }
 
+    /**
+     * Gets called when a player decides to go back to the main screen by pressing ESCAPE or a button that will lead
+     * there, that is not implemented yet.
+     * @throws IOException can be thrown
+     * @throws InterruptedException can be thrown
+     */
     public void cancel() throws IOException, InterruptedException {
         clearFields();
-        mainCtrl.showLobby();
+        mainCtrl.showSplashScreen();
     }
 
     public void play() throws IOException, InterruptedException {
         Player newPlayer = getPlayer();
         //if the game is singleplayer, then the game can start
-        if(mainCtrl.singleplayerGame == true) {
+        if(mainCtrl.singleplayerGame) {
             mainCtrl.initiateSingleplayerGame(newPlayer);
             mainCtrl.showQuestion();
         }
         else {
-            if (mainCtrl.checkUsername(newPlayer.username) == true) {
+            if (mainCtrl.checkUsername(newPlayer.username)) {
                 try {
                     mainCtrl.joinGame(newPlayer.username);
 
