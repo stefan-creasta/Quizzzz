@@ -99,7 +99,6 @@ public class GameService {
     public GameService(QuestionService questionService, LongPollingService longPollingService) {
         this.questionService = questionService;
         this.longPollingService = longPollingService;
-        createCurrentGame();
     }
 
     /**
@@ -247,6 +246,8 @@ public class GameService {
      * @return the gameId
      */
     public long createGame() {
+        if (currentGame == null)
+            createCurrentGame();
         return currentGame.id;
     }
 

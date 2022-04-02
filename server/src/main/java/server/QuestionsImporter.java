@@ -11,6 +11,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 import server.service.QuestionService;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -106,11 +107,18 @@ public class QuestionsImporter implements ApplicationRunner {
                         wrongAnswer1 = b.title;
                         wrongAnswer2 = this.title;
                     }
-                    // TODO modify the image shown for this question type
-                    imageRelativeURI = URI.create(image_path.replace(" ", "%20"));
-                    imageURL = imageURIRoot.resolve(imageRelativeURI).toURL().toString().replace("http://localhost:8080/images/", "images/");
+                    List<String> allCustomImages = new ArrayList<>();
+                    File folder = new File("server/resources/images/custom-images");
+                    for (final File fileEntry : folder.listFiles()) {
+                        if (fileEntry.isFile()) {
+                            allCustomImages.add(fileEntry.getName());
+                        } else {
+                            System.out.println(fileEntry.getName());
+                        }
+                    }
+                    imageURL = allCustomImages.get(rand.nextInt(allCustomImages.size()));
                     q = new Question(id, "What requires more energy?", answer, wrongAnswer1, wrongAnswer2, "2");
-                    q.questionImage = imageURL;
+                    q.questionImage = "images/custom-images/" + imageURL;
                     break;
                 case 3:// Case for 'How much energy does it take?' Open question
                     answer = String.format("%.0f", consumption_in_wh);
