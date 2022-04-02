@@ -1,3 +1,4 @@
+
 .main {
     -fx-background-color: #8b57a0;
 }
@@ -69,6 +70,7 @@
     -fx-padding: 10 30 10 30;
     -fx-background-radius: 999px;
 }
+
 /*.allStats{*/
 /*    -fx-border-width: 4;*/
 /*}*/
