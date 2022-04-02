@@ -63,6 +63,7 @@ class LeaderboardEntryTest {
         assertLinesMatch(List.of(
                 "commons.LeaderboardEntry@[0-9a-f]*\\[",
                 "  date=" + d,
+                "  rank=-1",
                 "  score=2",
                 "  username=abc",
                 "]"

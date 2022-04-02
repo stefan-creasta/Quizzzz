@@ -99,5 +99,6 @@ public class ServerListener {
      */
     public void stopListening() {
         listeningThreadKeepAlive.set(false);
+        listeningThread.interrupt();
     }
 }
