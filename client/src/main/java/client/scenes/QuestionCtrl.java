@@ -562,11 +562,12 @@ public class QuestionCtrl {
 //        TablePosition pos = leaderboard.getSelectionModel().getSelectedCells().get(0);
 //        int row = pos.getRow();
 //        System.out.println(pos);
-        for (LeaderboardEntry e: leaderboardEntries) {
+        for (int i = 0; i < leaderboardEntries.size(); i++) {
+            LeaderboardEntry e = leaderboardEntries.get(i);
             if (e.username.equals(state.username)) {
                 playerUsername.setText(e.username);
                 playerScore.setText(String.valueOf(e.score));
-
+                playerRank.setText(String.valueOf(i + 1));
             }
 
         }
@@ -577,12 +578,13 @@ public class QuestionCtrl {
 //            System.out.println(rankString);
 //        }
         // Item here is the table view type:
-        LeaderboardEntry item = leaderboard.getItems().get(0);
+        /**LeaderboardEntry item = leaderboard.getItems().get(0);
 
         TableColumn col = leaderboard.getColumns().get(0);
 
         // this gives the value in the selected cell:
         String data = (String) col.getCellObservableValue(item).getValue();
+         */
     }
 }
 
