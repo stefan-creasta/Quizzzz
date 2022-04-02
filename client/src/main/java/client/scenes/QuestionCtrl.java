@@ -390,7 +390,6 @@ public class QuestionCtrl {
         root.addEventFilter(KeyEvent.KEY_PRESSED, this::KeyPressed);
         root.addEventFilter(KeyEvent.KEY_RELEASED, this::KeyReleased);
 
-<<<<<<< HEAD
         //remember to stop timeline everytime a Question phase starts
 
 
@@ -404,9 +403,7 @@ public class QuestionCtrl {
 //        timeline.play();
 
         // <- comment/delete everything between these 2 comments later
-=======
         timer = new Timer(0, 5);
->>>>>>> main
 
         leaderboardRanks.setCellFactory(e -> {
             TableCell<LeaderboardEntry, String> indexCell = new TableCell<>();
