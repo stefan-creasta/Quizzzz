@@ -4,6 +4,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
 <GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.SplashScreenCtrl">
   <columnConstraints>
@@ -19,5 +20,10 @@
    <children>
       <Button fx:id="singleplayer" mnemonicParsing="false" onAction="#chooseSingleplayer" text="Singleplayer" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <Button fx:id="multiplayer" mnemonicParsing="false" onAction="#chooseMultiplayer" text="Multiplayer" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+       <Button layoutX="14.0" layoutY="382.0" mnemonicParsing="false" onAction="#adminPanel" prefHeight="43.0" prefWidth="158.0" text="Admin Panel" textAlignment="CENTER" GridPane.rowIndex="2">
+           <font>
+               <Font size="20.0" />
+           </font>
+       </Button>
    </children>
 </GridPane>

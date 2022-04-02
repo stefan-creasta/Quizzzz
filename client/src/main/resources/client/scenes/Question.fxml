@@ -6,6 +6,7 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -107,5 +108,6 @@
             <Font size="12.0" />
          </font>
       </Button>
+      <TextField fx:id="answerTextBox" layoutX="338.0" layoutY="352.0" prefHeight="70.0" prefWidth="243.0" promptText="Insert answer" />
    </children>
 </AnchorPane>

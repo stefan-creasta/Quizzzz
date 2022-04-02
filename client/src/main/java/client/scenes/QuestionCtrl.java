@@ -117,6 +117,9 @@ public class QuestionCtrl {
     @FXML
     private AnchorPane root;
 
+    @FXML
+    private TextField answerTextBox;
+
     private Boolean[] pressedEmote = {false, false, false, false, false};
 
     private Timer timer;
@@ -130,6 +133,8 @@ public class QuestionCtrl {
     private final MainCtrl mainCtrl;
 
     private Timeline timeline;
+
+    public boolean halfTimeWasUsed = false;
 
     @Inject
     public QuestionCtrl(MainCtrl mainCtrl) {
@@ -149,27 +154,30 @@ public class QuestionCtrl {
                 this.questionTitle.setText("Question 10");
                 this.questionText.setText(gameState.question.question);
 
-                this.answer1.setText(gameState.question.answer);
-                this.answer2.setText(gameState.question.wrongAnswer1);
-                this.answer3.setText(gameState.question.wrongAnswer2);
+                if(!gameState.question.type.equals("3")){
+                    this.answer1.setText(gameState.question.answer);
+                    this.answer2.setText(gameState.question.wrongAnswer1);
+                    this.answer3.setText(gameState.question.wrongAnswer2);
+                    answer1.setVisible(true);
+                    answer2.setVisible(true);
+                    answer3.setVisible(true);
+                }else{
+                    answerTextBox.clear();
+                    answerTextBox.setVisible(true);
+                }
                 
                 timeline = new Timeline( new KeyFrame(Duration.millis(1), e ->{
-                    long timeToDisplay = 10000 - (new Date().getTime() - gameState.timeOfReceival);
-                    questionTime.setText("Time left: " + timeToDisplay/1000.0 + " seconds");
+                    double timeToDisplay = 10000 - (new Date().getTime() - gameState.timeOfReceival);
+                    questionTime.setText("Time left: " + String.format("%.3f", timeToDisplay/1000.0) + " seconds");
                 }));
                 timeline.setCycleCount(100000);
                 timeline.play();
 
-                answer1.setVisible(true);//in case an eliminate wrong answer power up was called in the previous round
-                answer2.setVisible(true);//we set everything visible
-                answer3.setVisible(true);
-
                 break;
             case "halfTimePowerUp":
-                this.gameState = gameState;
                 timeline = new Timeline( new KeyFrame(Duration.millis(1), e ->{
-                    long timeToDisplay = 10000 - (new Date().getTime() - gameState.timeOfReceival);
-                    questionTime.setText("Time left: " + timeToDisplay/1000.0 + " seconds");
+                    double timeToDisplay = 10000 - (new Date().getTime() - gameState.timeOfReceival);
+                    questionTime.setText("Time left: " + String.format("%.3f", timeToDisplay/1000.0) + " seconds");
                 }));
                 timeline.setCycleCount(100000);
                 timeline.play();
@@ -206,7 +214,15 @@ public class QuestionCtrl {
      * Sends the answer to the server, together with the gameState
      */
     public void SubmitPressed(ActionEvent actionEvent) throws IOException, InterruptedException {
-        AnswerCommunication.sendAnswer(selectedAnswer, gameState);
+        if(answer1.isVisible()){//if we have an MC question
+            AnswerCommunication.sendAnswer(selectedAnswer, gameState);
+        }else if(answerTextBox.isVisible()){//if we have an open question
+            selectedAnswer = answerTextBox.getText();
+            AnswerCommunication.sendAnswer(selectedAnswer, gameState);
+        }else{
+            throw new IllegalArgumentException("we messed up the submitPressed function logic :(");
+        }
+
     }
 
     /**
@@ -392,6 +408,7 @@ public class QuestionCtrl {
 //        timeline.play();
 
         // <- comment/delete everything between these 2 comments later
+        timer = new Timer(0, 5);
 
         leaderboardRanks.setCellFactory(e -> {
             TableCell<LeaderboardEntry, String> indexCell = new TableCell<>();
@@ -443,9 +460,14 @@ public class QuestionCtrl {
         timer.synchronize(syncLong);
     }
 
+    /**
+     * Sets the new Question for the Question phase.
+     * @param q the new Question
+     */
     public void setQuestion(Question q) {
-        questionText.setText(q.question);
-        if (q.questionImage != null) {
+        questionText.setText(q.question);//sets the question Text
+
+        if (q.questionImage != null) {//sets the Image
             try {
                 questionImage.setImage(ImageCommunication.getImage("http://localhost:8080/" + q.questionImage));
             }
@@ -453,32 +475,48 @@ public class QuestionCtrl {
                 System.out.println("Failed to set the question image.");
             }
         }
-        List<String> answerList = new LinkedList<>(List.of(q.answer, q.wrongAnswer1, q.wrongAnswer2));
 
-        Collections.shuffle(answerList);
+        try{
+            if(!q.type.equals("3")){//if this is a MC question
+                List<String> answerList = new LinkedList<>(List.of(q.answer, q.wrongAnswer1, q.wrongAnswer2));
+                Collections.shuffle(answerList);
+                clearAnswer();
+                answer1.setText(answerList.get(0));
+                answer2.setText(answerList.get(1));
+                answer3.setText(answerList.get(2));
+                answerTextBox.setVisible(false);
+            }else{//if this is an open question
+                answer1.setVisible(false);
+                answer2.setVisible(false);
+                answer3.setVisible(false);
+                clearAnswer();
+                answerTextBox.setVisible(true);
+            }
+        }
+        catch(Exception exc){
+            exc.printStackTrace();
+            System.out.println("null pointer again????");
+        }
 
-        clearAnswer();
-        answer1.setText(answerList.get(0));
-        answer2.setText(answerList.get(1));
-        answer3.setText(answerList.get(2));
-
-        //Also reset the emotes so they can be pressed again for the new question.
-
-        for (int i=0; i<5; i++){
+        for (int i=0; i<5; i++){//Reset the emotes so they can be pressed again for the new question.
             pressedEmote[i] = false;
         }
 
     }
 
-    public void markAnswer(String correct, String ofplayer) {
-        for (Button answer : List.of(answer1, answer2, answer3)) {
-            answer.getStyleClass().removeAll("wrong", "right", "default");
-            if (answer.getText().equals(correct)) {
-                answer.getStyleClass().add("right");
-            } else if (answer.getText().equals(ofplayer)) {
-                answer.getStyleClass().add("wrong");
-            } else {
-                answer.getStyleClass().add("default");
+    public void markAnswer(String correct, String ofplayer, String type) {
+        if (type.equals("3")) {
+            answerTextBox.setText(correct);
+        } else {
+            for (Button answer : List.of(answer1, answer2, answer3)) {
+                answer.getStyleClass().removeAll("wrong", "right", "default");
+                if (answer.getText().equals(correct)) {
+                    answer.getStyleClass().add("right");
+                } else if (answer.getText().equals(ofplayer)) {
+                    answer.getStyleClass().add("wrong");
+                } else {
+                    answer.getStyleClass().add("default");
+                }
             }
         }
     }

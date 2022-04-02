@@ -1,6 +1,7 @@
 package client.scenes;
 
 import com.google.inject.Inject;
+import javafx.event.ActionEvent;
 
 public class SplashScreenCtrl {
     private MainCtrl mainCtrl;
@@ -15,5 +16,9 @@ public class SplashScreenCtrl {
     }
     public void chooseMultiplayer() {
         mainCtrl.chooseMultiplayer();
+    }
+
+    public void adminPanel(ActionEvent actionEvent) {
+        mainCtrl.showAdminInterface();
     }
 }

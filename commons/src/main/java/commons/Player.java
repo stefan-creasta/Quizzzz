@@ -9,12 +9,12 @@ public class Player {
 
     public boolean shouldReceiveDouble; // whether the player should recieve double points this round
 
-    public long timeToAnswer;//time it took them to answer in milliseconds
-    public long timeOfReceival;//time of receiving the question in milliseconds
+    public double timeToAnswer;//time it took them to answer in milliseconds
+    public double timeOfReceival;//time of receiving the question in milliseconds
 
     public long id;
     public String username;
-    public long score;
+    public double score;
     public long gameId;
     public String answer;
 
