@@ -18,7 +18,7 @@
             <Font size="45.0" />
          </font></Label>
       <TextField fx:id="serverField" layoutX="377.0" layoutY="300.0" prefHeight="53.0" prefWidth="245.0" promptText="Insert server address" />
-      <Label layoutX="269.0" layoutY="222.0" styleClass="enter-username-label" text="Enter address of server:" textAlignment="CENTER">
+      <Label fx:id="addressLabel" layoutX="269.0" layoutY="222.0" styleClass="enter-username-label" text="Enter address of server:" textAlignment="CENTER">
          <font>
             <Font size="45.0" />
          </font>

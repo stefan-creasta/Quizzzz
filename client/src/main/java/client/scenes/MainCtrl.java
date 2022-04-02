@@ -166,6 +166,7 @@ public class MainCtrl {
     }
     public void chooseSingleplayer() {
         setupSingleplayerGame();
+        playerCtrl.invisServerField();
         showPlayer();
     }
     public void chooseMultiplayer() {
