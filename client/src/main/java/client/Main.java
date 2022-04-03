@@ -57,9 +57,10 @@ public class Main extends Application {
         var gameCommunication = INJECTOR.getInstance(GameCommunication.class);
         var splashScreen = FXML.load(SplashScreenCtrl.class, "client", "scenes", "SplashScreen.fxml");
         var gameEnding = FXML.load(GameEndingCtrl.class, "client", "scenes", "GameEnding.fxml");
+        var questionPause = FXML.load(QuestionPauseCtrl.class, "client", "scenes", "QuestionPause.fxml");
 
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        mainCtrl.initialize(primaryStage, overview, add,  question, timer, lobby, player, adminInterface, gameEnding, gameCommunication, serverListener, splashScreen);
+        mainCtrl.initialize(primaryStage, overview, add,  question, timer, lobby, player, adminInterface, gameEnding, gameCommunication, serverListener, splashScreen, questionPause);
 
         this.serverListener = serverListener;
     }

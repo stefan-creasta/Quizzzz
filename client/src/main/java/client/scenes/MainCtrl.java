@@ -59,6 +59,9 @@ public class MainCtrl {
     private GameEndingCtrl gameEndingCtrl;
     private Scene gameEnding;
 
+    private QuestionPauseCtrl questionPauseCtrl;
+    private Scene questionPause;
+
     private Scene adminInterface;
 
     private ServerListener serverListener;
@@ -77,7 +80,7 @@ public class MainCtrl {
                            Pair<GameEndingCtrl, Parent> gameEndingPair,
                            GameCommunication gameCommunication,
                            ServerListener serverListener,
-                           Pair<SplashScreenCtrl, Parent> splashScreenPair) {
+                           Pair<SplashScreenCtrl, Parent> splashScreenPair, Pair<QuestionPauseCtrl, Parent> questionPausePair) {
 
         this.gameCommunication = gameCommunication;
         this.serverListener = serverListener;
@@ -107,6 +110,9 @@ public class MainCtrl {
 
         this.gameEndingCtrl = gameEndingPair.getKey();
         this.gameEnding = new Scene(gameEndingPair.getValue());
+
+        this.questionPauseCtrl = questionPausePair.getKey();
+        this.questionPause = new Scene(questionPausePair.getValue());
 
         System.out.println("GAME ID: " + gameId);
         showSplashScreen();
@@ -201,6 +207,12 @@ public class MainCtrl {
         primaryStage.setScene(gameEnding);
     }
 
+    public void showQuestionPause() {
+        primaryStage.setTitle("Pause");
+        primaryStage.setScene(questionPause);
+        questionPauseCtrl.showAnimation();
+    }
+
     public void showAdminInterface() {
         primaryStage.setTitle("Admin Panel");
         primaryStage.setScene(adminInterface);
@@ -276,6 +288,9 @@ public class MainCtrl {
                 break;
             case "intervalPhase"://called at the start of an interval phase
                 questionCtrl.markAnswer(gameState.question.answer, gameState.playerAnswer, gameState.question.type);
+                break;
+            case "pausePhase":
+                showQuestionPause();
                 break;
             case "endingPhase":
                 showGameEnding();
