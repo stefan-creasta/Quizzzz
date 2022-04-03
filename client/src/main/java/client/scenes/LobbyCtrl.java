@@ -70,14 +70,17 @@ public class LobbyCtrl implements Initializable {
     }
 
     @FXML
+    /**
+     * Method which returns the user to the splash screen, used by the leave game button
+     */
     public void leaveGame() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Exit game");
         alert.setHeaderText("You're about to exit the game!");
-        alert.setContentText("Are you sure?");
+        alert.setContentText("Are you sure you want to return to the splash screen?");
         if(alert.showAndWait().get() == ButtonType.OK) {
             Stage stage = (Stage)mainPane.getScene().getWindow();
-            stage.close();
+            mainCtrl.showSplashScreen();
         }
     }
 }
