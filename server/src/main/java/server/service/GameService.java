@@ -417,6 +417,8 @@ public class GameService {
                     Thread.sleep(5_000);
                         if (game.currentQuestion + 1 < game.questions.size()) {
                         game.progressGame();
+                        pausePhase(game);
+                        Thread.sleep(2000);
                         questionPhase(game);
                     } else {
                         endingPhase(game);
@@ -425,6 +427,15 @@ public class GameService {
                     e.printStackTrace();
                 }
             }).start();
+    }
+
+    public void pausePhase(final Game game) {
+        for (Player player : game.players) {
+            GameState state = game.getState(player);
+            state.setPlayerAnswer(player.answer);
+            state.instruction = "pausePhase";
+            sendToPlayer(player.id, state);
+        }
     }
 
     public void endingPhase(final Game game) {
