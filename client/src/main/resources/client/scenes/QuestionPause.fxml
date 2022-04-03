@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+
+<AnchorPane fx:id="root" prefHeight="600.0" prefWidth="1000.0" styleClass="main" stylesheets="@../../QuestionPause.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.QuestionPauseCtrl">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="40.0" layoutX="236.0" layoutY="463.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="loading-bar" width="529.0" />
+      <Rectangle fx:id="timeBar" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="40.0" layoutX="236.0" layoutY="463.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="loading-bar" width="529.0" />
+      <Label alignment="CENTER" layoutX="67.0" layoutY="208.0" prefHeight="184.0" prefWidth="866.0" styleClass="title" text="Stand Still. New Question Coming!" textAlignment="CENTER" wrapText="true" />
+   </children>
+</AnchorPane>

@@ -1,0 +1,17 @@
+.main {
+    -fx-background-color: #8b57a0;
+}
+
+.title {
+    -fx-font-size: 45.0;
+    -fx-text-fill: white;
+}
+
+.loading-bar {
+    -fx-fill: #f2d4ef;
+    -fx-stroke-width: 0;
+}
+
+#timeBar {
+    -fx-fill: #44ff00
+}
