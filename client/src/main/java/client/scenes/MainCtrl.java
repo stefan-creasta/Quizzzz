@@ -25,7 +25,12 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 public class MainCtrl {
@@ -67,6 +72,8 @@ public class MainCtrl {
     private long gameId;
 
     private String currentUsername;
+
+    public List<String> serverUrls;
 
     public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
                            Pair<AddQuoteCtrl, Parent> add,
@@ -114,6 +121,9 @@ public class MainCtrl {
         //showPlayer();
         this.adminInterface = new Scene(adminInterfacePair.getValue());
 
+        readServerUrls();
+
+        adminInterfacePair.getKey().registerServerUrlList(serverUrls);
         //showPlayer();
         //showQuestion();
         primaryStage.show();
@@ -304,6 +314,29 @@ public class MainCtrl {
                 break;
             case "answerSubmitted":
                 break;
+        }
+    }
+
+    public void readServerUrls() {
+        try {
+            File f = new File("server-urls.txt");
+            f.createNewFile();
+            String contents = Files.readString(f.toPath());
+            serverUrls = new LinkedList<>(Arrays.asList(contents.split("\n")));
+        } catch (IOException e) {
+            e.printStackTrace();
+            serverUrls = new LinkedList<>(List.of("http://localhost:8080"));
+        }
+    }
+
+    public void saveServerUrl(String s) {
+        if (!serverUrls.contains(s)) {
+            serverUrls.add(0, s);
+            try {
+                Files.writeString(new File("server-urls.txt").toPath(), s + "\n", StandardOpenOption.APPEND);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

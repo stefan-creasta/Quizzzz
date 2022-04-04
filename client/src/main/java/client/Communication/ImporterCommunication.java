@@ -3,6 +3,7 @@ package client.Communication;
 import com.google.inject.Inject;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -21,14 +22,16 @@ public class ImporterCommunication {
      * @param path the path relative to server/resources/images on the server to import the questions.
      * @return a message about the outcome of the import. Intended to be shown to the admin.
      */
-    public String importQuestions(String path) {
+    public String importQuestions(String path, String serverString) throws ConnectException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/api/import?activitiesSource=" + path))
+                .uri(URI.create(serverString + "/api/import?activitiesSource=" + path))
                 .GET()
                 .build();
 
         try {
             return client.send(request, HttpResponse.BodyHandlers.ofString()).body();
+        } catch (ConnectException e) {
+            throw e;
         } catch (IOException e) {
             e.printStackTrace();
             return "An error occurred while requesting the import. See the debug console for details.";

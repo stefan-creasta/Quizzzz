@@ -17,6 +17,7 @@ package client;
 
 
 import client.Communication.GameCommunication;
+import client.Communication.QuestionCommunication;
 import client.Communication.ServerListener;
 import client.utils.HttpClientFactory;
 import com.google.inject.Binder;
@@ -40,5 +41,6 @@ public class MyModule implements Module {
         binder.bind(HttpClient.class).toProvider(HttpClientFactory.class).in(Scopes.SINGLETON);
         binder.bind(ServerListener.class).in(Scopes.SINGLETON);
         binder.bind(GameCommunication.class).in(Scopes.SINGLETON);
+        binder.bind(QuestionCommunication.class).in(Scopes.SINGLETON);
     }
 }
