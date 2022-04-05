@@ -60,6 +60,11 @@ public class AdminInterfaceCtrl {
         setQuestionInputs(null);
     }
 
+    /**
+     * The event handler for the "Back to Menu" button.
+     * Tells MainCtrl to show the splash screen.
+     * @param actionEvent
+     */
     public void back(ActionEvent actionEvent) {
         mainCtrl.showSplashScreen();
     }
@@ -78,10 +83,15 @@ public class AdminInterfaceCtrl {
         }
     }
 
+    /**
+     * The event handler for when the activities table is clicked. It either selects or deselects a question.
+     */
     public void tableClick() {
+        //if no item was selected before or the user has just selected a different item.
         if (selectedQuestion == null || !selectedQuestion.equals(activitiesTable.getSelectionModel().getSelectedItem())) {
             selectedQuestion = activitiesTable.getSelectionModel().getSelectedItem();
             setQuestionInputs(selectedQuestion);
+        //if the user is trying to select the same item, deselect instead.
         } else {
             activitiesTable.getSelectionModel().clearSelection();
             selectedQuestion = null;
@@ -89,6 +99,11 @@ public class AdminInterfaceCtrl {
         }
     }
 
+    /**
+     * The event handler for the "Search" button.
+     * Fetches the search results for the inputted search keywords and shows the results on the activities table.
+     * @param actionEvent
+     */
     public void search(ActionEvent actionEvent) {
         try {
             var questions = questionCommunication.searchBy(searchField.getText(), urlField.getValue());
@@ -102,6 +117,12 @@ public class AdminInterfaceCtrl {
         }
     }
 
+    /**
+     * The event handler for the "Add/Update Activity" button.
+     * Saves the inputted activity if nothing was selected in the table, or updates the selected item otherwise.
+     * It also checks for any invalid inputs through the {@code validateInputs} method.
+     * @param actionEvent
+     */
     public void save(ActionEvent actionEvent) {
         if (!validateQuestionInputs()) return;
 
@@ -146,7 +167,13 @@ public class AdminInterfaceCtrl {
         }
     }
 
+    /**
+     * The event handler for the "Delete" button.
+     * Deletes the selected activity.
+     * @param actionEvent
+     */
     public void delete(ActionEvent actionEvent) {
+        if (selectedQuestion == null) return;
         try {
             questionCommunication.deleteQuestion(selectedQuestion.id, urlField.getValue());
             activitiesTable.getSelectionModel().clearSelection();
@@ -161,6 +188,12 @@ public class AdminInterfaceCtrl {
         }
     }
 
+    /**
+     * Validates the activity input fields.
+     * Adds the style class "error" to any field that has an error.
+     * Removes the class from a field if there aren't any errors in the field.
+     * @return true iff all inputs are valid.
+     */
     public boolean validateQuestionInputs() {
         boolean validation = true;
         try {
@@ -173,14 +206,28 @@ public class AdminInterfaceCtrl {
         return validation;
     }
 
+    /**
+     * Adds the "error" style class to the provided TextField if it doesn't have one.
+     * @param field
+     */
     public void markError(TextField field) {
         field.getStyleClass().add("error");
     }
 
+    /**
+     * Removes the "error" style class from the provided TextField if it has one.
+     * @param field
+     */
     public void clearError(TextField field) {
         field.getStyleClass().remove("error");
     }
 
+    /**
+     * Sets the activity input fields according to the provided Question.
+     * If Question is null, then the fields are emptied except the Image Path field,
+     * the text in which can be potentially used for adding a new question.
+     * @param q
+     */
     public void setQuestionInputs(Question q) {
         if (q == null) {
             deleteButton.setVisible(false);
@@ -199,22 +246,40 @@ public class AdminInterfaceCtrl {
         }
     }
 
+    /**
+     * Shows an error dialog with the provided message. It doesn't block the execution of the main window.
+     * @param s
+     */
     public void error(String s) {
         errorAlert.setTitle("Error");
         errorAlert.setContentText(s);
         errorAlert.show();
     }
 
+    /**
+     * Shows an info dialog with the provided message. It doesn't block the execution of the main window.
+     * @param s the body text of the dialog box
+     * @param title the title of the dialog box
+     */
     public void info(String s, String title) {
         infoAlert.setTitle(title);
         infoAlert.setContentText(s);
         infoAlert.show();
     }
 
+    /**
+     * Makes the server URL field observe the values in the MainCtrl serverUrls list.
+     * It is called from mainCtrl when the server list file was read and the serverUrls list is ready.
+     * @param list
+     */
     public void registerServerUrlList(List<String> list) {
         urlField.setItems(FXCollections.observableList(list));
     }
 
+    /**
+     * Saves the provided URL to the MainCtrl serverUrls list.
+     * @param s
+     */
     public void saveServerUrl(String s) {
         mainCtrl.saveServerUrl(s);
     }

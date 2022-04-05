@@ -31,6 +31,13 @@ public class QuestionCommunication {
         this.typeRefQuestion = new TypeReference<>() {};
     }
 
+    /**
+     * Sends a patch request with the question. The question id is significant.
+     * @param q
+     * @param serverString the server URL for the API endpoint
+     * @return the patched question
+     * @throws ConnectException
+     */
     public Question patchQuestion(Question q, String serverString) throws ConnectException {
         String body;
         try {
@@ -59,6 +66,12 @@ public class QuestionCommunication {
         return null;
     }
 
+    /**
+     * Sends a post request with the question. The question id should be 0.
+     * @param q
+     * @param serverString the server URL for the API endpoint
+     * @throws ConnectException
+     */
     public void postQuestion(Question q, String serverString) throws ConnectException {
         String body;
         try {
@@ -85,6 +98,12 @@ public class QuestionCommunication {
         }
     }
 
+    /**
+     * Sends a post request with the question. The question id should be 0.
+     * @param id the question ID to delete
+     * @param serverString the server URL for the API endpoint
+     * @throws ConnectException
+     */
     public void deleteQuestion(long id, String serverString) throws ConnectException {
         HttpRequest req = HttpRequest.newBuilder()
                 .uri(UriBuilder
@@ -103,6 +122,14 @@ public class QuestionCommunication {
         }
     }
 
+    /**
+     * Searches for open-ended and watts answer multiple choice questions.
+     * whose question title match the given search keywords.
+     * @param text the search keywords
+     * @param serverString the server URL for the API endpoint
+     * @return the list of results
+     * @throws ConnectException
+     */
     public List<Question> searchBy(String text, String serverString) throws ConnectException {
         HttpRequest req = HttpRequest.newBuilder()
                 .uri(UriBuilder

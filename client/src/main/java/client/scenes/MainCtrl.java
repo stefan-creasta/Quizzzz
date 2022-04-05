@@ -317,6 +317,9 @@ public class MainCtrl {
         }
     }
 
+    /**
+     * Read the server URLs from [working directory]\server-urls.txt.
+     */
     public void readServerUrls() {
         try {
             File f = new File("server-urls.txt");
@@ -329,6 +332,10 @@ public class MainCtrl {
         }
     }
 
+    /**
+     * Save the server URL both in the shared serverUrls list and in [working directory]\server-urls.txt.
+     * @param s the URL to save
+     */
     public void saveServerUrl(String s) {
         if (!serverUrls.contains(s)) {
             serverUrls.add(0, s);
