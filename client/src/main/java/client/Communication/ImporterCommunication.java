@@ -21,9 +21,9 @@ public class ImporterCommunication {
      * @param path the path relative to server/resources/images on the server to import the questions.
      * @return a message about the outcome of the import. Intended to be shown to the admin.
      */
-    public String importQuestions(String path) {
+    public String importQuestions(String path, String serverString) {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/api/import?activitiesSource=" + path))
+                .uri(URI.create(serverString + "/api/import?activitiesSource=" + path))
                 .GET()
                 .build();
 
