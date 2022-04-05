@@ -79,7 +79,6 @@ public class LobbyCtrl implements Initializable {
         alert.setContentText("Are you sure you want to return to the splash screen?");
         if(alert.showAndWait().get() == ButtonType.OK) {
             mainCtrl.exitGame();
-            Stage stage = (Stage)mainPane.getScene().getWindow();
             mainCtrl.showSplashScreen();
         }
     }
