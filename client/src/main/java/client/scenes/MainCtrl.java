@@ -329,6 +329,7 @@ public class MainCtrl {
             alert.setContentText("Are you sure you want to close the application?");
         }
         if(alert.showAndWait().get() == ButtonType.OK) {
+            exitGame();
             if(stage.getScene().equals(this.splash)) {
                 stage.close();
             }
