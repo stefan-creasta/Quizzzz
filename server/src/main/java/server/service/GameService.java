@@ -541,6 +541,7 @@ public class GameService {
         System.out.println("Score function has been called:");
         Question q = g.questions.get(g.currentQuestion);
         for (Player p : g.players) {
+            double finalAdd = 0;
             if(q.type.equals("3")){//Open-ended
                 System.out.println("this question is open ended");//debug
                 boolean inFunctionShouldReceive = false;//check if double points was used
@@ -550,8 +551,8 @@ public class GameService {
                     System.out.println("DOUBLE POINTS POWER UP TOOK PLACE IN SCORING");
                 }
                 if (p.answer != null) {
-                    double pAnswer = Integer.parseInt(p.answer);
-                    double qAnswer = Integer.parseInt(q.answer);
+                    double pAnswer = Double.parseDouble(p.answer);
+                    double qAnswer = Double.parseDouble(q.answer);
                     double difference = Math.abs(pAnswer - qAnswer);
                     System.out.println("Player with id " + p.id + "has this answer " + pAnswer + " and the question answer is " + q.answer);
                     double toAdd = 0;
@@ -566,12 +567,11 @@ public class GameService {
                             toAdd = toAdd*2;
                         }
                         System.out.println("toadd is " + toAdd);
-
+                        finalAdd = toAdd;
                         p.score = p.score + toAdd * 10;
                     }
                     System.out.println("Player with id " + p.id + " won that many points - " + toAdd);
                 }
-
             }else {//Multiple Choice
                 System.out.println("this question is MC");//debug
                 boolean inFunctionShouldReceive = false;//check if double points was used
@@ -587,12 +587,16 @@ public class GameService {
                         toAdd = toAdd * 2;
                     }
                     System.out.println("ANSWER IS CORRECT");
+                    finalAdd = toAdd;
                     p.score = p.score + toAdd * 10;
                 }
                 System.out.println("Player with id " + p.id + " won that many points - " + toAdd);
             }
-
             p.answer = null;
+            GameState state = g.getState();
+            state.instruction = "score";
+            state.thisScored = finalAdd;
+            sendToPlayer(p.id, state);
         }
     }
 }

@@ -25,6 +25,7 @@ public class GameState {
 
     public double timeToAnswer;//time it took them to answer in milliseconds
     public double timeOfReceival;//time of receiving the question in milliseconds
+    public double thisScored;
 
     public GameState() {
 
