@@ -29,7 +29,6 @@ import java.io.IOException;
 import java.util.List;
 
 public class MainCtrl {
-    public String serverName;
 
     public boolean singleplayerGame;
 
@@ -109,7 +108,6 @@ public class MainCtrl {
 
         this.gameEndingCtrl = gameEndingPair.getKey();
         this.gameEnding = new Scene(gameEndingPair.getValue());
-        serverName ="randomserver";
         System.out.println("GAME ID: " + gameId);
         showSplashScreen();
         //showPlayer();
@@ -237,8 +235,14 @@ public class MainCtrl {
     public List<LeaderboardEntry> getMultiplayerLeaderboards() throws IOException, InterruptedException{
         return gameCommunication.getLeaderboardMultiplayer(gameId);
     }
+    
     public List<LeaderboardEntry> getServerLeaderboards() throws IOException, InterruptedException{
-        return gameCommunication.getTopLeaderboard(serverName);
+        return gameCommunication.getTopLeaderboard(playerCtrl.serverString);
+    }
+    public void updateServerLeaderboard(List<LeaderboardEntry> entries) throws IOException, InterruptedException{
+        for (LeaderboardEntry e: entries) {
+            gameCommunication.addEntry(playerCtrl.serverString,e);
+        }
     }
     /**
      * Sends a request to the server to initiate the game with ID gameId

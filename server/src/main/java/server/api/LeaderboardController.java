@@ -1,5 +1,6 @@
 package server.api;
 
+import com.google.gson.Gson;
 import commons.LeaderboardEntry;
 import org.springframework.web.bind.annotation.*;
 import server.service.LeaderboardService;
@@ -21,7 +22,13 @@ public class LeaderboardController {
     }
 
     @PostMapping("")
-    public void postLeaderboard(@RequestBody LeaderboardEntry item) {
-        leaderboardService.addEntry(item);
+    public void postLeaderboard(@RequestBody String item) {
+//        var objectMapper = new ObjectMapper();
+//        String requestBody = objectMapper
+//                .writeValueAsString(entry);
+
+        Gson g = new Gson();
+        LeaderboardEntry p = g.fromJson(item, LeaderboardEntry.class);
+        leaderboardService.addEntry(p);
     }
 }

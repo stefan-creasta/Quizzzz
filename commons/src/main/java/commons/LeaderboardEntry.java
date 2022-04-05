@@ -29,7 +29,7 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
     }
 
     public LeaderboardEntry(String un, int s) {
-        this(un, s, new Date());
+            this(un, s, new Date());
     }
 
     public LeaderboardEntry(String un, int s, Date d) {

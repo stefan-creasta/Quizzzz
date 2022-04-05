@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
@@ -19,6 +20,15 @@ public class GameEndingCtrl {
     private MainCtrl mainCtrl;
 
     private List<LeaderboardEntry> entries;
+
+    @FXML
+    private Label currentleaderboard;
+
+    @FXML
+    private Label worldleaderboard;
+
+    @FXML
+    private TableView<LeaderboardEntry> serverleaderboard;
 
     @FXML
     private TableView<LeaderboardEntry> leaderboard;
@@ -49,6 +59,9 @@ public class GameEndingCtrl {
         leaderboardHelper.setRankColumnCellFactory(leaderboardRanks);
         leaderboardHelper.setUsernameColumnCellFactory(leaderboardUsernames);
         leaderboardHelper.setScoreColumnCellFactory(leaderboardScores);
+        currentleaderboard.setVisible(true);
+        serverleaderboard.setVisible(false);
+        worldleaderboard.setVisible(false);
     }
 
     public void handleGameState(GameState gameState) {
@@ -58,9 +71,11 @@ public class GameEndingCtrl {
         else {
             newGameButton.setText("Play as Multiplayer Again");
         }
+        updateServerLeaderboard(gameState);
         leaderboard.setItems(FXCollections.observableList(
             leaderboardHelper.prepareLeaderboard(gameState.leaderboard, mainCtrl.getCurrentUsername()))
         );
+        updateLeaderboard();
     }
 
     public void splashScreen(ActionEvent actionEvent) {
@@ -79,14 +94,40 @@ public class GameEndingCtrl {
             mainCtrl.joinGame(mainCtrl.getCurrentUsername());
         }
     }
+
     public void showServerLeaderboard(){
-        updateLeaderboard();
+        serverleaderboard.setItems(FXCollections.observableList(
+                leaderboardHelper.prepareLeaderboard(entries, mainCtrl.getCurrentUsername())));
+        serverleaderboard.setVisible(true);
+        leaderboard.setVisible(false); //current leaderboard
+        currentleaderboard.setVisible(false); //these are labels 4head
+        worldleaderboard.setVisible(true); //these are labels 4head
 
     }
+    //after adding the entries to the server, we receive the top 10 sorted entries
     public void updateLeaderboard() {
         try {
             entries = mainCtrl.getServerLeaderboards();
+            System.out.println(entries.toString());
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    public void goBack(){
+        serverleaderboard.setVisible(false);
+        worldleaderboard.setVisible(false);
+        leaderboard.setVisible(true);
+        currentleaderboard.setVisible(true);
+
+    }
+    // recieves the leaderboard from the gamestate and add it to the database on the server
+    public void updateServerLeaderboard(GameState state){
+        try {
+            mainCtrl.updateServerLeaderboard(state.leaderboard);
+        }
+        catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();

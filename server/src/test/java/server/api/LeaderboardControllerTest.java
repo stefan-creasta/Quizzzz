@@ -17,10 +17,10 @@ public class LeaderboardControllerTest {
             new LeaderboardEntry("Tony", 2500, d)
     );
 
-    @Test
-    public void postLeaderboardTest() {
-        controller.postLeaderboard(leaderboardEntries.get(0));
-    }
+//    @Test
+//    public void postLeaderboardTest() {
+//        controller.postLeaderboard(leaderboardEntries.get(0));
+//    }
 
     @Test
     public void getLeaderboardTest() {
