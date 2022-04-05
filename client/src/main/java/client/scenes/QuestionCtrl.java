@@ -119,6 +119,12 @@ public class QuestionCtrl {
     @FXML
     private TextField answerTextBox;
 
+    @FXML
+    private ProgressBar timeBar;
+
+    @FXML
+    private Label scoreLabel;
+
     private Boolean[] pressedEmote = {false, false, false, false, false};
 
     private Timer timer;
@@ -150,6 +156,9 @@ public class QuestionCtrl {
         this.gameState = gameState;
         switch(gameState.instruction){
             case "questionPhase":
+                timeBar.setVisible(true);
+                questionTime.setVisible(true);
+                scoreLabel.setVisible(false);
                 //TODO: Update question number based on current question
                 this.questionTitle.setText("Question 10");
                 this.questionText.setText(gameState.question.question);
@@ -169,20 +178,33 @@ public class QuestionCtrl {
                 timeline = new Timeline( new KeyFrame(Duration.millis(1), e ->{
                     double timeToDisplay = 10000 - (new Date().getTime() - gameState.timeOfReceival);
                     questionTime.setText("Time left: " + String.format("%.3f", timeToDisplay/1000.0) + " seconds");
+                    timeBar.setProgress(timeToDisplay/10000.0);
                 }));
-                timeline.setCycleCount(100000);
+                timeline.setCycleCount(10000);
                 timeline.play();
 
                 break;
             case "halfTimePowerUp":
                 timeline = new Timeline( new KeyFrame(Duration.millis(1), e ->{
                     double timeToDisplay = 10000 - (new Date().getTime() - gameState.timeOfReceival);
-                    questionTime.setText("Time left: " + String.format("%.3f", timeToDisplay/1000.0) + " seconds");
+                    if(timeToDisplay < 0){
+                        questionTime.setText("Time left: 0.000 seconds");
+                        timeBar.setProgress(0);
+                    }else{
+                        questionTime.setText("Time left: " + String.format("%.3f", timeToDisplay / 1000.0) + " seconds");
+                        timeBar.setProgress(timeToDisplay / 10000.0);
+                    }
+
                 }));
-                timeline.setCycleCount(100000);
+                timeline.setCycleCount(10000);
                 timeline.play();
                 //TODO time is already being halved, but make it explicit to the client, so that it is easily noticeable
                 break;
+            case "score":
+                timeBar.setVisible(false);
+                questionTime.setVisible(false);
+                scoreLabel.setText("You received: " + String.format("%.2f", gameState.thisScored*10) + " points!");
+                scoreLabel.setVisible(true);
         }
 
 

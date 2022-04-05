@@ -541,6 +541,7 @@ public class GameService {
         System.out.println("Score function has been called:");
         Question q = g.questions.get(g.currentQuestion);
         for (Player p : g.players) {
+            double finalAdd = 0;
             if(q.type.equals("3")){//Open-ended
                 System.out.println("this question is open ended");//debug
                 boolean inFunctionShouldReceive = false;//check if double points was used
@@ -566,12 +567,11 @@ public class GameService {
                             toAdd = toAdd*2;
                         }
                         System.out.println("toadd is " + toAdd);
-
+                        finalAdd = toAdd;
                         p.score = p.score + toAdd * 10;
                     }
                     System.out.println("Player with id " + p.id + " won that many points - " + toAdd);
                 }
-
             }else {//Multiple Choice
                 System.out.println("this question is MC");//debug
                 boolean inFunctionShouldReceive = false;//check if double points was used
@@ -587,12 +587,16 @@ public class GameService {
                         toAdd = toAdd * 2;
                     }
                     System.out.println("ANSWER IS CORRECT");
+                    finalAdd = toAdd;
                     p.score = p.score + toAdd * 10;
                 }
                 System.out.println("Player with id " + p.id + " won that many points - " + toAdd);
             }
-
             p.answer = null;
+            GameState state = g.getState();
+            state.instruction = "score";
+            state.thisScored = finalAdd;
+            sendToPlayer(p.id, state);
         }
     }
 }

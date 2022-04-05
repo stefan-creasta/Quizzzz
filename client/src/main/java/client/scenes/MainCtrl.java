@@ -317,6 +317,9 @@ public class MainCtrl {
                 break;
             case "answerSubmitted":
                 break;
+            case "score":
+                questionCtrl.updateGameState(gameState);
+                break;
         }
     }
 }
