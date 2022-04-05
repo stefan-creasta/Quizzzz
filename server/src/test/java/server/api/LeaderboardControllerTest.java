@@ -24,7 +24,7 @@ public class LeaderboardControllerTest {
 
     @Test
     public void getLeaderboardTest() {
-        when(service.getLeaderboard(-1)).thenReturn(leaderboardEntries);
+        when(service.getLeaderboard(10)).thenReturn(leaderboardEntries);
 
         List<LeaderboardEntry> returned = controller.getLeaderboard();
 

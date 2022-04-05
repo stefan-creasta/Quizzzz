@@ -12,8 +12,13 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 
+import java.io.IOException;
+import java.util.List;
+
 public class GameEndingCtrl {
     private MainCtrl mainCtrl;
+
+    private List<LeaderboardEntry> entries;
 
     @FXML
     private TableView<LeaderboardEntry> leaderboard;
@@ -72,6 +77,19 @@ public class GameEndingCtrl {
         else {
             mainCtrl.setupMultiplayerGame();
             mainCtrl.joinGame(mainCtrl.getCurrentUsername());
+        }
+    }
+    public void showServerLeaderboard(){
+        updateLeaderboard();
+
+    }
+    public void updateLeaderboard() {
+        try {
+            entries = mainCtrl.getServerLeaderboards();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }

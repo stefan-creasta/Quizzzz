@@ -217,13 +217,12 @@ public class GameCommunication {
         return mapper.readValue(response.body(), typeRef);
     }
         /**
-         * Method which returns the leaderboard for a singleplayer game. Since this method returns the global
-         * leaderboard, it doesn't need the game's id
+         * Method which returns the leaderboard containing the top 10 entries on the specified server
          * @return the list of leaderboard entries
          */
-        public List<LeaderboardEntry> getLeaderboardSingleplayer () throws IOException, InterruptedException {
+        public List<LeaderboardEntry> getTopLeaderboard(String server) throws IOException, InterruptedException {
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:8080/api/leaderboard/"))
+                    .uri(URI.create(server+"/api/leaderboard/"))
                     .GET()
                     .build();
             var response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -231,6 +230,36 @@ public class GameCommunication {
             final TypeReference<List<LeaderboardEntry>> typeRef = new TypeReference<>() {
             };
             return mapper.readValue(response.body(), typeRef);
+        }
+
+    /**
+     * Method to add a leaderboard entry to the database on a specific server
+     * @param server
+     * @param entry
+     * @throws IOException
+     * @throws InterruptedException
+     */
+
+        public void addEntry(String server, LeaderboardEntry entry) throws IOException, InterruptedException{
+
+
+
+            var objectMapper = new ObjectMapper();
+            String requestBody = objectMapper
+                    .writeValueAsString(entry);
+
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(server+"/api/leaderboard/"))
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                    .build();
+            try {
+                client.send(request, HttpResponse.BodyHandlers.discarding());
+            }catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
     }

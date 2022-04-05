@@ -29,7 +29,7 @@
             <Font size="20.0" />
          </font>
       </Button>
-      <Button layoutX="27.0" layoutY="259.0" mnemonicParsing="false" onAction="#splashScreen" prefHeight="53.0" prefWidth="443.0" text="World Leaderboard" textAlignment="CENTER">
+      <Button layoutX="27.0" layoutY="259.0" mnemonicParsing="false" onAction="#showServerLeaderboard" prefHeight="53.0" prefWidth="443.0" text="World Leaderboard" textAlignment="CENTER">
          <font>
             <Font size="20.0" />
          </font>

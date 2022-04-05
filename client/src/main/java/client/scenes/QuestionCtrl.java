@@ -540,7 +540,7 @@ public class QuestionCtrl {
         }
         // if the current list of player in the lobby is one then the current game is  in single player mode
         if (mainCtrl.singleplayerGame == true){
-            updateSingleplayerLeaderboards();
+//            updateSingleplayerLeaderboards();
 
             ObservableList<LeaderboardEntry> entries = FXCollections.observableList(leaderboardEntries);
             leaderboard.setItems(entries);
@@ -593,18 +593,18 @@ public class QuestionCtrl {
         }
 
     }
-    public void updateSingleplayerLeaderboards(){
-
-        try {
-            leaderboardEntries = mainCtrl.getSingleplayerLeaderboards();
-            Collections.sort(leaderboardEntries);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-    }
+//    public void updateSingleplayerLeaderboards(){
+//
+//        try {
+//            leaderboardEntries = mainCtrl.getSingleplayerLeaderboards();
+//            Collections.sort(leaderboardEntries);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
 
     public void updateEmotes(List<Emote> emoteEntries) {
         //TODO: Fix cell so that the image of the emote is displayed

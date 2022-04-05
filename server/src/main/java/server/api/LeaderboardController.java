@@ -17,7 +17,7 @@ public class LeaderboardController {
 
     @GetMapping("")
     public List<LeaderboardEntry> getLeaderboard() {
-        return leaderboardService.getLeaderboard(-1);
+        return leaderboardService.getLeaderboard(10);
     }
 
     @PostMapping("")
