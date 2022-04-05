@@ -40,7 +40,6 @@ class LeaderboardEntryTest {
     @Test
     void testEquals() {
         Date d = new Date(3, 3, 3);
-        //when(d.equals(d)).thenReturn(true);
         LeaderboardEntry l1 = new LeaderboardEntry("abc", 2, d);
         LeaderboardEntry l2 = new LeaderboardEntry("cbd", 1, d);
         LeaderboardEntry l3 = new LeaderboardEntry("abc", 1, d);
@@ -55,6 +54,7 @@ class LeaderboardEntryTest {
         LeaderboardEntry l1 = new LeaderboardEntry("abc", 2, d);
         l1.hashCode();
     }
+
 
     @Test
     void testToString() {
