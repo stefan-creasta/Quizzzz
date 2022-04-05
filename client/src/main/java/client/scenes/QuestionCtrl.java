@@ -203,7 +203,7 @@ public class QuestionCtrl {
             case "score":
                 timeBar.setVisible(false);
                 questionTime.setVisible(false);
-                scoreLabel.setText("You received: " + String.format("%.2f", gameState.thisScored) + " points!");
+                scoreLabel.setText("You received: " + String.format("%.2f", gameState.thisScored*10) + " points!");
                 scoreLabel.setVisible(true);
         }
 
