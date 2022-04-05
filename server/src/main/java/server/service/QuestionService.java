@@ -98,6 +98,7 @@ public class QuestionService {
         if (questionRepository.existsById(question.id)) {
             Question old = questionRepository.getId(question.id);
             if (question.question == null) question.question = old.question;
+            if (question.type == null) question.type = old.type;
             if (question.answer == null) {
                 //keep old answers.
                 question.answer = old.answer;
