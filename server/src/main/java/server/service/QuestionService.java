@@ -61,11 +61,22 @@ public class QuestionService {
         questionRepository.deleteAll();
     }
 
+    /**
+     * Searches for open-ended and watts answer multiple choice questions.
+     * whose question title match the given search keywords.
+     * @param q the search keywords
+     * @return the list of results
+     */
     public List<Question> search(String q) {
         System.out.println("Searching questions for " + q);
         return questionRepository.searchWithWattsAnswer("%" + q + "%");
     }
 
+    /**
+     * If the question type is watts answer multiple choice, sets the wrong answers to proper values.
+     * @param q
+     * @return
+     */
     public Question setMissingAnswers(Question q) {
         if (q.type.equals("1")) {
             List<Double> factors = new LinkedList<>(List.of(.25, .33, .4, .5, .66, .75, 1.25, 1.5, 2., 2.5, 3., 4.));
@@ -78,6 +89,11 @@ public class QuestionService {
         return q;
     }
 
+    /**
+     * Patches the question on the database with the same id with the provided question.
+     * @param question
+     * @return
+     */
     public Question patchQuestion(Question question) {
         if (questionRepository.existsById(question.id)) {
             Question old = questionRepository.getId(question.id);
@@ -98,6 +114,10 @@ public class QuestionService {
         else return null;
     }
 
+    /**
+     * Deletes the question with the provided id from the database.
+     * @param id
+     */
     public void deleteQuestion(long id) {
         questionRepository.deleteById(id);
     }
