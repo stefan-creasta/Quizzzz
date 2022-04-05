@@ -6,9 +6,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 import java.net.URL;
@@ -25,6 +24,8 @@ public class LobbyCtrl implements Initializable {
     private Button startButton;
     @FXML
     private Button leaveButton;
+    @FXML
+    private AnchorPane mainPane;
     @FXML
     private TableView<String> table;
     @FXML
@@ -64,5 +65,20 @@ public class LobbyCtrl implements Initializable {
         mainCtrl.initiateGame();
         mainCtrl.showQuestion();
         //System.out.println(lobbyCommunication.getPlayers().size());
+    }
+
+    @FXML
+    /**
+     * Method which returns the user to the splash screen, used by the leave game button
+     */
+    public void leaveGame() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Exit game");
+        alert.setHeaderText("You're about to exit the game!");
+        alert.setContentText("Are you sure you want to return to the splash screen?");
+        if(alert.showAndWait().get() == ButtonType.OK) {
+            mainCtrl.exitGame();
+            mainCtrl.showSplashScreen();
+        }
     }
 }

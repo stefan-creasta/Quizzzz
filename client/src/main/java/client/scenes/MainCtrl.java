@@ -22,6 +22,8 @@ import commons.LeaderboardEntry;
 import commons.Player;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -117,6 +119,10 @@ public class MainCtrl {
         //showPlayer();
         //showQuestion();
         primaryStage.show();
+        primaryStage.setOnCloseRequest(event -> {
+            event.consume();
+            exitGame(primaryStage);
+        });
     }
 
     public void setupSingleplayerGame() {
@@ -320,6 +326,32 @@ public class MainCtrl {
             case "score":
                 questionCtrl.updateGameState(gameState);
                 break;
+        }
+    }
+
+    /**
+     * Method which exits the game. If the user is in the splash screen, it closes the app. Otherwise,
+     * the method returns the user to the splash screen.
+     * @param stage The current stage of the game
+     */
+    public void exitGame(Stage stage) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Exit game");
+        alert.setHeaderText("You're about to exit the game!");
+        if(!stage.getScene().equals(this.splash)) {
+            alert.setContentText("Are you sure you want to return to the splash screen?");
+        }
+        else {
+            alert.setContentText("Are you sure you want to close the application?");
+        }
+        if(alert.showAndWait().get() == ButtonType.OK) {
+            exitGame();
+            if(stage.getScene().equals(this.splash)) {
+                stage.close();
+            }
+            else {
+                showSplashScreen();
+            }
         }
     }
 }

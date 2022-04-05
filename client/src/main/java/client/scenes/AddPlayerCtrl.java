@@ -62,38 +62,38 @@ public class AddPlayerCtrl {
     }
 
     public void play() throws IOException, InterruptedException {
-        // here instead of in the multplayer clause
-        Player newPlayer = getPlayer();
-        //if the game is singleplayer, then the game can start
-        if(mainCtrl.singleplayerGame) {
+                // here instead of in the multplayer clause
+                Player newPlayer = getPlayer();
+                //if the game is singleplayer, then the game can start
+                if(mainCtrl.singleplayerGame) {
 
-            serverString = "http://localhost:8080";
-            mainCtrl.initiateSingleplayerGame(newPlayer);
-            mainCtrl.showQuestion();
-            serverField.setVisible(true);
-            addressLabel.setVisible(true);
-        }
-        else {
-            serverString = serverField.getText();
-            if (mainCtrl.checkUsername(newPlayer.username)) {
-                try {
-                    mainCtrl.joinGame(newPlayer.username);
-
-                } catch (WebApplicationException e) {
-
-                    var alert = new Alert(Alert.AlertType.ERROR);
-                    alert.initModality(Modality.APPLICATION_MODAL);
-                    alert.setContentText(e.getMessage());
-                    alert.showAndWait();
-                    return;
+                    serverString = "http://localhost:8080";
+                    mainCtrl.initiateSingleplayerGame(newPlayer);
+                    mainCtrl.showQuestion();
+                    serverField.setVisible(true);
+                    addressLabel.setVisible(true);
                 }
-                mainCtrl.showLobby();
-            }else{
-                Alert usernameAlert = new Alert(Alert.AlertType.ERROR, "Username or server input is not correct");
-                usernameAlert.show();
+                else {
+                        serverString = serverField.getText();
+                        if (mainCtrl.checkUsername(newPlayer.username) && !newPlayer.username.equals("") && newPlayer.username != null) {
+                            try {
+                                mainCtrl.joinGame(newPlayer.username);
+
+                            } catch (WebApplicationException e) {
+
+                                var alert = new Alert(Alert.AlertType.ERROR);
+                                alert.initModality(Modality.APPLICATION_MODAL);
+                                alert.setContentText(e.getMessage());
+                                alert.showAndWait();
+                                return;
+                            }
+                            mainCtrl.showLobby();
+                        } else {
+                            Alert usernameAlert = new Alert(Alert.AlertType.ERROR, "Username or server input is not correct");
+                            usernameAlert.show();
+                        }
+                    }
             }
-        }
-    }
 
     private Player getPlayer() {
         var username = usernameField.getText();

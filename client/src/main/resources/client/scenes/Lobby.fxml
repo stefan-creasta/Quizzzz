@@ -7,11 +7,10 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" styleClass="main" stylesheets="@../../Lobby.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.LobbyCtrl">
+<AnchorPane fx:id="mainPane" prefHeight="600.0" prefWidth="1000.0" styleClass="main" stylesheets="@../../Lobby.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.LobbyCtrl">
    <children>
       <Button fx:id="startButton" alignment="CENTER" layoutX="678.0" layoutY="210.0" mnemonicParsing="false" onAction="#startGame" text="Start Game" textAlignment="CENTER" />
-      <Button fx:id="leaveButton" layoutX="668.0" layoutY="344.0" mnemonicParsing="false" styleClass="red" text="Leave Game" />
+      <Button fx:id="leaveButton" layoutX="668.0" layoutY="344.0" mnemonicParsing="false" onAction="#leaveGame" styleClass="red" text="Leave Game" />
       <TableView fx:id="table" layoutX="38.0" layoutY="157.0" prefHeight="353.0" prefWidth="503.0" styleClass="table">
         <columns>
           <TableColumn fx:id="col1" prefWidth="258.4000244140625" text="Players" />
