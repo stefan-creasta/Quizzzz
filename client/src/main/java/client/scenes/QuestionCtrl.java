@@ -141,6 +141,14 @@ public class QuestionCtrl {
 
     public boolean halfTimeWasUsed = false;
 
+    public int questionNumber = 1;
+
+    boolean doubleUsed = false;
+
+    boolean halfUsed = false;
+
+    boolean eliminateUsed = false;
+
 
     @Inject
     public QuestionCtrl(MainCtrl mainCtrl) {
@@ -159,8 +167,16 @@ public class QuestionCtrl {
                 timeBar.setVisible(true);
                 questionTime.setVisible(true);
                 scoreLabel.setVisible(false);
-                //TODO: Update question number based on current question
-                this.questionTitle.setText("Question 10");
+                if(doubleUsed){
+                    //TODO call function that makes button different shade to indicate it has been used
+                }
+                if(eliminateUsed){
+                    //TODO call function that makes button different shade to indicate it has been used
+                }
+                if(halfUsed){
+                    //TODO call function that makes button different shade to indicate it has been used
+                }
+                this.questionTitle.setText("Question " + questionNumber++);
                 this.questionText.setText(gameState.question.question);
 
                 if(!gameState.question.type.equals("3")){
@@ -320,6 +336,8 @@ public class QuestionCtrl {
      * up is used and all players are alerted.
      */
     public void DoublePointsButtonPressed(ActionEvent event) throws IOException, InterruptedException {
+        doubleUsed = true;
+        //TODO call function that makes button different shade to indicate it has been used
         String result = PowerUpsCommunication.sendPowerUps("doublePointsPowerUp", gameState, mainCtrl.playerCtrl.serverString);
 
         try {
@@ -342,19 +360,21 @@ public class QuestionCtrl {
      * and the wrong answer button is made invisible and inaccessible. Also other players are alerted.
      */
     void EliminateWrongAnswerButtonPressed(ActionEvent event) throws IOException, InterruptedException {
+        eliminateUsed = true;
+        //TODO call function that makes button different shade to indicate it has been used
         String result = PowerUpsCommunication.sendPowerUps("eliminateWrongAnswerPowerUp", gameState, mainCtrl.playerCtrl.serverString);
 
         try {
             if (result.split("___")[1].equals("success")) {
                 String answer = result.split("___")[2];
                 if (answer1.getText().equals(answer)) {
-                    setVisible("answer1", false);//TODO dont forget to turn visible later if needed
+                    setVisible("answer1", false);
                 }
                 if (answer2.getText().equals(answer)) {
-                    setVisible("answer2", false);//TODO dont forget to turn visible later if needed
+                    setVisible("answer2", false);
                 }
                 if (answer3.getText().equals(answer)) {
-                    setVisible("answer3", false);//TODO dont forget to turn visible later if needed
+                    setVisible("answer3", false);
                 }
 
             }
@@ -373,9 +393,11 @@ public class QuestionCtrl {
     /**
      * Gets called when the half time power up is used. Sends a request to the server,
      * where it is checked if the player has already used that power up. If not, the power up is used,
-     * and the time of all other players is halved.//TODO finish
+     * and the time of all other players is halved.
      */
     void HalfTimeButtonPressed(ActionEvent event) throws IOException, InterruptedException {
+        halfUsed = true;
+        //TODO call function that makes button different shade to indicate it has been used
         String result = PowerUpsCommunication.sendPowerUps("halfTimePowerUp", gameState, mainCtrl.playerCtrl.serverString);
         try {
             if (result.split("___")[1].equals("success")) {
@@ -417,19 +439,6 @@ public class QuestionCtrl {
         root.addEventFilter(KeyEvent.KEY_PRESSED, this::KeyPressed);
         root.addEventFilter(KeyEvent.KEY_RELEASED, this::KeyReleased);
 
-        //remember to stop timeline everytime a Question phase starts
-
-
-        //comment/delete everything between these 2 comments ->
-
-//        timer = new Timer(0, 5);
-//        Timeline timeline= new Timeline( new KeyFrame(Duration.millis(1), e ->{
-////            questionTime.setText(timer.toTimerDisplayString());
-//        }));
-//        timeline.setCycleCount((int)timer.getDurationLong()/1000);
-//        timeline.play();
-
-        // <- comment/delete everything between these 2 comments later
         timer = new Timer(0, 5);
 
         leaderboardRanks.setCellFactory(e -> {
@@ -476,12 +485,6 @@ public class QuestionCtrl {
                 break;
         }
     }
-
-    public void syncTimer(long syncLong, long duration) {
-        timer.setDuration(duration);
-        timer.synchronize(syncLong);
-    }
-
 
 
     /**
