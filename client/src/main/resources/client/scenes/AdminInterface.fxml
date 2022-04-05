@@ -43,7 +43,7 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <ComboBox fx:id="urlField" editable="true" layoutX="209.0" layoutY="8.0" prefHeight="36.0" prefWidth="374.0" promptText="http://localhost:8080" />
+      <ComboBox fx:id="urlField" editable="true" layoutX="209.0" layoutY="8.0" onAction="#serverUrlChange" prefHeight="36.0" prefWidth="374.0" promptText="http://localhost:8080" />
       <Line endX="589.8929443359375" endY="3.814697265625E-6" layoutX="115.0" layoutY="52.0" startX="-100.0" />
       <TextField fx:id="activityField" layoutX="15.0" layoutY="345.0" prefHeight="36.0" prefWidth="350.0" promptText="Activity" />
       <TextField fx:id="wattsField" layoutX="365.0" layoutY="345.0" prefHeight="36.0" prefWidth="150.0" promptText="Watts/Hour" />

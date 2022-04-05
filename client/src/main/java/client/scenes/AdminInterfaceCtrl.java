@@ -60,6 +60,20 @@ public class AdminInterfaceCtrl {
         setQuestionInputs(null);
     }
 
+
+    /**
+     * The event handler for the server URL field.
+     * Clears the activities table and clears any input.
+     */
+    public void serverUrlChange(ActionEvent actionEvent) {
+        if (selectedQuestion != null) {
+            setQuestionInputs(null);
+        }
+        selectedQuestion = null;
+        activitiesTable.setItems(FXCollections.observableList(List.of()));
+        pathField.setText("");
+    }
+
     /**
      * The event handler for the "Back to Menu" button.
      * Tells MainCtrl to show the splash screen.
