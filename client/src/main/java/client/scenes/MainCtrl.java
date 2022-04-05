@@ -21,12 +21,10 @@ import commons.GameState;
 import commons.Player;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import java.io.IOException;
-import java.net.ConnectException;
 import java.util.List;
 
 public class MainCtrl {
