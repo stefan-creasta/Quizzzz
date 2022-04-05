@@ -10,35 +10,35 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="440.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AdminInterfaceCtrl">
+<AnchorPane styleClass="main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="440.0" prefWidth="720.0" stylesheets="@../../AdminInterface.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AdminInterfaceCtrl">
     <children>
-        <Button layoutX="594.0" layoutY="55.0" mnemonicParsing="false" onAction="#importQuestions" prefHeight="18.0" prefWidth="112.0" text="Import" textAlignment="CENTER">
+        <Button styleClass="button" layoutX="594.0" layoutY="55.0" mnemonicParsing="false" onAction="#importQuestions" prefHeight="18.0" prefWidth="112.0" text="Import" textAlignment="CENTER">
          <font>
             <Font size="14.0" />
          </font></Button>
         <TextField fx:id="pathField" layoutX="209.0" layoutY="52.0" prefHeight="36.0" prefWidth="373.0" promptText="path relative to the images root..." />
-        <Label layoutX="14.0" layoutY="60.0" text="Path to import activities from:">
+        <Label styleClass="label" layoutX="14.0" layoutY="60.0" text="Path to import activities from:">
          <font>
             <Font size="14.0" />
          </font></Label>
-      <Button layoutX="13.0" layoutY="388.0" mnemonicParsing="false" onAction="#back" prefHeight="43.0" prefWidth="190.0" text="Back to Menu" textAlignment="CENTER">
+      <Button styleClass="button" layoutX="13.0" layoutY="388.0" mnemonicParsing="false" onAction="#back" prefHeight="43.0" prefWidth="190.0" text="Back to Menu" textAlignment="CENTER">
          <font>
             <Font size="20.0" />
          </font>
       </Button>
       <Line endX="589.8929443359375" endY="3.814697265625E-6" layoutX="115.0" layoutY="89.0" startX="-100.0" />
       <TextField fx:id="searchField" layoutX="208.0" layoutY="90.0" prefHeight="36.0" prefWidth="374.0" promptText="search terms" />
-      <Button layoutX="594.0" layoutY="93.0" mnemonicParsing="false" onAction="#search" prefHeight="18.0" prefWidth="112.0" text="Search" textAlignment="CENTER">
+      <Button styleClass="button" layoutX="594.0" layoutY="93.0" mnemonicParsing="false" onAction="#search" prefHeight="18.0" prefWidth="112.0" text="Search" textAlignment="CENTER">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Label layoutX="14.0" layoutY="98.0" text="Search for question to edit:">
+      <Label styleClass="label" layoutX="14.0" layoutY="98.0" text="Search for question to edit:">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label layoutX="14.0" layoutY="16.0" text="Server URL (starts with http):">
+      <Label styleClass="label" layoutX="14.0" layoutY="16.0" text="Server URL (starts with http):">
          <font>
             <Font size="14.0" />
          </font>
@@ -48,17 +48,17 @@
       <TextField fx:id="activityField" layoutX="15.0" layoutY="345.0" prefHeight="36.0" prefWidth="350.0" promptText="Activity" />
       <TextField fx:id="wattsField" layoutX="365.0" layoutY="345.0" prefHeight="36.0" prefWidth="150.0" promptText="Watts/Hour" />
       <TextField fx:id="imagePathField" layoutX="515.0" layoutY="345.0" prefHeight="36.0" prefWidth="190.0" promptText="Image Path" />
-      <Button fx:id="saveButton" layoutX="453.0" layoutY="388.0" mnemonicParsing="false" onAction="#save" prefHeight="43.0" prefWidth="252.0" text="Update Selected Activity" textAlignment="CENTER">
+      <Button fx:id="saveButton" styleClass="button" layoutX="453.0" layoutY="388.0" mnemonicParsing="false" onAction="#save" prefHeight="43.0" prefWidth="252.0" text="Update Selected Activity" textAlignment="CENTER">
          <font>
             <Font size="20.0" />
          </font>
       </Button>
-      <Button fx:id="deleteButton" layoutX="208.0" layoutY="388.0" mnemonicParsing="false" onAction="#delete" prefHeight="43.0" prefWidth="238.0" text="Delete Selected Activity" textAlignment="CENTER">
+      <Button fx:id="deleteButton" styleClass="button" layoutX="208.0" layoutY="388.0" mnemonicParsing="false" onAction="#delete" prefHeight="43.0" prefWidth="238.0" text="Delete Selected Activity" textAlignment="CENTER">
          <font>
             <Font size="20.0" />
          </font>
       </Button>
-      <TableView fx:id="activitiesTable" layoutX="14.0" layoutY="126.0" maxWidth="-Infinity" minWidth="-Infinity" onMouseClicked="#tableClick" prefHeight="219.0">
+      <TableView fx:id="activitiesTable" styleClass="activities" layoutX="14.0" layoutY="126.0" maxWidth="-Infinity" minWidth="-Infinity" onMouseClicked="#tableClick" prefHeight="219.0">
         <columns>
           <TableColumn fx:id="activityColumn" minWidth="0.0" prefWidth="347.20001220703125" text="Activity" />
           <TableColumn fx:id="wattsColumn" minWidth="0.0" prefWidth="130.79998779296875" text="Watts/Hour" />

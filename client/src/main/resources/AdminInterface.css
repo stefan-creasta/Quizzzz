@@ -1,0 +1,42 @@
+.main {
+    -fx-background-color: #8b57a0;
+}
+
+.label {
+    -fx-text-fill: white;
+}
+
+.button {
+    -fx-background-radius: 999px;
+    -fx-effect: innershadow( gaussian, rgba( 0, 0, 0, 0.5 ), 5, 0, 0, 2 );
+    -fx-background-color: #f2d4ef;
+}
+
+.activities .column-header,
+.activities .column-header-background .filler {
+    -fx-background-color: #3b315a;
+}
+
+.activities .label {
+    -fx-text-fill: black;
+}
+
+.activities .column-header .label {
+    -fx-text-fill: white;
+}
+
+.activities, .table-row-cell:odd {
+    -fx-background-color: #f2d4ef;
+}
+
+.activities .table-row-cell:even {
+    -fx-background-color: #f5ebf2;
+}
+
+.activities .table-row-cell:selected {
+    -fx-background-color: #00ff00;
+}
+
+.activities .table-row-cell:selected .text {
+    -fx-fill: black;
+}
