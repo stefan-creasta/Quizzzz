@@ -28,10 +28,17 @@ public class GameCommunication {
      * @return the ID of the game state that is created, if an exception occurs, return -1;
      */
     public long createGame(String serverString) {
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/api/game/create"))
-                .POST(HttpRequest.BodyPublishers.noBody())
-                .build();
+        HttpRequest request = null;
+        try
+        {
+            request = HttpRequest.newBuilder()
+                    .uri(URI.create(serverString + "/api/game/create"))
+                    .POST(HttpRequest.BodyPublishers.noBody())
+                    .build();
+        }
+        catch(IllegalArgumentException exc){
+            return -1;
+        }
         try {
             return Long.parseLong(client.send(request, HttpResponse.BodyHandlers.ofString()).body());
         } catch (IOException e) {

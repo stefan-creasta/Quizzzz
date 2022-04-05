@@ -21,10 +21,12 @@ import commons.GameState;
 import commons.Player;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.util.List;
 
 public class MainCtrl {
@@ -123,9 +125,11 @@ public class MainCtrl {
         gameId = gameCommunication.createSingleplayerGame();
     }
 
-    public void setupMultiplayerGame() {
+    public boolean setupMultiplayerGame() {
         singleplayerGame = false;
         gameId = gameCommunication.createGame(playerCtrl.serverString);
+        if(gameId==-1) return false;
+        return true;
     }
 
     public void joinGame(String username) {
@@ -138,8 +142,16 @@ public class MainCtrl {
     public boolean checkUsername(String username) throws IOException, InterruptedException {
         //In case the game that is being checked against is initiated in between username checks, accept the username
         // for the new game. Therefore, we are resetting the multiplayer gameId each time a username attempt is made.
-        if (!singleplayerGame) setupMultiplayerGame();
-        return gameCommunication.checkUsername(gameId, username, playerCtrl.serverString);
+        boolean flag = true;
+        if (!singleplayerGame){
+            flag = setupMultiplayerGame();
+        }
+
+        if(flag) {
+            return gameCommunication.checkUsername(gameId, username, playerCtrl.serverString);
+        }else{
+            return false;
+        }
     }
 
     public void showOverview() {
@@ -170,7 +182,8 @@ public class MainCtrl {
         showPlayer();
     }
     public void chooseMultiplayer() {
-        setupMultiplayerGame();
+//        setupMultiplayerGame();
+        singleplayerGame = false;
         showPlayer();
     }
     public void showPlayer() {
