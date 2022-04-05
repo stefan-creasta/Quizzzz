@@ -38,7 +38,7 @@ public class ServerListener {
      * @param mainCtrl the mainCtrl that will handleGameState
      * @throws IllegalArgumentException thrown when mainCtrl is null
      */
-    public void initialize(final long playerId, MainCtrl mainCtrl) throws IllegalArgumentException {
+    public void initialize(final long playerId, MainCtrl mainCtrl, String serverString) throws IllegalArgumentException {
         if (mainCtrl == null) throw new IllegalArgumentException();
         if (listeningThread != null) {
             stopListening();
@@ -55,7 +55,7 @@ public class ServerListener {
         // New threads need to be invoked via the JavaFX Platform API, otherwise it won't run
         listeningThread = new Thread(() -> {
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:8080/api/listen?playerId=" + playerId))
+                    .uri(URI.create(serverString + "/api/listen?playerId=" + playerId))
                     .GET()
                     .build();
             while (listeningThreadKeepAlive.get()) {
