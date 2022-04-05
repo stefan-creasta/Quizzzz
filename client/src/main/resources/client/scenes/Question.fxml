@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -13,7 +14,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" prefHeight="600.0" prefWidth="1000.0" styleClass="main" stylesheets="@../../Question.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.QuestionCtrl">
+<AnchorPane fx:id="root" prefHeight="642.0" prefWidth="1000.0" styleClass="main" stylesheets="@../../Question.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.QuestionCtrl">
    <children>
       <Label fx:id="questionTitle" alignment="CENTER" layoutX="57.0" layoutY="56.0" prefWidth="300.0" stylesheets="@../../Question.css" text="Question 1" textAlignment="CENTER">
          <styleClass>
@@ -44,13 +45,36 @@
          </font></Button>
       <Button fx:id="halfTime" layoutX="724.0" layoutY="235.0" mnemonicParsing="false" onAction="#HalfTimeButtonPressed" prefWidth="230.0" stylesheets="@../../Question.css" text="Half time" />
       <Label layoutX="711.0" layoutY="27.0" styleClass="leaderboard-text" text="Hold Tab to see Leaderboard" textFill="WHITE" />
-      <TableView fx:id="leaderboard" layoutX="266.0" layoutY="86.0" prefHeight="412.0" prefWidth="479.0" styleClass="leaderboard">
-        <columns>
-          <TableColumn fx:id="leaderboardRanks" editable="false" prefWidth="117.55978393554688" text="Rank" />
-            <TableColumn fx:id="leaderboardUsernames" editable="false" minWidth="0.0" prefWidth="207.94021606445312" text="Username" />
-            <TableColumn fx:id="leaderboardScores" editable="false" minWidth="0.0" prefWidth="141.01806640625" text="Score" />
-        </columns>
-      </TableView>
+      <SplitPane fx:id="allLeaderboard" dividerPositions="0.8652522935779818" layoutX="300.0" layoutY="121.0" orientation="VERTICAL" prefHeight="379.0" prefWidth="488.0" styleClass="allStats">
+        <items>
+            <TableView fx:id="leaderboard" prefHeight="266.0" prefWidth="478.0" styleClass="leaderboard">
+              <columns>
+                <TableColumn fx:id="leaderboardRanks" editable="false" prefWidth="152.79998170137424" text="Rank" />
+                  <TableColumn fx:id="leaderboardUsernames" editable="false" minWidth="0.0" prefWidth="166.4000244140625" text="Username" />
+                  <TableColumn fx:id="leaderboardScores" editable="false" minWidth="0.0" prefWidth="157.60000000000002" text="Score" />
+              </columns>
+            </TableView>
+          <AnchorPane fx:id="playerPosition" minHeight="0.0" minWidth="0.0" prefHeight="74.0" prefWidth="478.0" styleClass="playerStats">
+               <children>
+                  <Label fx:id="playerRank" layoutX="7.0" layoutY="-4.0" prefHeight="54.0" prefWidth="147.0" text="#3" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="playerUsername" layoutX="161.0" prefHeight="46.0" prefWidth="147.0" text="Ben" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="playerScore" layoutX="331.0" prefHeight="46.0" prefWidth="147.0" text="9000" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
       <Button fx:id="emoteAngry" layoutX="21.0" layoutY="443.0" mnemonicParsing="false" onAction="#AngryEmotePressed" prefHeight="38.0" prefWidth="70.0" style="-fx-padding: 0;" text="Angry">
          <font>
             <Font size="12.0" />

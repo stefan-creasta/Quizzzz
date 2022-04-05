@@ -88,6 +88,9 @@ public class AddPlayerCtrl {
                     return;
                 }
                 mainCtrl.showLobby();
+            }else{
+                Alert usernameAlert = new Alert(Alert.AlertType.ERROR, "Username or server input is not correct");
+                usernameAlert.show();
             }
         }
     }

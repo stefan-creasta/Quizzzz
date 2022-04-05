@@ -3,21 +3,22 @@ package client.scenes;
 import client.Communication.AnswerCommunication;
 import client.Communication.ImageCommunication;
 import client.Communication.PowerUpsCommunication;
-import commons.*;
 import commons.Timer;
+import commons.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
-
 import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URL;
@@ -67,6 +68,18 @@ public class QuestionCtrl {
     private Button halfTime;
 
     @FXML
+    private AnchorPane playerPosition;
+
+    @FXML
+    private Label playerScore;
+
+    @FXML
+    private Label playerUsername;
+
+    @FXML
+    private Label playerRank;
+
+    @FXML
     private ImageView questionImage;
 
     @FXML
@@ -77,6 +90,9 @@ public class QuestionCtrl {
 
     @FXML
     private Label questionTime;
+
+    @FXML
+    private SplitPane allLeaderboard;
 
     @FXML
     private TableView<LeaderboardEntry> leaderboard;
@@ -117,11 +133,14 @@ public class QuestionCtrl {
 
     private String selectedAnswer;
 
+    private List<LeaderboardEntry> leaderboardEntries;
+
+    private final MainCtrl mainCtrl;
+
     private Timeline timeline;
 
     public boolean halfTimeWasUsed = false;
 
-    private MainCtrl mainCtrl;
 
     @Inject
     public QuestionCtrl(MainCtrl mainCtrl) {
@@ -373,7 +392,7 @@ public class QuestionCtrl {
     }
 
     @FXML
-    void KeyPressed(KeyEvent event) {
+    void KeyPressed(KeyEvent event){
         System.out.println(event.getCode() + " was pressed.");
         switch (event.getCode()) {
             case TAB:
@@ -395,10 +414,22 @@ public class QuestionCtrl {
         assert questionText != null : "fx:id=\"questionText\" was not injected: check your FXML file 'Question.fxml'.";
         assert questionTitle != null : "fx:id=\"questionTitle\" was not injected: check your FXML file 'Question.fxml'.";
 
-
         root.addEventFilter(KeyEvent.KEY_PRESSED, this::KeyPressed);
         root.addEventFilter(KeyEvent.KEY_RELEASED, this::KeyReleased);
 
+        //remember to stop timeline everytime a Question phase starts
+
+
+        //comment/delete everything between these 2 comments ->
+
+//        timer = new Timer(0, 5);
+//        Timeline timeline= new Timeline( new KeyFrame(Duration.millis(1), e ->{
+////            questionTime.setText(timer.toTimerDisplayString());
+//        }));
+//        timeline.setCycleCount((int)timer.getDurationLong()/1000);
+//        timeline.play();
+
+        // <- comment/delete everything between these 2 comments later
         timer = new Timer(0, 5);
 
         leaderboardRanks.setCellFactory(e -> {
@@ -419,14 +450,12 @@ public class QuestionCtrl {
         });
         leaderboardUsernames.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().username));
         leaderboardScores.setCellValueFactory(e -> new SimpleStringProperty(Integer.toString(e.getValue().score)));
-
-
         emotesUsernameColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().username));
         emotesEmoteColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().type));
         emotes.setPlaceholder(new Label(""));
+        leaderboard.addEventFilter(ScrollEvent.ANY, Event::consume);
         hideLeaderboard();
     }
-
 
     /**
      * Makes an FXML element visible/invisible
@@ -527,21 +556,81 @@ public class QuestionCtrl {
     }
 
     public void showLeaderboard() {
-        List<LeaderboardEntry> leaderboardEntries = new LinkedList<LeaderboardEntry>();
-        leaderboardEntries.addAll(List.of(
-                new LeaderboardEntry("userA", 300),
-                new LeaderboardEntry("userC", 100),
-                new LeaderboardEntry("userB", 200)
-        ));
-        Collections.sort(leaderboardEntries);
+            // if the current list of player in the lobby is one then the current game is in multiplayer mode
+        if (mainCtrl.singleplayerGame == false) {
+            updateMultilayerLeaderboards();
 
-        ObservableList<LeaderboardEntry> entries = FXCollections.observableList(leaderboardEntries);
-        leaderboard.setItems(entries);
-        leaderboard.setVisible(true);
+            System.out.println("SIZE FOR LEADERBOARD: " + leaderboardEntries.size());
+            ObservableList<LeaderboardEntry> entries = FXCollections.observableList(leaderboardEntries);
+            leaderboard.setItems(entries);
+            allLeaderboard.setVisible(true);
+        }
+        // if the current list of player in the lobby is one then the current game is  in single player mode
+        if (mainCtrl.singleplayerGame == true){
+            updateSingleplayerLeaderboards();
+
+            ObservableList<LeaderboardEntry> entries = FXCollections.observableList(leaderboardEntries);
+            leaderboard.setItems(entries);
+            updateCurrentPlayer(gameState);
+            allLeaderboard.setVisible(true);
+
+        }
     }
 
     public void hideLeaderboard() {
-        leaderboard.setVisible(false);
+        allLeaderboard.setVisible(false);
+    }
+
+    /**
+     * Retrieves the list of Leaderboard Entries from the server and populates the table in the game
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    public void updateMultilayerLeaderboards(){
+
+        try {
+            leaderboardEntries = mainCtrl.getMultiplayerLeaderboards();
+            Collections.sort(leaderboardEntries);
+            List<LeaderboardEntry> auxiliarList = new ArrayList<>();
+            for(int i = 0; i <= 4 && i < leaderboardEntries.size(); i++) {
+                auxiliarList.add(leaderboardEntries.get(i));
+            }
+            int currentPlayerPosition = -1;
+            for(int i = 0; i < leaderboardEntries.size(); i++) {
+                if(gameState.username.equals(leaderboardEntries.get(i).username)) {
+                    currentPlayerPosition = i;
+                    break;
+                }
+            }
+            System.out.println("PLAYER POSITION E: " + currentPlayerPosition);
+            if(currentPlayerPosition != -1) {
+                if(currentPlayerPosition <= 4) {
+                    System.out.println("PLAYER POSITION E FALS");
+                    playerPosition.setVisible(false);
+                }
+                else {
+                    updateCurrentPlayer(gameState);
+                }
+            }
+            leaderboardEntries = auxiliarList;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
+    public void updateSingleplayerLeaderboards(){
+
+        try {
+            leaderboardEntries = mainCtrl.getSingleplayerLeaderboards();
+            Collections.sort(leaderboardEntries);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void updateEmotes(List<Emote> emoteEntries) {
@@ -554,6 +643,22 @@ public class QuestionCtrl {
         System.out.println(emoteEntriesWithImage);
         ObservableList<EmoteEntry> emoteEntriesList = FXCollections.observableList(emoteEntriesWithImage);
         this.emotes.setItems(emoteEntriesList);
+    }
+
+    /**
+     * Allows the current user to see their own scores and ranks at the bottom of the leaderboard
+     * @param state
+     */
+    public void updateCurrentPlayer(GameState state){
+        for (int i = 0; i < leaderboardEntries.size(); i++) {
+            LeaderboardEntry e = leaderboardEntries.get(i);
+            if (e.username.equals(state.username)) {
+                playerUsername.setText(e.username);
+                playerScore.setText(String.valueOf(e.score));
+                playerRank.setText("#"+ String.valueOf(i + 1));
+                break;
+            }
+        }
     }
 }
 
@@ -568,3 +673,4 @@ class EmoteEntry {
     }
 
 }
+

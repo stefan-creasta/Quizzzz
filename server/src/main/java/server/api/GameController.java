@@ -71,6 +71,12 @@ public class GameController {
     public void initiateGame(@PathVariable long id) throws IllegalArgumentException{
         service.initiateGame(id);
     }
+
+    /**
+     * Method which returns the usernames of the players in a certain game
+     * @param id the game's id
+     * @return the list of usernames
+     */
     @PostMapping("/init/singleplayer/{id}")
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
     /**
@@ -85,6 +91,17 @@ public class GameController {
         List<String> players = service.getPlayers(id);
         System.out.println("GetMapping players: " + players.size());
         return players;
+    }
+
+    /**
+     * Method which returns a multiplayer game's leaderboard
+     * @param id the game's id
+     * @return the list of scores
+     */
+    @GetMapping("/leaderboard/{id}")
+    public List<LeaderboardEntry> getLeaderboard(@PathVariable long id) {
+        List<LeaderboardEntry> leaderboard = service.getLeaderboard(id);
+        return leaderboard;
     }
     @GetMapping("/check/{id}")
     public boolean checkUsername(@PathVariable long id, @RequestParam String username) throws IllegalArgumentException {

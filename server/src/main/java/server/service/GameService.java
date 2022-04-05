@@ -356,6 +356,24 @@ public class GameService {
     }
 
     /**
+     * Method which returns a leaderboard for a certain game
+     * @param id the game's id
+     * @return the list of leaderboard entries
+     */
+    public List<LeaderboardEntry> getLeaderboard(long id) {
+        Map<Long, Player> players = playerRepository.getPlayers();
+        List<LeaderboardEntry> leaderboardEntries = new ArrayList<>();
+        for(Long playerId : players.keySet()) {
+            Player player = players.get(playerId);
+            if(player.gameId == id) {
+                LeaderboardEntry newLeaderboardEntry = new LeaderboardEntry(player.username, (int) player.score);
+                leaderboardEntries.add(newLeaderboardEntry);
+            }
+        }
+        return leaderboardEntries;
+    }
+
+/**
      * Method which checks whether a username has already been taken
      * @param id the id of the game
      * @param username the new player's username

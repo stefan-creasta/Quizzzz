@@ -18,6 +18,7 @@ package client.scenes;
 import client.Communication.GameCommunication;
 import client.Communication.ServerListener;
 import commons.GameState;
+import commons.LeaderboardEntry;
 import commons.Player;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -123,9 +124,11 @@ public class MainCtrl {
         gameId = gameCommunication.createSingleplayerGame();
     }
 
-    public void setupMultiplayerGame() {
+    public boolean setupMultiplayerGame() {
         singleplayerGame = false;
         gameId = gameCommunication.createGame(playerCtrl.serverString);
+        if(gameId==-1) return false;
+        return true;
     }
 
     public void joinGame(String username) {
@@ -138,8 +141,16 @@ public class MainCtrl {
     public boolean checkUsername(String username) throws IOException, InterruptedException {
         //In case the game that is being checked against is initiated in between username checks, accept the username
         // for the new game. Therefore, we are resetting the multiplayer gameId each time a username attempt is made.
-        if (!singleplayerGame) setupMultiplayerGame();
-        return gameCommunication.checkUsername(gameId, username, playerCtrl.serverString);
+        boolean flag = true;
+        if (!singleplayerGame){
+            flag = setupMultiplayerGame();
+        }
+
+        if(flag) {
+            return gameCommunication.checkUsername(gameId, username, playerCtrl.serverString);
+        }else{
+            return false;
+        }
     }
 
     public void showOverview() {
@@ -170,7 +181,8 @@ public class MainCtrl {
         showPlayer();
     }
     public void chooseMultiplayer() {
-        setupMultiplayerGame();
+//        setupMultiplayerGame();
+        singleplayerGame = false;
         showPlayer();
     }
     public void showPlayer() {
@@ -213,6 +225,26 @@ public class MainCtrl {
 
     public String getCurrentUsername() {
         return currentUsername;
+    }
+
+    /**
+     *
+     * @return the current list containing all the current entries for the current multiplayer game
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    public List<LeaderboardEntry> getMultiplayerLeaderboards() throws IOException, InterruptedException{
+        return gameCommunication.getLeaderboardMultiplayer(gameId);
+    }
+
+    /**
+     *
+     * @return the leaderboards containing all the entries for singleplayer mode
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    public List<LeaderboardEntry> getSingleplayerLeaderboards() throws IOException, InterruptedException{
+        return gameCommunication.getLeaderboardSingleplayer();
     }
 
     /**
