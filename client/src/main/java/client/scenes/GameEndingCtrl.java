@@ -75,7 +75,7 @@ public class GameEndingCtrl {
             mainCtrl.initiateSingleplayerGame(new commons.Player(mainCtrl.getCurrentUsername(), 0));
         }
         else {
-            mainCtrl.setupMultiplayerGame();
+            if(mainCtrl.setupMultiplayerGame())
             mainCtrl.joinGame(mainCtrl.getCurrentUsername());
         }
     }

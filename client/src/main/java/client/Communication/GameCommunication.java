@@ -29,11 +29,18 @@ public class GameCommunication {
      *
      * @return the ID of the game state that is created, if an exception occurs, return -1;
      */
-    public long createGame() {
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/api/game/create"))
-                .POST(HttpRequest.BodyPublishers.noBody())
-                .build();
+    public long createGame(String serverString) {
+        HttpRequest request = null;
+        try
+        {
+            request = HttpRequest.newBuilder()
+                    .uri(URI.create(serverString + "/api/game/create"))
+                    .POST(HttpRequest.BodyPublishers.noBody())
+                    .build();
+        }
+        catch(IllegalArgumentException exc){
+            return -1;
+        }
         try {
             return Long.parseLong(client.send(request, HttpResponse.BodyHandlers.ofString()).body());
         } catch (IOException e) {
@@ -72,9 +79,9 @@ public class GameCommunication {
      * @param username The username that the client has chosen to join the game with.
      * @return the gameState to initially render the game with, returns null if an exception occurred.
      */
-    public GameState joinGame(long gameId, String username) {
+    public GameState joinGame(long gameId, String username, String serverString) {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/api/game/join/" + gameId + "?username=" + username))
+                .uri(URI.create(serverString + "/api/game/join/" + gameId + "?username=" + username))
                 .GET()
                 .build();
         try {
@@ -101,9 +108,9 @@ public class GameCommunication {
      * @param username The username that the client has chosen to join the singleplayer game with.
      * @return the gameState to initially render the game with, returns null if an exception occurred.
      */
-    public GameState joinSingleplayerGame(long gameId, String username) {
+    public GameState joinSingleplayerGame(long gameId, String username, String serverString) {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/api/game/join/singleplayer/" + gameId + "?username=" + username))
+                .uri(URI.create(serverString + "/api/game/join/singleplayer/" + gameId + "?username=" + username))
                 .GET()
                 .build();
         try {
@@ -128,9 +135,9 @@ public class GameCommunication {
      *
      * @param gameId The id of the game to be initiated.
      */
-    public void initiateGame(long gameId) {
+    public void initiateGame(long gameId, String serverString) {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/api/game/init/" + gameId))
+                .uri(URI.create(serverString + "/api/game/init/" + gameId))
                 .POST(HttpRequest.BodyPublishers.noBody())
                 .build();
         try {
@@ -147,9 +154,9 @@ public class GameCommunication {
      *
      * @param gameId The id of the game to be initiated.
      */
-    public void initiateSingleplayerGame(long gameId) {
+    public void initiateSingleplayerGame(long gameId, String serverString) {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/api/game/init/singleplayer/" + gameId))
+                .uri(URI.create(serverString + "/api/game/init/singleplayer/" + gameId))
                 .POST(HttpRequest.BodyPublishers.noBody())
                 .build();
         try {
@@ -167,9 +174,9 @@ public class GameCommunication {
      * @param gameId the game's ID
      * @return a list of usernames
      */
-    public List<String> getPlayers(long gameId) throws IOException, InterruptedException {
+    public List<String> getPlayers(long gameId, String serverString) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/api/game/players/" + gameId))
+                .uri(URI.create(serverString + "/api/game/players/" + gameId))
                 .GET()
                 .build();
         var response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -186,9 +193,9 @@ public class GameCommunication {
      * @param username the username which needs to be checked
      * @return true, if the username has not been taken and can be used, false otherwise
      */
-    public boolean checkUsername(long gameId, String username) throws IOException, InterruptedException {
+    public boolean checkUsername(long gameId, String username, String serverString) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/api/game/check/" + gameId + "?username=" + username))
+                .uri(URI.create(serverString + "/api/game/check/" + gameId + "?username=" + username))
                 .GET()
                 .build();
         var response = client.send(request, HttpResponse.BodyHandlers.ofString());

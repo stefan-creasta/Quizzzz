@@ -26,7 +26,7 @@ public class AdminInterfaceCtrl {
     }
 
     public void importQuestions(ActionEvent actionEvent) {
-        String message = importerCommunication.importQuestions(pathField.getText());
+        String message = importerCommunication.importQuestions(pathField.getText(), mainCtrl.playerCtrl.serverString);
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
 
