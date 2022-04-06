@@ -168,13 +168,13 @@ public class QuestionCtrl {
                 questionTime.setVisible(true);
                 scoreLabel.setVisible(false);
                 if(doubleUsed){
-                    //TODO call function that makes button different shade to indicate it has been used
+                    doublePoints.setDisable(true);
                 }
                 if(eliminateUsed){
-                    //TODO call function that makes button different shade to indicate it has been used
+                    eliminateWrongAnswer.setDisable(true);
                 }
                 if(halfUsed){
-                    //TODO call function that makes button different shade to indicate it has been used
+                    halfTime.setDisable(true);
                 }
                 this.questionTitle.setText("Question " + questionNumber++);
                 this.questionText.setText(gameState.question.question);
@@ -190,7 +190,7 @@ public class QuestionCtrl {
                     answerTextBox.clear();
                     answerTextBox.setVisible(true);
                 }
-                
+
                 timeline = new Timeline( new KeyFrame(Duration.millis(1), e ->{
                     double timeToDisplay = 10000 - (new Date().getTime() - gameState.timeOfReceival);
                     questionTime.setText("Time left: " + String.format("%.3f", timeToDisplay/1000.0) + " seconds");
@@ -337,7 +337,8 @@ public class QuestionCtrl {
      */
     public void DoublePointsButtonPressed(ActionEvent event) throws IOException, InterruptedException {
         doubleUsed = true;
-        //TODO call function that makes button different shade to indicate it has been used
+        doublePoints.setDisable(true);
+
         String result = PowerUpsCommunication.sendPowerUps("doublePointsPowerUp", gameState, mainCtrl.playerCtrl.serverString);
 
         try {
@@ -361,6 +362,7 @@ public class QuestionCtrl {
      */
     void EliminateWrongAnswerButtonPressed(ActionEvent event) throws IOException, InterruptedException {
         eliminateUsed = true;
+        eliminateWrongAnswer.setDisable(true);
         //TODO call function that makes button different shade to indicate it has been used
         String result = PowerUpsCommunication.sendPowerUps("eliminateWrongAnswerPowerUp", gameState, mainCtrl.playerCtrl.serverString);
 
@@ -397,6 +399,7 @@ public class QuestionCtrl {
      */
     void HalfTimeButtonPressed(ActionEvent event) throws IOException, InterruptedException {
         halfUsed = true;
+        halfTime.setDisable(true);
         //TODO call function that makes button different shade to indicate it has been used
         String result = PowerUpsCommunication.sendPowerUps("halfTimePowerUp", gameState, mainCtrl.playerCtrl.serverString);
         try {
@@ -464,6 +467,7 @@ public class QuestionCtrl {
         emotes.setPlaceholder(new Label(""));
         leaderboard.addEventFilter(ScrollEvent.ANY, Event::consume);
         hideLeaderboard();
+
     }
 
     /**
