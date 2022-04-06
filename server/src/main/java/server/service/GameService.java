@@ -366,7 +366,7 @@ public class GameService {
         for(Long playerId : players.keySet()) {
             Player player = players.get(playerId);
             if(player.gameId == id) {
-                LeaderboardEntry newLeaderboardEntry = new LeaderboardEntry(player.username, (int) player.score);
+                LeaderboardEntry newLeaderboardEntry = new LeaderboardEntry(player.username, player.score);
                 leaderboardEntries.add(newLeaderboardEntry);
             }
         }

@@ -34,7 +34,7 @@
          <children>
             <Group scaleX="0.8" scaleY="0.8">
                <children>
-                  <Button fx:id="newGameButton" layoutY="263.0" mnemonicParsing="false" onAction="#newGame" prefHeight="53.0" prefWidth="443.0" text="Play Another Game" textAlignment="CENTER">
+                  <Button fx:id="newGameButton" layoutX="-8.0" layoutY="148.0" mnemonicParsing="false" onAction="#newGame" prefHeight="53.0" prefWidth="443.0" text="Play Another Game" textAlignment="CENTER">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -44,17 +44,12 @@
                         <Font size="45.0" />
                      </font>
                   </Label>
-                  <Button layoutY="198.0" mnemonicParsing="false" onAction="#splashScreen" prefHeight="53.0" prefWidth="443.0" text="Past Singleplayer Scores" textAlignment="CENTER">
+                  <Button fx:id="worldLeaderboardButton" layoutX="-3.0" layoutY="69.0" mnemonicParsing="false" onAction="#showServerLeaderboard" prefHeight="53.0" prefWidth="443.0" text="World Leaderboard" textAlignment="CENTER">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Button>
-                  <Button layoutY="134.0" mnemonicParsing="false" onAction="#showServerLeaderboard" prefHeight="53.0" prefWidth="443.0" text="World Leaderboard" textAlignment="CENTER">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Button>
-                  <Button layoutY="327.0" mnemonicParsing="false" onAction="#splashScreen" prefHeight="53.0" prefWidth="443.0" text="Main Menu" textAlignment="CENTER">
+                  <Button layoutX="-12.0" layoutY="230.0" mnemonicParsing="false" onAction="#splashScreen" prefHeight="53.0" prefWidth="443.0" text="Main Menu" textAlignment="CENTER">
                      <font>
                         <Font size="20.0" />
                      </font>

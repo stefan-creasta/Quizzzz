@@ -57,6 +57,9 @@ public class GameEndingCtrl {
         backButton.setVisible(false);
     }
 
+    @FXML
+    Button worldLeaderboardButton;
+
     public void handleGameState(GameState gameState) {
         thisgameentries = gameState.leaderboard;
         if (mainCtrl.singleplayerGame) {
@@ -72,8 +75,6 @@ public class GameEndingCtrl {
         updateLeaderboard();
         System.out.println(entries);
 
-//        serverleaderboard.setItems(FXCollections.observableList(
-//                leaderboardHelper.prepareLeaderboard(entries, mainCtrl.getCurrentUsername())));
     }
 
     public void splashScreen(ActionEvent actionEvent) {
@@ -104,6 +105,8 @@ public class GameEndingCtrl {
      */
 
     public void showServerLeaderboard(){
+        worldLeaderboardButton.setVisible(false);
+
         leaderboard.setItems(FXCollections.observableList(
                 leaderboardHelper.prepareLeaderboard(entries, mainCtrl.getCurrentUsername()))
         );
@@ -119,6 +122,7 @@ public class GameEndingCtrl {
     public void updateLeaderboard() {
         try {
             entries = mainCtrl.getServerLeaderboards();
+            System.out.println(entries);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -130,6 +134,7 @@ public class GameEndingCtrl {
      * Method to return to the game ending screen after accessing the server leaderboard
      */
     public void goBack(){
+        worldLeaderboardButton.setVisible(true);
         leaderboard.setItems(FXCollections.observableList(
                 leaderboardHelper.prepareLeaderboard(thisgameentries, mainCtrl.getCurrentUsername()))
         );
@@ -147,6 +152,7 @@ public class GameEndingCtrl {
             for (LeaderboardEntry e:state.leaderboard) {
                 if (state.username.equals(e.username))
                 mainCtrl.updateServerLeaderboard(e);
+                System.out.println(e);
             }
         }
         catch (IOException e) {
@@ -155,4 +161,5 @@ public class GameEndingCtrl {
             e.printStackTrace();
         }
     }
+
 }

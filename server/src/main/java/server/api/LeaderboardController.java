@@ -23,12 +23,9 @@ public class LeaderboardController {
 
     @PostMapping("")
     public void postLeaderboard(@RequestBody String item) {
-//        var objectMapper = new ObjectMapper();
-//        String requestBody = objectMapper
-//                .writeValueAsString(entry);
-
         Gson g = new Gson();
         LeaderboardEntry p = g.fromJson(item, LeaderboardEntry.class);
+        System.out.println(p.score + "DEBUG IS THIS A DOUBLE");//debug
         leaderboardService.addEntry(p);
     }
 }

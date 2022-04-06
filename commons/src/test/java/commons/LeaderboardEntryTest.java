@@ -21,7 +21,7 @@ class LeaderboardEntryTest {
         Date d = new Date();
 
         LeaderboardEntry l1 = new LeaderboardEntry("abc", 1, d);
-        LeaderboardEntry l2 = new LeaderboardEntry("cbd", 2, d);
+        LeaderboardEntry l2 = new LeaderboardEntry("cbd", 8, d);
 
         assertEquals(1, l1.compareTo(l2));
     }
