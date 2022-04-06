@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="root" prefHeight="642.0" prefWidth="1000.0" styleClass="main" stylesheets="@../../QuestionPause.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.QuestionPauseCtrl">
+   <children>
+   </children>
+</AnchorPane>

@@ -66,7 +66,7 @@ public class AddPlayerCtrl {
         if(mainCtrl.singleplayerGame) {
             serverString = "http://localhost:8080";
             mainCtrl.initiateSingleplayerGame(newPlayer);
-            mainCtrl.showQuestion();
+            mainCtrl.showQuestionPause();
             serverField.setVisible(true);
         }
         else {
