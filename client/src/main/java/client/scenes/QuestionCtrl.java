@@ -21,6 +21,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 
 import javax.inject.Inject;
@@ -136,6 +137,9 @@ public class QuestionCtrl {
 
     @FXML
     private Button submit;
+
+    @FXML
+    private GridPane answerGridpane;
 
     private Boolean[] pressedEmote = {false, false, false, false, false};
 
@@ -577,6 +581,7 @@ public class QuestionCtrl {
     public void setQuestion(Question q, String serverString) {
         questionText.setText(q.question);//sets the question Text
 
+
         if (q.questionImage != null) {//sets the Image
             try {
                 System.out.println("serverString is: " + serverString);
@@ -590,6 +595,7 @@ public class QuestionCtrl {
 
         try {
             if (!q.type.equals("3")) {//if this is a MC question
+                answerGridpane.setVisible(true);
                 List<String> answerList = new LinkedList<>(List.of(q.answer, q.wrongAnswer1, q.wrongAnswer2));
                 Collections.shuffle(answerList);
                 clearAnswer();
@@ -598,6 +604,7 @@ public class QuestionCtrl {
                 answer3.setText(answerList.get(2));
                 answerTextBox.setVisible(false);
             } else {//if this is an open question
+                answerGridpane.setVisible(false);
                 answer1.setVisible(false);
                 answer2.setVisible(false);
                 answer3.setVisible(false);
