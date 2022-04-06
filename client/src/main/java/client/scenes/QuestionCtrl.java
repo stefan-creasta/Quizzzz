@@ -318,7 +318,7 @@ public class QuestionCtrl {
         answerTextBox.setDisable(true);
 
 
-        if (answer1.isVisible()) {//if we have an MC question
+        if (answer1.isVisible()||answer2.isVisible()) {//if we have an MC question
             AnswerCommunication.sendAnswer(selectedAnswer, gameState, mainCtrl.playerCtrl.serverString);
         } else if (answerTextBox.isVisible()) {//if we have an open question
             selectedAnswer = answerTextBox.getText();

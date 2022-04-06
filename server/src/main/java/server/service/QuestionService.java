@@ -29,8 +29,8 @@ public class QuestionService {
         List<Question> all = questionRepository.getAll();
         List<Question> ret = new ArrayList<>();
         Random random = new Random();
-        for (int i = 0; i < 4; i++) {
-            for (int type = 0; type < 5; type++) {
+        for (int i = 0; i < 5; i++) {
+            for (int type = 0; type < 4; type++) {
                 Question q = all.get(random.nextInt(all.size()));
                 while (!q.type.equals(String.valueOf(type))) {
                     q = all.get(random.nextInt(all.size()));
