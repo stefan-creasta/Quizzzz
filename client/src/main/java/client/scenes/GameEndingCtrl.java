@@ -142,7 +142,10 @@ public class GameEndingCtrl {
     // recieves the leaderboard from the gamestate and add it to the database on the server
     public void updateServerLeaderboard(GameState state){
         try {
-            mainCtrl.updateServerLeaderboard(state.leaderboard);
+            for (LeaderboardEntry e:state.leaderboard) {
+                if (state.username.equals(e.username))
+                mainCtrl.updateServerLeaderboard(e);
+            }
         }
         catch (IOException e) {
             e.printStackTrace();

@@ -239,10 +239,8 @@ public class MainCtrl {
     public List<LeaderboardEntry> getServerLeaderboards() throws IOException, InterruptedException{
         return gameCommunication.getTopLeaderboard(playerCtrl.serverString);
     }
-    public void updateServerLeaderboard(List<LeaderboardEntry> entries) throws IOException, InterruptedException{
-        for (LeaderboardEntry e: entries) {
+    public void updateServerLeaderboard(LeaderboardEntry e) throws IOException, InterruptedException{
             gameCommunication.addEntry(playerCtrl.serverString,e);
-        }
     }
     /**
      * Sends a request to the server to initiate the game with ID gameId
