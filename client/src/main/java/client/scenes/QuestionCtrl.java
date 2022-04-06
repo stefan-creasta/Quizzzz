@@ -319,7 +319,6 @@ public class QuestionCtrl {
      */
     @FXML
     void AngryEmotePressed(ActionEvent event) throws IOException, InterruptedException {
-        System.out.println("Angry emote pressed");
         if (!pressedEmote[0]) {
             Emote emote = new Emote(Emote.Type.Angry, gameState.username, gameState.gameId);
             AnswerCommunication.sendEmote(emote, mainCtrl.playerCtrl.serverString);
