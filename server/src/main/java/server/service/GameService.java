@@ -318,7 +318,7 @@ public class GameService {
         if (game.started) return;
         game.started = true;
         game.stage = QUESTION;
-        questionPhase(game);
+        pausePhase(game);
         createCurrentGame();
     }
 
@@ -333,7 +333,7 @@ public class GameService {
         if (game.started) return;
         game.started = true;
         game.stage = QUESTION;
-        questionPhase(game);
+        pausePhase(game);
     }
 
     /**
@@ -394,6 +394,12 @@ public class GameService {
 
         stateString = "QUESTION";
 
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         for (Player player : game.players) {
             GameState state = game.getState(player);
             state.stage = QUESTION;
@@ -435,7 +441,7 @@ public class GameService {
                     Thread.sleep(5_000);
                         if (game.currentQuestion + 1 < game.questions.size()) {
                         game.progressGame();
-                        questionPhase(game);
+                        pausePhase(game);
                     } else {
                         endingPhase(game);
                     }
@@ -443,6 +449,26 @@ public class GameService {
                     e.printStackTrace();
                 }
             }).start();
+    }
+
+    public void pausePhase(final Game game) {
+        stateString = "PAUSE";
+
+        for (Player player : game.players) {
+            GameState state = game.getState(player);
+            state.setPlayerAnswer(player.answer);
+            state.instruction = "pausePhase";
+            sendToPlayer(player.id, state);
+        }
+
+        new Thread(() -> {
+            try {
+                Thread.sleep(8_00);
+                questionPhase(game);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     public void endingPhase(final Game game) {
@@ -551,7 +577,14 @@ public class GameService {
                     System.out.println("DOUBLE POINTS POWER UP TOOK PLACE IN SCORING");
                 }
                 if (p.answer != null) {
-                    double pAnswer = Double.parseDouble(p.answer);
+
+                    double pAnswer = 0;
+                    try {
+                        pAnswer = Double.parseDouble(p.answer);
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     double qAnswer = Double.parseDouble(q.answer);
                     double difference = Math.abs(pAnswer - qAnswer);
                     System.out.println("Player with id " + p.id + "has this answer " + pAnswer + " and the question answer is " + q.answer);

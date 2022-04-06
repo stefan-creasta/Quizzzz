@@ -27,7 +27,12 @@ import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 public class MainCtrl {
@@ -57,6 +62,9 @@ public class MainCtrl {
     private GameEndingCtrl gameEndingCtrl;
     private Scene gameEnding;
 
+    private QuestionPauseCtrl questionPauseCtrl;
+    private Scene questionPause;
+
     private Scene adminInterface;
 
     private ServerListener serverListener;
@@ -64,6 +72,8 @@ public class MainCtrl {
     private long gameId;
 
     private String currentUsername;
+
+    public List<String> serverUrls;
 
     public void initialize(Stage primaryStage,
                            Pair<QuestionCtrl, Parent> question,
@@ -74,7 +84,7 @@ public class MainCtrl {
                            Pair<GameEndingCtrl, Parent> gameEndingPair,
                            GameCommunication gameCommunication,
                            ServerListener serverListener,
-                           Pair<SplashScreenCtrl, Parent> splashScreenPair) {
+                           Pair<SplashScreenCtrl, Parent> splashScreenPair, Pair<QuestionPauseCtrl, Parent> questionPausePair) {
 
         this.gameCommunication = gameCommunication;
         this.serverListener = serverListener;
@@ -98,11 +108,17 @@ public class MainCtrl {
 
         this.gameEndingCtrl = gameEndingPair.getKey();
         this.gameEnding = new Scene(gameEndingPair.getValue());
+        this.questionPauseCtrl = questionPausePair.getKey();
+        this.questionPause = new Scene(questionPausePair.getValue());
+
         System.out.println("GAME ID: " + gameId);
         showSplashScreen();
         //showPlayer();
         this.adminInterface = new Scene(adminInterfacePair.getValue());
 
+        readServerUrls();
+
+        adminInterfacePair.getKey().registerServerUrlList(serverUrls);
         //showPlayer();
         //showQuestion();
         primaryStage.show();
@@ -193,6 +209,11 @@ public class MainCtrl {
     private void showGameEnding() {
         primaryStage.setTitle("Game Over");
         primaryStage.setScene(gameEnding);
+    }
+
+    public void showQuestionPause() {
+        primaryStage.setTitle("Pause");
+        primaryStage.setScene(questionPause);
     }
 
     public void showAdminInterface() {
@@ -291,6 +312,9 @@ public class MainCtrl {
             case "intervalPhase"://called at the start of an interval phase
                 questionCtrl.markAnswer(gameState.question.answer, gameState.playerAnswer, gameState.question.type);
                 break;
+            case "pausePhase":
+                showQuestionPause();
+                break;
             case "endingPhase":
                 showGameEnding();
                 gameEndingCtrl.handleGameState(gameState);
@@ -325,6 +349,36 @@ public class MainCtrl {
             }
             else {
                 showSplashScreen();
+            }
+        }
+    }
+
+    /**
+     * Read the server URLs from [working directory]\server-urls.txt.
+     */
+    public void readServerUrls() {
+        try {
+            File f = new File("server-urls.txt");
+            f.createNewFile();
+            String contents = Files.readString(f.toPath());
+            serverUrls = new LinkedList<>(Arrays.asList(contents.split("\n")));
+        } catch (IOException e) {
+            e.printStackTrace();
+            serverUrls = new LinkedList<>(List.of("http://localhost:8080"));
+        }
+    }
+
+    /**
+     * Save the server URL both in the shared serverUrls list and in [working directory]\server-urls.txt.
+     * @param s the URL to save
+     */
+    public void saveServerUrl(String s) {
+        if (!serverUrls.contains(s)) {
+            serverUrls.add(0, s);
+            try {
+                Files.writeString(new File("server-urls.txt").toPath(), s + "\n", StandardOpenOption.APPEND);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }

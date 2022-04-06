@@ -43,9 +43,6 @@
     -fx-border-color: #f2d4ef;
 }
 
-.button:disabled {
-    -fx-opacity: 1;
-}
 
 .right {
     -fx-background-color: #4eb620;

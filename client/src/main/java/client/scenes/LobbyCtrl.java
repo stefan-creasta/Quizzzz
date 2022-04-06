@@ -61,7 +61,7 @@ public class LobbyCtrl implements Initializable {
      */
     public void startGame() throws IOException, InterruptedException {
         mainCtrl.initiateGame();
-        mainCtrl.showQuestion();
+        mainCtrl.showQuestionPause();
         //System.out.println(lobbyCommunication.getPlayers().size());
     }
 
