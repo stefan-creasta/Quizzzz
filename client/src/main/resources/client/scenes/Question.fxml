@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" prefHeight="642.0" prefWidth="1000.0" styleClass="main" stylesheets="@../../Question.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.QuestionCtrl">
+<AnchorPane fx:id="root" prefHeight="642.0" prefWidth="1000.0" styleClass="main" stylesheets="resources/Question.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.QuestionCtrl">
    <children>
       <GridPane layoutX="57.0" layoutY="27.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
          <columnConstraints>
@@ -33,25 +33,25 @@
             <Group GridPane.columnIndex="2">
                <children>
                   <BorderPane layoutX="2.0" layoutY="31.0" prefHeight="247.0" prefWidth="253.0" styleClass="powerup-border" />
-                  <Button fx:id="doublePoints" layoutX="13.0" layoutY="50.0" mnemonicParsing="false" onAction="#DoublePointsButtonPressed" prefWidth="230.0" stylesheets="@../../Question.css" text="Double points" />
-                  <Button fx:id="eliminateWrongAnswer" layoutX="13.0" layoutY="129.0" mnemonicParsing="false" onAction="#EliminateWrongAnswerButtonPressed" prefWidth="230.0" style="-fx-font-size: 16; -fx-padding: 15;" stylesheets="@../../Question.css" text="Eliminate wrong answer">
+                  <Button fx:id="doublePoints" layoutX="13.0" layoutY="50.0" mnemonicParsing="false" onAction="#DoublePointsButtonPressed" prefWidth="230.0" text="Double points" />
+                  <Button fx:id="eliminateWrongAnswer" layoutX="13.0" layoutY="129.0" mnemonicParsing="false" onAction="#EliminateWrongAnswerButtonPressed" prefWidth="230.0" style="-fx-font-size: 16; -fx-padding: 15;" text="Eliminate wrong answer">
                      <font>
                         <Font size="8.0" />
                      </font>
                   </Button>
-                  <Button fx:id="halfTime" layoutX="13.0" layoutY="208.0" mnemonicParsing="false" onAction="#HalfTimeButtonPressed" prefWidth="230.0" stylesheets="@../../Question.css" text="Half time" />
+                  <Button fx:id="halfTime" layoutX="13.0" layoutY="208.0" mnemonicParsing="false" onAction="#HalfTimeButtonPressed" prefWidth="230.0" text="Half time" />
                   <Label styleClass="leaderboard-text" text="Hold Tab to see Leaderboard" textFill="WHITE" />
                </children>
             </Group>
             <Group>
                <children>
-                  <Label fx:id="questionTitle" alignment="CENTER" prefWidth="300.0" stylesheets="@../../Question.css" text="Question 1" textAlignment="CENTER">
+                  <Label fx:id="questionTitle" alignment="CENTER" prefWidth="300.0" text="Question 1" textAlignment="CENTER">
                      <styleClass>
                         <String fx:value="question-title" />
                         <String fx:value="custom-text" />
                      </styleClass>
                   </Label>
-                  <Label fx:id="questionText" alignment="CENTER" layoutX="1.0" layoutY="73.0" prefWidth="300.0" stylesheets="@../../Question.css" text="What is the maximum amount of energy that can be spend by a car in a week. You can assume that the car is running non-stop.:33" textAlignment="CENTER" wrapText="true">
+                  <Label fx:id="questionText" alignment="CENTER" layoutX="1.0" layoutY="73.0" prefWidth="300.0" text="What is the maximum amount of energy that can be spend by a car in a week. You can assume that the car is running non-stop.:33" textAlignment="CENTER" wrapText="true">
                      <styleClass>
                         <String fx:value="question-description" />
                         <String fx:value="custom-text" />
@@ -87,13 +87,13 @@
             <RowConstraints maxHeight="69.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Button fx:id="answer1" contentDisplay="CENTER" mnemonicParsing="false" onAction="#Answer1Pressed" styleClass="selected" stylesheets="@../../Question.css" text="Answer 1" GridPane.rowIndex="2" />
-            <Button fx:id="answer2" contentDisplay="CENTER" mnemonicParsing="false" onAction="#Answer2Pressed" stylesheets="@../../Question.css" text="Answer 2" GridPane.rowIndex="1" />
-            <Button fx:id="answer3" contentDisplay="CENTER" mnemonicParsing="false" onAction="#Answer3Pressed" stylesheets="@../../Question.css" text="Answer 3" />
+            <Button fx:id="answer1" contentDisplay="CENTER" mnemonicParsing="false" onAction="#Answer1Pressed" styleClass="selected"  text="Answer 1" GridPane.rowIndex="2" />
+            <Button fx:id="answer2" contentDisplay="CENTER" mnemonicParsing="false" onAction="#Answer2Pressed"  text="Answer 2" GridPane.rowIndex="1" />
+            <Button fx:id="answer3" contentDisplay="CENTER" mnemonicParsing="false" onAction="#Answer3Pressed" text="Answer 3" />
             <Group GridPane.halignment="CENTER" GridPane.rowIndex="2" />
          </children>
       </GridPane>
-      <Button fx:id="submit" layoutX="752.0" layoutY="391.0" mnemonicParsing="false" onAction="#SubmitPressed" stylesheets="@../../Question.css" text="Submit" AnchorPane.rightAnchor="40.0" />
+      <Button fx:id="submit" layoutX="752.0" layoutY="391.0" mnemonicParsing="false" onAction="#SubmitPressed"  text="Submit" AnchorPane.rightAnchor="40.0" />
       <TableView fx:id="emotes" layoutX="771.0" layoutY="440.0" prefHeight="201.0" prefWidth="230.0" styleClass="emotes" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <columns>
           <TableColumn fx:id="emotesUsernameColumn" editable="false" prefWidth="114.0" resizable="false" sortable="false" styleClass="username-column" text="Username" />
