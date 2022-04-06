@@ -59,7 +59,7 @@
                   </Label>
                </children>
             </Group>
-            <ImageView fx:id="questionImage" fitHeight="241.0" fitWidth="290.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
+            <ImageView fx:id="questionImage" fitHeight="241.0" fitWidth="290.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER">
                <image>
                   <Image url="@../../images/image 2.png" />
                </image>
@@ -156,7 +156,7 @@
             <Label fx:id="scoreLabel" alignment="CENTER" prefHeight="118.0" prefWidth="521.0" styleClass="scored-points" text="You scored x points" GridPane.halignment="CENTER" />
          </children>
       </GridPane>
-      <SplitPane fx:id="allLeaderboard" dividerPositions="0.8652522935779818" layoutX="300.0" layoutY="121.0" orientation="VERTICAL" prefHeight="379.0" prefWidth="488.0" styleClass="allStats" visible="false">
+      <SplitPane fx:id="allLeaderboard" dividerPositions="0.8652522935779818" layoutX="300.0" layoutY="121.0" orientation="VERTICAL" prefHeight="379.0" prefWidth="488.0" styleClass="allStats" visible="false" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="250.0">
         <items>
             <TableView fx:id="leaderboard" prefHeight="266.0" prefWidth="478.0" styleClass="leaderboard">
               <columns>
@@ -164,6 +164,9 @@
                   <TableColumn fx:id="leaderboardUsernames" editable="false" minWidth="0.0" prefWidth="166.4000244140625" text="Username" />
                   <TableColumn fx:id="leaderboardScores" editable="false" minWidth="0.0" prefWidth="157.60000000000002" text="Score" />
               </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
             </TableView>
           <AnchorPane fx:id="playerPosition" minHeight="0.0" minWidth="0.0" prefHeight="74.0" prefWidth="478.0" styleClass="playerStats">
                <children>

@@ -299,6 +299,8 @@ public class QuestionCtrl {
         answer3.setDisable(true);
         submit.setDisable(true);
 
+        answerTextBox.setDisable(true);
+
 
         if (answer1.isVisible()) {//if we have an MC question
             AnswerCommunication.sendAnswer(selectedAnswer, gameState, mainCtrl.playerCtrl.serverString);
