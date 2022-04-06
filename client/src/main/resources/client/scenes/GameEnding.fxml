@@ -1,65 +1,97 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" prefHeight="600.0" prefWidth="1000.0" styleClass="main" stylesheets="@../../Question.css,@../../AddPlayer.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.GameEndingCtrl">
+<AnchorPane fx:id="root" prefHeight="600.0" prefWidth="1000.0" styleClass="main" stylesheets="/Question.css,/AddPlayer.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.GameEndingCtrl">
    <children>
-      <Button fx:id="newGameButton" layoutX="27.0" layoutY="388.0" mnemonicParsing="false" onAction="#newGame" prefHeight="53.0" prefWidth="443.0" text="Play Another Game" textAlignment="CENTER">
-         <font>
-            <Font size="20.0" />
-         </font></Button>
-      <Label layoutX="137.0" layoutY="74.0" styleClass="enter-username-label" text="Game Over">
-         <font>
-            <Font size="45.0" />
-         </font></Label>
-      <TableView fx:id="leaderboard" layoutX="493.0" layoutY="94.0" prefHeight="412.0" prefWidth="479.0" styleClass="leaderboard">
-        <columns>
-          <TableColumn fx:id="leaderboardRanks" editable="false" prefWidth="117.55978393554688" text="Rank" />
-            <TableColumn fx:id="leaderboardUsernames" editable="false" minWidth="0.0" prefWidth="207.94021606445312" text="Username" />
-            <TableColumn fx:id="leaderboardScores" editable="false" minWidth="0.0" prefWidth="141.01806640625" text="Score" />
-        </columns>
-      </TableView>
-      <Button layoutX="27.0" layoutY="323.0" mnemonicParsing="false" onAction="#splashScreen" prefHeight="53.0" prefWidth="443.0" text="Past Singleplayer Scores" textAlignment="CENTER">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Button>
-      <Button layoutX="27.0" layoutY="259.0" mnemonicParsing="false" onAction="#showServerLeaderboard" prefHeight="53.0" prefWidth="443.0" text="World Leaderboard" textAlignment="CENTER">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Button>
-      <Button layoutX="27.0" layoutY="452.0" mnemonicParsing="false" onAction="#splashScreen" prefHeight="53.0" prefWidth="443.0" text="Main Menu" textAlignment="CENTER">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Button>
-      <Button fx:id="backButton" layoutX="153.0" layoutY="164.0" mnemonicParsing="false" onAction="#goBack" prefHeight="54.0" prefWidth="191.0" text="Back" textAlignment="CENTER">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Button>
-      <TableView fx:id="serverleaderboard" layoutX="494.0" layoutY="94.0" prefHeight="412.0" prefWidth="479.0" styleClass="leaderboard">
-         <columns>
-            <TableColumn fx:id="leaderboardRanks1" editable="false" prefWidth="117.55978393554688" text="Rank" />
-            <TableColumn fx:id="leaderboardUsernames1" editable="false" minWidth="0.0" prefWidth="207.94021606445312" text="Username" />
-            <TableColumn fx:id="leaderboardScores1" editable="false" minWidth="0.0" prefWidth="141.01806640625" text="Score" />
-         </columns>
-      </TableView>
-      <Label fx:id="worldleaderboard" layoutX="605.0" layoutY="28.0" styleClass="enter-username-label" text="World Leaderboard">
-         <font>
-            <Font size="30.0" />
-         </font>
-      </Label>
-      <Label fx:id="currentleaderboard" layoutX="595.0" layoutY="28.0" styleClass="enter-username-label" text="Current Leaderboard">
-         <font>
-            <Font size="30.0" />
-         </font>
-      </Label>
+<!--<<<<<<< HEAD-->
+
+       <!--      <TableView fx:id="leaderboard" layoutX="493.0" layoutY="94.0" prefHeight="412.0" prefWidth="479.0" styleClass="leaderboard">-->
+<!--        <columns>-->
+<!--          <TableColumn fx:id="leaderboardRanks" editable="false" prefWidth="117.55978393554688" text="Rank" />-->
+<!--            <TableColumn fx:id="leaderboardUsernames" editable="false" minWidth="0.0" prefWidth="207.94021606445312" text="Username" />-->
+<!--            <TableColumn fx:id="leaderboardScores" editable="false" minWidth="0.0" prefWidth="141.01806640625" text="Score" />-->
+<!--        </columns>-->
+<!--      </TableView>-->
+       <!--=======-->
+      <GridPane layoutX="27.0" layoutY="94.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="712.799951171875" minWidth="10.0" prefWidth="492.8000122070313" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="447.9999877929687" minWidth="10.0" prefWidth="447.9999877929687" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Group scaleX="0.8" scaleY="0.8">
+               <children>
+                  <Button fx:id="newGameButton" layoutY="263.0" mnemonicParsing="false" onAction="#newGame" prefHeight="53.0" prefWidth="443.0" text="Play Another Game" textAlignment="CENTER">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Button>
+                  <Label layoutX="110.0" styleClass="enter-username-label" text="Game Over">
+                     <font>
+                        <Font size="45.0" />
+                     </font>
+                  </Label>
+                  <Button layoutY="198.0" mnemonicParsing="false" onAction="#splashScreen" prefHeight="53.0" prefWidth="443.0" text="Past Singleplayer Scores" textAlignment="CENTER">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Button>
+                  <Button layoutY="134.0" mnemonicParsing="false" onAction="#showServerLeaderboard" prefHeight="53.0" prefWidth="443.0" text="World Leaderboard" textAlignment="CENTER">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Button>
+                  <Button layoutY="327.0" mnemonicParsing="false" onAction="#splashScreen" prefHeight="53.0" prefWidth="443.0" text="Main Menu" textAlignment="CENTER">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Button>
+                   <Button fx:id="backButton" layoutX="122.0" layoutY="68.0" mnemonicParsing="false" onAction="#goBack" prefHeight="54.0" prefWidth="191.0" text="Back" textAlignment="CENTER">
+                       <font>
+                           <Font size="20.0" />
+                       </font>
+                   </Button>
+                   <TableView fx:id="serverleaderboard" layoutX="494.0" layoutY="94.0" prefHeight="412.0" prefWidth="479.0" styleClass="leaderboard">
+                       <columns>
+                           <TableColumn fx:id="leaderboardRanks1" editable="false" prefWidth="117.55978393554688" text="Rank" />
+                           <TableColumn fx:id="leaderboardUsernames1" editable="false" minWidth="0.0" prefWidth="207.94021606445312" text="Username" />
+                           <TableColumn fx:id="leaderboardScores1" editable="false" minWidth="0.0" prefWidth="141.01806640625" text="Score" />
+                       </columns>
+                   </TableView>
+                   <Label fx:id="currentleaderboard" layoutX="581.0" layoutY="31.0" styleClass="enter-username-label" text="Current Leaderboard">
+                       <font>
+                           <Font size="30.0" />
+                       </font>
+                   </Label>
+                   <Label fx:id="worldleaderboard" layoutX="583.0" layoutY="32.0" styleClass="enter-username-label" text="World Leaderboard">
+                       <font>
+                           <Font size="30.0" />
+                       </font>
+                   </Label>
+               </children>
+            </Group>
+            <TableView fx:id="leaderboard" prefHeight="412.0" prefWidth="479.0" styleClass="leaderboard" GridPane.columnIndex="1">
+              <columns>
+                <TableColumn fx:id="leaderboardRanks" editable="false" prefWidth="117.55978393554688" text="Rank" />
+                  <TableColumn fx:id="leaderboardUsernames" editable="false" minWidth="0.0" prefWidth="207.94021606445312" text="Username" />
+                  <TableColumn fx:id="leaderboardScores" editable="false" minWidth="0.0" prefWidth="141.01806640625" text="Score" />
+              </columns>
+            </TableView>
+         </children>
+      </GridPane>
+<!--&gt;>>>>>> main-->
    </children>
 </AnchorPane>

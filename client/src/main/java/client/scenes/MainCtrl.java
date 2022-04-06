@@ -22,6 +22,8 @@ import commons.LeaderboardEntry;
 import commons.Player;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -34,11 +36,6 @@ public class MainCtrl {
 
     private Stage primaryStage;
 
-    private QuoteOverviewCtrl overviewCtrl;
-    private Scene overview;
-
-    private AddQuoteCtrl addCtrl;
-    private Scene add;
 
     public AddPlayerCtrl playerCtrl;
     private Scene player;
@@ -68,8 +65,7 @@ public class MainCtrl {
 
     private String currentUsername;
 
-    public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
-                           Pair<AddQuoteCtrl, Parent> add,
+    public void initialize(Stage primaryStage,
                            Pair<QuestionCtrl, Parent> question,
                            Pair<CountdownTimer, Parent> timer,
                            Pair<LobbyCtrl, Parent> lobbyPair,
@@ -84,12 +80,6 @@ public class MainCtrl {
         this.serverListener = serverListener;
 
         this.primaryStage = primaryStage;
-
-        this.overviewCtrl = overview.getKey();
-        this.overview = new Scene(overview.getValue());
-
-        this.addCtrl = add.getKey();
-        this.add = new Scene(add.getValue());
 
         this.timerCtrl = timer.getKey();
         this.timer = new Scene(timer.getValue());
@@ -116,6 +106,10 @@ public class MainCtrl {
         //showPlayer();
         //showQuestion();
         primaryStage.show();
+        primaryStage.setOnCloseRequest(event -> {
+            event.consume();
+            exitGame(primaryStage);
+        });
     }
 
     public void setupSingleplayerGame() {
@@ -152,22 +146,10 @@ public class MainCtrl {
         }
     }
 
-    public void showOverview() {
-        primaryStage.setTitle("Quotes: Overview");
-        primaryStage.setScene(overview);
-        overviewCtrl.refresh();
-    }
-
     public void showLobby() throws IOException, InterruptedException {
         primaryStage.setTitle("Lobby");
         primaryStage.setScene(lobby);
         lobbyCtrl.refresh();
-    }
-
-    public void showAdd() {
-        primaryStage.setTitle("Quotes: Adding Quote");
-        primaryStage.setScene(add);
-        add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
     }
 
     public void showSplashScreen() {
@@ -234,6 +216,9 @@ public class MainCtrl {
      */
     public List<LeaderboardEntry> getMultiplayerLeaderboards() throws IOException, InterruptedException{
         return gameCommunication.getLeaderboardMultiplayer(gameId);
+    }
+    public List<LeaderboardEntry> getSingleplayerLeaderboards() throws IOException, InterruptedException{
+        return gameCommunication.getLeaderboardSingleplayer();
     }
     
     public List<LeaderboardEntry> getServerLeaderboards() throws IOException, InterruptedException{
@@ -315,6 +300,32 @@ public class MainCtrl {
             case "score":
                 questionCtrl.updateGameState(gameState);
                 break;
+        }
+    }
+
+    /**
+     * Method which exits the game. If the user is in the splash screen, it closes the app. Otherwise,
+     * the method returns the user to the splash screen.
+     * @param stage The current stage of the game
+     */
+    public void exitGame(Stage stage) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Exit game");
+        alert.setHeaderText("You're about to exit the game!");
+        if(!stage.getScene().equals(this.splash)) {
+            alert.setContentText("Are you sure you want to return to the splash screen?");
+        }
+        else {
+            alert.setContentText("Are you sure you want to close the application?");
+        }
+        if(alert.showAndWait().get() == ButtonType.OK) {
+            exitGame();
+            if(stage.getScene().equals(this.splash)) {
+                stage.close();
+            }
+            else {
+                showSplashScreen();
+            }
         }
     }
 }

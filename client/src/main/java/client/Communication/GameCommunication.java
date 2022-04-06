@@ -223,7 +223,25 @@ public class GameCommunication {
         };
         return mapper.readValue(response.body(), typeRef);
     }
-        /**
+
+    /**
+     * Method which returns the leaderboard for a singleplayer game. Since this method returns the global
+     * leaderboard, it doesn't need the game's id
+     * @return the list of leaderboard entries
+     */
+    public List<LeaderboardEntry> getLeaderboardSingleplayer () throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/api/leaderboard/"))
+                .GET()
+                .build();
+        var response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        final ObjectMapper mapper = new ObjectMapper();
+        final TypeReference<List<LeaderboardEntry>> typeRef = new TypeReference<>() {
+        };
+        return mapper.readValue(response.body(), typeRef);
+    }
+
+    /**
          * Method which returns the leaderboard containing the top 10 entries on the specified server
          * @return the list of leaderboard entries
          */

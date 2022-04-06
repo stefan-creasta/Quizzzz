@@ -20,9 +20,9 @@ import client.Communication.ServerListener;
 import com.google.inject.Inject;
 import commons.Player;
 import jakarta.ws.rs.WebApplicationException;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
@@ -40,8 +40,6 @@ public class AddPlayerCtrl {
     private TextField usernameField;
     @FXML
     private TextField serverField;
-    @FXML
-    private Label addressLabel;
 
     @Inject
     public AddPlayerCtrl(MainCtrl mainCtrl, ServerListener serverListener, GameCommunication gameCommunication) {
@@ -66,21 +64,17 @@ public class AddPlayerCtrl {
         Player newPlayer = getPlayer();
         //if the game is singleplayer, then the game can start
         if(mainCtrl.singleplayerGame) {
-
             serverString = "http://localhost:8080";
             mainCtrl.initiateSingleplayerGame(newPlayer);
             mainCtrl.showQuestion();
             serverField.setVisible(true);
-            addressLabel.setVisible(true);
         }
         else {
             serverString = serverField.getText();
-            if (mainCtrl.checkUsername(newPlayer.username)) {
+            if (mainCtrl.checkUsername(newPlayer.username) && !newPlayer.username.equals("") && newPlayer.username != null) {
                 try {
                     mainCtrl.joinGame(newPlayer.username);
-
                 } catch (WebApplicationException e) {
-
                     var alert = new Alert(Alert.AlertType.ERROR);
                     alert.initModality(Modality.APPLICATION_MODAL);
                     alert.setContentText(e.getMessage());
@@ -88,7 +82,7 @@ public class AddPlayerCtrl {
                     return;
                 }
                 mainCtrl.showLobby();
-            }else{
+            } else {
                 Alert usernameAlert = new Alert(Alert.AlertType.ERROR, "Username or server input is not correct");
                 usernameAlert.show();
             }
@@ -112,7 +106,6 @@ public class AddPlayerCtrl {
                 break;
             case ESCAPE:
                 serverField.setVisible(true);
-                addressLabel.setVisible(true);
                 cancel();
                 break;
             default:
@@ -122,6 +115,9 @@ public class AddPlayerCtrl {
 
     public void invisServerField(){
         serverField.setVisible(false);
-        addressLabel.setVisible(false);
+    }
+
+    public void back(ActionEvent actionEvent) {
+        mainCtrl.showSplashScreen();
     }
 }

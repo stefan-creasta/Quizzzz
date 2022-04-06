@@ -63,7 +63,9 @@ public class ServerListener {
                 try {
                     var response = client.send(request, HttpResponse.BodyHandlers.ofString());
                     //GameState gameState = gson.fromJson(response.body(), new TypeToken<GameState>(){}.getType());if(response.body().contains("timestamp")) continue;
-                    if(response.body().contains("timestamp"))  { continue; }
+                    if (response.body().contains("timestamp")) {
+                        continue;
+                    }
                     List<GameState> gameState = mapper.readValue(response.body(), typeRef);
                     System.out.println(response.body());
                     System.out.println(gameState);
@@ -99,6 +101,8 @@ public class ServerListener {
      */
     public void stopListening() {
         listeningThreadKeepAlive.set(false);
-        listeningThread.interrupt();
+        if(listeningThread != null) {
+            listeningThread.interrupt();
+        }
     }
 }

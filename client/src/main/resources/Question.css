@@ -32,6 +32,21 @@
     -fx-background-color: #673e8b
 }
 
+
+.button.selected {
+    -fx-border-width: 6;
+    -fx-border-color: #f2d4ef;
+}
+
+.button:selected {
+    -fx-border-width: 6;
+    -fx-border-color: #f2d4ef;
+}
+
+.button:disabled {
+    -fx-opacity: 1;
+}
+
 .right {
     -fx-background-color: #4eb620;
     -fx-border-width: 1;
@@ -69,6 +84,17 @@
     -fx-font-size: 24px;
     -fx-padding: 10 30 10 30;
     -fx-background-radius: 999px;
+}
+
+.scored-points {
+    -fx-text-fill: white;
+    -fx-padding: 10 20 10 20;
+    -fx-font-size: 40px;
+    -fx-border-radius: 30px;
+    -fx-background-radius: 30px;
+    -fx-background-color: #673e8b;
+    -fx-border-width: 0.5;
+    -fx-border-color: black;
 }
 
 /*.allStats{*/
@@ -157,4 +183,27 @@
 
 .emotes .table-row-cell:empty .table-cell {
     -fx-background-color: transparent;
+}
+
+
+.input {
+    -fx-text-fill: white;
+    -fx-padding: 10 20 10 20;
+    -fx-font-size: 22px;
+    -fx-border-radius: 999px;
+    -fx-background-radius: 999px;
+    -fx-background-color: #673e8b;
+    -fx-border-width: 0.5;
+    -fx-border-color: black;
+}
+
+.progress-bar > .track {
+    -fx-text-box-border: transparent;
+    -fx-control-inner-background: #673e8b;
+}
+
+.progress-bar .bar {
+    -fx-padding: 0;
+    -fx-background-insets: 0;
+    -fx-background-color: #f2d4ef;
 }
