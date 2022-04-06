@@ -41,7 +41,17 @@ public class GameEndingCtrl {
     private TableColumn<LeaderboardEntry, String> leaderboardScores;
 
     @FXML
+    private TableColumn<LeaderboardEntry, String> leaderboardUsernames1;
+    @FXML
+    private TableColumn<LeaderboardEntry, String> leaderboardRanks1;
+    @FXML
+    private TableColumn<LeaderboardEntry, String> leaderboardScores1;
+
+    @FXML
     private Button newGameButton;
+
+    @FXML
+    private Button backButton;
 
     @FXML
     private AnchorPane root;
@@ -59,9 +69,13 @@ public class GameEndingCtrl {
         leaderboardHelper.setRankColumnCellFactory(leaderboardRanks);
         leaderboardHelper.setUsernameColumnCellFactory(leaderboardUsernames);
         leaderboardHelper.setScoreColumnCellFactory(leaderboardScores);
+        leaderboardHelper.setRankColumnCellFactory(leaderboardRanks1);
+        leaderboardHelper.setUsernameColumnCellFactory(leaderboardUsernames1);
+        leaderboardHelper.setScoreColumnCellFactory(leaderboardScores1);
         currentleaderboard.setVisible(true);
         serverleaderboard.setVisible(false);
         worldleaderboard.setVisible(false);
+        backButton.setVisible(false);
     }
 
     public void handleGameState(GameState gameState) {
@@ -76,6 +90,10 @@ public class GameEndingCtrl {
             leaderboardHelper.prepareLeaderboard(gameState.leaderboard, mainCtrl.getCurrentUsername()))
         );
         updateLeaderboard();
+        System.out.println(entries);
+
+        serverleaderboard.setItems(FXCollections.observableList(
+                leaderboardHelper.prepareLeaderboard(entries, mainCtrl.getCurrentUsername())));
     }
 
     public void splashScreen(ActionEvent actionEvent) {
@@ -96,19 +114,17 @@ public class GameEndingCtrl {
     }
 
     public void showServerLeaderboard(){
-        serverleaderboard.setItems(FXCollections.observableList(
-                leaderboardHelper.prepareLeaderboard(entries, mainCtrl.getCurrentUsername())));
         serverleaderboard.setVisible(true);
         leaderboard.setVisible(false); //current leaderboard
         currentleaderboard.setVisible(false); //these are labels 4head
         worldleaderboard.setVisible(true); //these are labels 4head
+        backButton.setVisible(true);
 
     }
     //after adding the entries to the server, we receive the top 10 sorted entries
     public void updateLeaderboard() {
         try {
             entries = mainCtrl.getServerLeaderboards();
-            System.out.println(entries.toString());
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -120,6 +136,7 @@ public class GameEndingCtrl {
         worldleaderboard.setVisible(false);
         leaderboard.setVisible(true);
         currentleaderboard.setVisible(true);
+        backButton.setVisible(false);
 
     }
     // recieves the leaderboard from the gamestate and add it to the database on the server

@@ -12,7 +12,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.Date;
 import java.util.List;
 
 public class GameCommunication {
@@ -250,11 +249,9 @@ public class GameCommunication {
 
     public void addEntry(String server, LeaderboardEntry entry) throws IOException, InterruptedException{
 
+            String requestBody = (gson.toJson(entry));
 
-            entry.date = new Date();
-            var objectMapper = new ObjectMapper();
-            String requestBody = objectMapper
-                    .writeValueAsString(entry);
+        System.out.println(requestBody);
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(server+"/api/leaderboard/"))
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody))
