@@ -93,7 +93,7 @@ public class AdminInterfaceCtrl {
             saveServerUrl(urlField.getValue());
         } catch (ConnectException e) {
             e.printStackTrace();
-            error(e.getMessage());
+            error("Error connecting \"" + urlField.getValue() + "\"");
         }
     }
 
@@ -127,7 +127,8 @@ public class AdminInterfaceCtrl {
             saveServerUrl(urlField.getValue());
         }
         catch (ConnectException e) {
-            error(e.getMessage());
+            e.printStackTrace();
+            error("Error connecting \"" + urlField.getValue() + "\"");
         }
     }
 
@@ -157,7 +158,7 @@ public class AdminInterfaceCtrl {
                 saveServerUrl(urlField.getValue());
             } catch (ConnectException e) {
                 e.printStackTrace();
-                error(e.getMessage());
+                error("Error connecting \"" + urlField.getValue() + "\"");
             }
         } else {
             q.id = selectedQuestion.id;
@@ -173,7 +174,7 @@ public class AdminInterfaceCtrl {
                 saveServerUrl(urlField.getValue());
             } catch (ConnectException e) {
                 e.printStackTrace();
-                error(e.getMessage());
+                error("Error connecting \"" + urlField.getValue() + "\"");
                 return;
             }
             activitiesTable.getItems().set(activitiesTable.getItems().indexOf(selectedQuestion), q);
@@ -198,7 +199,7 @@ public class AdminInterfaceCtrl {
             saveServerUrl(urlField.getValue());
         } catch (ConnectException e) {
             e.printStackTrace();
-            error(e.getMessage());
+            error("Error connecting \"" + urlField.getValue() + "\"");
         }
     }
 
