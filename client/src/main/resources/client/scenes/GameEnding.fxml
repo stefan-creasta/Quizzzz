@@ -64,23 +64,6 @@
                            <Font size="20.0" />
                        </font>
                    </Button>
-                   <TableView fx:id="serverleaderboard" layoutX="494.0" layoutY="94.0" prefHeight="412.0" prefWidth="479.0" styleClass="leaderboard">
-                       <columns>
-                           <TableColumn fx:id="leaderboardRanks1" editable="false" prefWidth="117.55978393554688" text="Rank" />
-                           <TableColumn fx:id="leaderboardUsernames1" editable="false" minWidth="0.0" prefWidth="207.94021606445312" text="Username" />
-                           <TableColumn fx:id="leaderboardScores1" editable="false" minWidth="0.0" prefWidth="141.01806640625" text="Score" />
-                       </columns>
-                   </TableView>
-                   <Label fx:id="currentleaderboard" layoutX="581.0" layoutY="31.0" styleClass="enter-username-label" text="Current Leaderboard">
-                       <font>
-                           <Font size="30.0" />
-                       </font>
-                   </Label>
-                   <Label fx:id="worldleaderboard" layoutX="583.0" layoutY="32.0" styleClass="enter-username-label" text="World Leaderboard">
-                       <font>
-                           <Font size="30.0" />
-                       </font>
-                   </Label>
                </children>
             </Group>
             <TableView fx:id="leaderboard" prefHeight="412.0" prefWidth="479.0" styleClass="leaderboard" GridPane.columnIndex="1">
@@ -92,6 +75,5 @@
             </TableView>
          </children>
       </GridPane>
-<!--&gt;>>>>>> main-->
    </children>
 </AnchorPane>

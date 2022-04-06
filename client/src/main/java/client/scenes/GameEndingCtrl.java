@@ -8,7 +8,6 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
@@ -19,16 +18,9 @@ import java.util.List;
 public class GameEndingCtrl {
     private MainCtrl mainCtrl;
 
+    private List<LeaderboardEntry> thisgameentries;
+
     private List<LeaderboardEntry> entries;
-
-    @FXML
-    private Label currentleaderboard;
-
-    @FXML
-    private Label worldleaderboard;
-
-    @FXML
-    private TableView<LeaderboardEntry> serverleaderboard;
 
     @FXML
     private TableView<LeaderboardEntry> leaderboard;
@@ -39,13 +31,6 @@ public class GameEndingCtrl {
     private TableColumn<LeaderboardEntry, String> leaderboardRanks;
     @FXML
     private TableColumn<LeaderboardEntry, String> leaderboardScores;
-
-    @FXML
-    private TableColumn<LeaderboardEntry, String> leaderboardUsernames1;
-    @FXML
-    private TableColumn<LeaderboardEntry, String> leaderboardRanks1;
-    @FXML
-    private TableColumn<LeaderboardEntry, String> leaderboardScores1;
 
     @FXML
     private Button newGameButton;
@@ -69,16 +54,11 @@ public class GameEndingCtrl {
         leaderboardHelper.setRankColumnCellFactory(leaderboardRanks);
         leaderboardHelper.setUsernameColumnCellFactory(leaderboardUsernames);
         leaderboardHelper.setScoreColumnCellFactory(leaderboardScores);
-        leaderboardHelper.setRankColumnCellFactory(leaderboardRanks1);
-        leaderboardHelper.setUsernameColumnCellFactory(leaderboardUsernames1);
-        leaderboardHelper.setScoreColumnCellFactory(leaderboardScores1);
-        currentleaderboard.setVisible(true);
-        serverleaderboard.setVisible(false);
-        worldleaderboard.setVisible(false);
         backButton.setVisible(false);
     }
 
     public void handleGameState(GameState gameState) {
+        thisgameentries = gameState.leaderboard;
         if (mainCtrl.singleplayerGame) {
             newGameButton.setText("Play as Singleplayer Again");
         }
@@ -87,13 +67,13 @@ public class GameEndingCtrl {
         }
         updateServerLeaderboard(gameState);
         leaderboard.setItems(FXCollections.observableList(
-            leaderboardHelper.prepareLeaderboard(gameState.leaderboard, mainCtrl.getCurrentUsername()))
+            leaderboardHelper.prepareLeaderboard(thisgameentries, mainCtrl.getCurrentUsername()))
         );
         updateLeaderboard();
         System.out.println(entries);
 
-        serverleaderboard.setItems(FXCollections.observableList(
-                leaderboardHelper.prepareLeaderboard(entries, mainCtrl.getCurrentUsername())));
+//        serverleaderboard.setItems(FXCollections.observableList(
+//                leaderboardHelper.prepareLeaderboard(entries, mainCtrl.getCurrentUsername())));
     }
 
     public void splashScreen(ActionEvent actionEvent) {
@@ -124,10 +104,10 @@ public class GameEndingCtrl {
      */
 
     public void showServerLeaderboard(){
-        serverleaderboard.setVisible(true);
-        leaderboard.setVisible(false); //current leaderboard
-        currentleaderboard.setVisible(false); //these are labels 4head
-        worldleaderboard.setVisible(true); //these are labels 4head
+        leaderboard.setItems(FXCollections.observableList(
+                leaderboardHelper.prepareLeaderboard(entries, mainCtrl.getCurrentUsername()))
+        );
+        leaderboard.setVisible(true); //current leaderboard
         backButton.setVisible(true);
 
     }
@@ -150,10 +130,10 @@ public class GameEndingCtrl {
      * Method to return to the game ending screen after accessing the server leaderboard
      */
     public void goBack(){
-        serverleaderboard.setVisible(false);
-        worldleaderboard.setVisible(false);
+        leaderboard.setItems(FXCollections.observableList(
+                leaderboardHelper.prepareLeaderboard(thisgameentries, mainCtrl.getCurrentUsername()))
+        );
         leaderboard.setVisible(true);
-        currentleaderboard.setVisible(true);
         backButton.setVisible(false);
 
     }
