@@ -40,19 +40,24 @@ public class QuestionCommunication {
      */
     public Question patchQuestion(Question q, String serverString) throws ConnectException {
         String body;
+        HttpRequest req;
         try {
             body = mapper.writeValueAsString(q);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return null;
         }
-        HttpRequest req = HttpRequest.newBuilder()
-                .uri(UriBuilder
-                        .fromUri(serverString + "/api/questions/")
-                        .build())
-                .setHeader("Content-Type", "application/json")
-                .method("PATCH", HttpRequest.BodyPublishers.ofString(body))
-                .build();
+        try {
+            req = HttpRequest.newBuilder()
+                    .uri(UriBuilder
+                            .fromUri(serverString + "/api/questions/")
+                            .build())
+                    .setHeader("Content-Type", "application/json")
+                    .method("PATCH", HttpRequest.BodyPublishers.ofString(body))
+                    .build();
+        } catch (IllegalArgumentException e) {
+            throw new ConnectException(e.getMessage());
+        }
         try {
             body = client.send(req, HttpResponse.BodyHandlers.ofString()).body();
             return mapper.readValue(body, typeRefQuestion);
@@ -74,19 +79,24 @@ public class QuestionCommunication {
      */
     public void postQuestion(Question q, String serverString) throws ConnectException {
         String body;
+        HttpRequest req;
         try {
             body = mapper.writeValueAsString(q);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return;
         }
-        HttpRequest req = HttpRequest.newBuilder()
-                .uri(UriBuilder
-                        .fromUri(serverString + "/api/questions/")
-                        .build())
-                .setHeader("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(body))
-                .build();
+        try {
+            req = HttpRequest.newBuilder()
+                    .uri(UriBuilder
+                            .fromUri(serverString + "/api/questions/")
+                            .build())
+                    .setHeader("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(body))
+                    .build();
+        } catch (IllegalArgumentException e) {
+            throw new ConnectException(e.getMessage());
+        }
         try {
             System.out.println(client.send(req, HttpResponse.BodyHandlers.ofString()).statusCode());
         } catch (ConnectException e) {
@@ -105,12 +115,17 @@ public class QuestionCommunication {
      * @throws ConnectException
      */
     public void deleteQuestion(long id, String serverString) throws ConnectException {
-        HttpRequest req = HttpRequest.newBuilder()
-                .uri(UriBuilder
-                        .fromUri(serverString + "/api/questions/" + id)
-                        .build())
-                .DELETE()
-                .build();
+        HttpRequest req;
+        try {
+            req = HttpRequest.newBuilder()
+                    .uri(UriBuilder
+                            .fromUri(serverString + "/api/questions/" + id)
+                            .build())
+                    .DELETE()
+                    .build();
+        } catch (IllegalArgumentException e) {
+            throw new ConnectException(e.getMessage());
+        }
         try {
             client.send(req, HttpResponse.BodyHandlers.discarding());
         } catch (ConnectException e) {
@@ -131,13 +146,19 @@ public class QuestionCommunication {
      * @throws ConnectException
      */
     public List<Question> searchBy(String text, String serverString) throws ConnectException {
-        HttpRequest req = HttpRequest.newBuilder()
-                .uri(UriBuilder
-                        .fromUri(serverString + "/api/questions/search")
-                        .queryParam("q", text)
-                        .build())
-                .GET()
-                .build();
+        HttpRequest req;
+        try {
+            req = HttpRequest.newBuilder()
+                    .uri(UriBuilder
+                            .fromUri(serverString + "/api/questions/search")
+                            .queryParam("q", text)
+                            .build())
+                    .GET()
+                    .build();
+        }
+        catch (IllegalArgumentException e) {
+            throw new ConnectException(e.getMessage());
+        }
         try {
             System.out.println(req.uri().toURL().toString());
         } catch (MalformedURLException e) {
