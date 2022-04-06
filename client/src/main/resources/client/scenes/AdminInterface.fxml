@@ -10,7 +10,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane styleClass="main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="440.0" prefWidth="720.0" stylesheets="@../../AdminInterface.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AdminInterfaceCtrl">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="440.0" prefWidth="720.0" styleClass="main" stylesheets="/AdminInterface.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AdminInterfaceCtrl">
     <children>
         <Button styleClass="button" layoutX="594.0" layoutY="55.0" mnemonicParsing="false" onAction="#importQuestions" prefHeight="18.0" prefWidth="112.0" text="Import" textAlignment="CENTER">
          <font>
