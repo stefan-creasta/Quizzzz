@@ -40,3 +40,14 @@
 .activities .table-row-cell:selected .text {
     -fx-fill: black;
 }
+
+.input {
+    -fx-text-fill: white;
+    -fx-padding: 10 20 10 20;
+    -fx-font-size: 22px;
+    -fx-border-radius: 999px;
+    -fx-background-radius: 999px;
+    -fx-background-color: #673e8b;
+    -fx-border-width: 0.5;
+    -fx-border-color: black;
+}

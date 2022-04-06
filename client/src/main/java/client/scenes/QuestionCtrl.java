@@ -3,24 +3,27 @@ package client.scenes;
 import client.Communication.AnswerCommunication;
 import client.Communication.ImageCommunication;
 import client.Communication.PowerUpsCommunication;
-import com.google.inject.Inject;
 import commons.Timer;
 import commons.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
@@ -112,13 +115,22 @@ public class QuestionCtrl {
     private TableColumn<EmoteEntry, String> emotesUsernameColumn;
 
     @FXML
-    private TableColumn<EmoteEntry, String> emotesEmoteColumn;
+    private TableColumn<EmoteEntry, ImageView> emotesEmoteColumn;
 
     @FXML
     private AnchorPane root;
 
     @FXML
     private TextField answerTextBox;
+
+    @FXML
+    private ProgressBar timeBar;
+
+    @FXML
+    private Label scoreLabel;
+
+    @FXML
+    private Group emoteGroup;
 
     private Boolean[] pressedEmote = {false, false, false, false, false};
 
@@ -136,6 +148,7 @@ public class QuestionCtrl {
 
     public boolean halfTimeWasUsed = false;
 
+
     @Inject
     public QuestionCtrl(MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
@@ -148,44 +161,59 @@ public class QuestionCtrl {
      */
     void updateGameState(GameState gameState) {
         this.gameState = gameState;
-        switch(gameState.instruction){
+        switch (gameState.instruction) {
             case "questionPhase":
+                timeBar.setVisible(true);
+                questionTime.setVisible(true);
+                scoreLabel.setVisible(false);
                 //TODO: Update question number based on current question
                 this.questionTitle.setText("Question 10");
                 this.questionText.setText(gameState.question.question);
 
-                if(!gameState.question.type.equals("3")){
+                if (!gameState.question.type.equals("3")) {
                     this.answer1.setText(gameState.question.answer);
                     this.answer2.setText(gameState.question.wrongAnswer1);
                     this.answer3.setText(gameState.question.wrongAnswer2);
                     answer1.setVisible(true);
                     answer2.setVisible(true);
                     answer3.setVisible(true);
-                }else{
+                } else {
                     answerTextBox.clear();
                     answerTextBox.setVisible(true);
+                    answerTextBox.setDisable(false);
                 }
-                
-                timeline = new Timeline( new KeyFrame(Duration.millis(1), e ->{
+
+                timeline = new Timeline(new KeyFrame(Duration.millis(1), e -> {
                     double timeToDisplay = 10000 - (new Date().getTime() - gameState.timeOfReceival);
-                    questionTime.setText("Time left: " + String.format("%.3f", timeToDisplay/1000.0) + " seconds");
+                    questionTime.setText("Time left: " + String.format("%.3f", timeToDisplay / 1000.0) + " seconds");
+                    timeBar.setProgress(timeToDisplay / 10000.0);
                 }));
-                timeline.setCycleCount(100000);
+                timeline.setCycleCount(10000);
                 timeline.play();
 
                 break;
             case "halfTimePowerUp":
-                timeline = new Timeline( new KeyFrame(Duration.millis(1), e ->{
+                timeline = new Timeline(new KeyFrame(Duration.millis(1), e -> {
                     double timeToDisplay = 10000 - (new Date().getTime() - gameState.timeOfReceival);
-                    questionTime.setText("Time left: " + String.format("%.3f", timeToDisplay/1000.0) + " seconds");
+                    if (timeToDisplay < 0) {
+                        questionTime.setText("Time left: 0.000 seconds");
+                        timeBar.setProgress(0);
+                    } else {
+                        questionTime.setText("Time left: " + String.format("%.3f", timeToDisplay / 1000.0) + " seconds");
+                        timeBar.setProgress(timeToDisplay / 10000.0);
+                    }
+
                 }));
-                timeline.setCycleCount(100000);
+                timeline.setCycleCount(10000);
                 timeline.play();
                 //TODO time is already being halved, but make it explicit to the client, so that it is easily noticeable
                 break;
+            case "score":
+                timeBar.setVisible(false);
+                questionTime.setVisible(false);
+                scoreLabel.setText("You received: " + String.format("%.2f", gameState.thisScored * 10) + " points!");
+                scoreLabel.setVisible(true);
         }
-
-
 
 
     }
@@ -214,12 +242,12 @@ public class QuestionCtrl {
      * Sends the answer to the server, together with the gameState
      */
     public void SubmitPressed(ActionEvent actionEvent) throws IOException, InterruptedException {
-        if(answer1.isVisible()){//if we have an MC question
-            AnswerCommunication.sendAnswer(selectedAnswer, gameState);
-        }else if(answerTextBox.isVisible()){//if we have an open question
+        if (answer1.isVisible()) {//if we have an MC question
+            AnswerCommunication.sendAnswer(selectedAnswer, gameState, mainCtrl.playerCtrl.serverString);
+        } else if (answerTextBox.isVisible()) {//if we have an open question
             selectedAnswer = answerTextBox.getText();
-            AnswerCommunication.sendAnswer(selectedAnswer, gameState);
-        }else{
+            AnswerCommunication.sendAnswer(selectedAnswer, gameState, mainCtrl.playerCtrl.serverString);
+        } else {
             throw new IllegalArgumentException("we messed up the submitPressed function logic :(");
         }
 
@@ -233,7 +261,7 @@ public class QuestionCtrl {
     void AngryEmotePressed(ActionEvent event) throws IOException, InterruptedException {
         if (!pressedEmote[0]) {
             Emote emote = new Emote(Emote.Type.Angry, gameState.username, gameState.gameId);
-            AnswerCommunication.sendEmote(emote);
+            AnswerCommunication.sendEmote(emote, mainCtrl.playerCtrl.serverString);
             pressedEmote[0] = true;
         }
     }
@@ -246,7 +274,7 @@ public class QuestionCtrl {
     void LOLEmotePressed(ActionEvent event) throws IOException, InterruptedException {
         if (!pressedEmote[1]) {
             Emote emote = new Emote(Emote.Type.LOL, gameState.username, gameState.gameId);
-            AnswerCommunication.sendEmote(emote);
+            AnswerCommunication.sendEmote(emote, mainCtrl.playerCtrl.serverString);
             pressedEmote[1] = true;
         }
     }
@@ -259,7 +287,7 @@ public class QuestionCtrl {
     void SweatEmotePressed(ActionEvent event) throws IOException, InterruptedException {
         if (!pressedEmote[2]) {
             Emote emote = new Emote(Emote.Type.Sweat, gameState.username, gameState.gameId);
-            AnswerCommunication.sendEmote(emote);
+            AnswerCommunication.sendEmote(emote, mainCtrl.playerCtrl.serverString);
             pressedEmote[2] = true;
         }
     }
@@ -272,7 +300,7 @@ public class QuestionCtrl {
     void ClapEmotePressed(ActionEvent event) throws IOException, InterruptedException {
         if (!pressedEmote[3]) {
             Emote emote = new Emote(Emote.Type.Clap, gameState.username, gameState.gameId);
-            AnswerCommunication.sendEmote(emote);
+            AnswerCommunication.sendEmote(emote, mainCtrl.playerCtrl.serverString);
             pressedEmote[3] = true;
         }
     }
@@ -285,7 +313,7 @@ public class QuestionCtrl {
     void WinEmotePressed(ActionEvent event) throws IOException, InterruptedException {
         if (!pressedEmote[4]) {
             Emote emote = new Emote(Emote.Type.Win, gameState.username, gameState.gameId);
-            AnswerCommunication.sendEmote(emote);
+            AnswerCommunication.sendEmote(emote, mainCtrl.playerCtrl.serverString);
             pressedEmote[4] = true;
         }
     }
@@ -298,7 +326,7 @@ public class QuestionCtrl {
      * up is used and all players are alerted.
      */
     public void DoublePointsButtonPressed(ActionEvent event) throws IOException, InterruptedException {
-        String result = PowerUpsCommunication.sendPowerUps("doublePointsPowerUp", gameState);
+        String result = PowerUpsCommunication.sendPowerUps("doublePointsPowerUp", gameState, mainCtrl.playerCtrl.serverString);
 
         try {
             if (result.split("___")[1].equals("success")) {
@@ -320,7 +348,7 @@ public class QuestionCtrl {
      * and the wrong answer button is made invisible and inaccessible. Also other players are alerted.
      */
     void EliminateWrongAnswerButtonPressed(ActionEvent event) throws IOException, InterruptedException {
-        String result = PowerUpsCommunication.sendPowerUps("eliminateWrongAnswerPowerUp", gameState);
+        String result = PowerUpsCommunication.sendPowerUps("eliminateWrongAnswerPowerUp", gameState, mainCtrl.playerCtrl.serverString);
 
         try {
             if (result.split("___")[1].equals("success")) {
@@ -354,7 +382,7 @@ public class QuestionCtrl {
      * and the time of all other players is halved.//TODO finish
      */
     void HalfTimeButtonPressed(ActionEvent event) throws IOException, InterruptedException {
-        String result = PowerUpsCommunication.sendPowerUps("halfTimePowerUp", gameState);
+        String result = PowerUpsCommunication.sendPowerUps("halfTimePowerUp", gameState, mainCtrl.playerCtrl.serverString);
         try {
             if (result.split("___")[1].equals("success")) {
                 System.out.println("halftime has been used but maybe not implemented yet");
@@ -370,7 +398,7 @@ public class QuestionCtrl {
     }
 
     @FXML
-    void KeyPressed(KeyEvent event){
+    void KeyPressed(KeyEvent event) {
         System.out.println(event.getCode() + " was pressed.");
         switch (event.getCode()) {
             case TAB:
@@ -429,10 +457,34 @@ public class QuestionCtrl {
         leaderboardUsernames.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().username));
         leaderboardScores.setCellValueFactory(e -> new SimpleStringProperty(Integer.toString(e.getValue().score)));
         emotesUsernameColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().username));
-        emotesEmoteColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().type));
-        emotes.setPlaceholder(new Label(""));
+        emotesEmoteColumn.setCellValueFactory(e -> {
+            ImageView image = e.getValue().image;
+            return new SimpleObjectProperty<>(image);
+        });
         leaderboard.addEventFilter(ScrollEvent.ANY, Event::consume);
         hideLeaderboard();
+
+
+        Map<String, Button> emoteTypes = new HashMap<>();
+        emoteTypes.put("angry", emoteAngry);
+        emoteTypes.put("lol", emoteLOL);
+        emoteTypes.put("sweat", emoteSweat);
+        emoteTypes.put("clap", emoteClap);
+        emoteTypes.put("win", emoteWin);
+
+        for (Map.Entry<String, Button> entry : emoteTypes.entrySet()) {
+            String type = entry.getKey();
+            Button button = entry.getValue();
+
+            Image img = new Image("images/emojis/" + type + ".png");
+            ImageView view = new ImageView(img);
+            view.setFitHeight(30);
+            view.setPreserveRatio(true);
+            button.setText("");
+            button.setPrefSize(50, 50);
+            button.setGraphic(view);
+        }
+        emotes.setPlaceholder(new Label(""));
     }
 
     /**
@@ -460,24 +512,28 @@ public class QuestionCtrl {
         timer.synchronize(syncLong);
     }
 
+
     /**
      * Sets the new Question for the Question phase.
+     *
      * @param q the new Question
      */
-    public void setQuestion(Question q) {
+    public void setQuestion(Question q, String serverString) {
         questionText.setText(q.question);//sets the question Text
 
         if (q.questionImage != null) {//sets the Image
             try {
-                questionImage.setImage(ImageCommunication.getImage("http://localhost:8080/" + q.questionImage));
-            }
-            catch (IOException e) {
+                System.out.println("serverString is: " + serverString);
+                System.out.println("serverString is: " + serverString);
+                System.out.println("serverString is: " + serverString);
+                questionImage.setImage(ImageCommunication.getImage(serverString + "/" + q.questionImage));
+            } catch (IOException e) {
                 System.out.println("Failed to set the question image.");
             }
         }
 
-        try{
-            if(!q.type.equals("3")){//if this is a MC question
+        try {
+            if (!q.type.equals("3")) {//if this is a MC question
                 List<String> answerList = new LinkedList<>(List.of(q.answer, q.wrongAnswer1, q.wrongAnswer2));
                 Collections.shuffle(answerList);
                 clearAnswer();
@@ -485,21 +541,29 @@ public class QuestionCtrl {
                 answer2.setText(answerList.get(1));
                 answer3.setText(answerList.get(2));
                 answerTextBox.setVisible(false);
-            }else{//if this is an open question
+            } else {//if this is an open question
                 answer1.setVisible(false);
                 answer2.setVisible(false);
                 answer3.setVisible(false);
                 clearAnswer();
                 answerTextBox.setVisible(true);
+                answerTextBox.setDisable(false);
             }
-        }
-        catch(Exception exc){
+        } catch (Exception exc) {
             exc.printStackTrace();
             System.out.println("null pointer again????");
         }
 
-        for (int i=0; i<5; i++){//Reset the emotes so they can be pressed again for the new question.
+        for (int i = 0; i < 5; i++) {//Reset the emotes so they can be pressed again for the new question.
             pressedEmote[i] = false;
+        }
+
+        emotes.setVisible(true);
+        emoteGroup.setVisible(true);
+
+        if (mainCtrl.singleplayerGame) {
+            emotes.setVisible(false);
+            emoteGroup.setVisible(false);
         }
 
     }
@@ -507,6 +571,7 @@ public class QuestionCtrl {
     public void markAnswer(String correct, String ofplayer, String type) {
         if (type.equals("3")) {
             answerTextBox.setText(correct);
+            answerTextBox.setDisable(true);
         } else {
             for (Button answer : List.of(answer1, answer2, answer3)) {
                 answer.getStyleClass().removeAll("wrong", "right", "default");
@@ -529,7 +594,7 @@ public class QuestionCtrl {
     }
 
     public void showLeaderboard() {
-            // if the current list of player in the lobby is one then the current game is in multiplayer mode
+        // if the current list of player in the lobby is one then the current game is in multiplayer mode
         if (mainCtrl.singleplayerGame == false) {
             updateMultilayerLeaderboards();
 
@@ -539,7 +604,7 @@ public class QuestionCtrl {
             allLeaderboard.setVisible(true);
         }
         // if the current list of player in the lobby is one then the current game is  in single player mode
-        if (mainCtrl.singleplayerGame == true){
+        if (mainCtrl.singleplayerGame == true) {
             updateSingleplayerLeaderboards();
 
             ObservableList<LeaderboardEntry> entries = FXCollections.observableList(leaderboardEntries);
@@ -556,32 +621,32 @@ public class QuestionCtrl {
 
     /**
      * Retrieves the list of Leaderboard Entries from the server and populates the table in the game
+     *
      * @throws IOException
      * @throws InterruptedException
      */
-    public void updateMultilayerLeaderboards(){
+    public void updateMultilayerLeaderboards() {
 
         try {
             leaderboardEntries = mainCtrl.getMultiplayerLeaderboards();
             Collections.sort(leaderboardEntries);
             List<LeaderboardEntry> auxiliarList = new ArrayList<>();
-            for(int i = 0; i <= 4 && i < leaderboardEntries.size(); i++) {
+            for (int i = 0; i <= 4 && i < leaderboardEntries.size(); i++) {
                 auxiliarList.add(leaderboardEntries.get(i));
             }
             int currentPlayerPosition = -1;
-            for(int i = 0; i < leaderboardEntries.size(); i++) {
-                if(gameState.username.equals(leaderboardEntries.get(i).username)) {
+            for (int i = 0; i < leaderboardEntries.size(); i++) {
+                if (gameState.username.equals(leaderboardEntries.get(i).username)) {
                     currentPlayerPosition = i;
                     break;
                 }
             }
             System.out.println("PLAYER POSITION E: " + currentPlayerPosition);
-            if(currentPlayerPosition != -1) {
-                if(currentPlayerPosition <= 4) {
+            if (currentPlayerPosition != -1) {
+                if (currentPlayerPosition <= 4) {
                     System.out.println("PLAYER POSITION E FALS");
                     playerPosition.setVisible(false);
-                }
-                else {
+                } else {
                     updateCurrentPlayer(gameState);
                 }
             }
@@ -593,7 +658,8 @@ public class QuestionCtrl {
         }
 
     }
-    public void updateSingleplayerLeaderboards(){
+
+    public void updateSingleplayerLeaderboards() {
 
         try {
             leaderboardEntries = mainCtrl.getSingleplayerLeaderboards();
@@ -609,9 +675,14 @@ public class QuestionCtrl {
     public void updateEmotes(List<Emote> emoteEntries) {
         //TODO: Fix cell so that the image of the emote is displayed
         List<EmoteEntry> emoteEntriesWithImage = new ArrayList<>();
-        for(Emote emote : emoteEntries) {
+        for (Emote emote : emoteEntries) {
 
-            emoteEntriesWithImage.add(new EmoteEntry(emote.username, String.valueOf(emote.type)));
+            Image img = new Image("images/emojis/" + emote.type + ".png");
+            ImageView imageView = new ImageView(img);
+            imageView.setFitHeight(30);
+            imageView.setPreserveRatio(true);
+
+            emoteEntriesWithImage.add(new EmoteEntry(emote.username, imageView));
         }
         System.out.println(emoteEntriesWithImage);
         ObservableList<EmoteEntry> emoteEntriesList = FXCollections.observableList(emoteEntriesWithImage);
@@ -620,15 +691,16 @@ public class QuestionCtrl {
 
     /**
      * Allows the current user to see their own scores and ranks at the bottom of the leaderboard
+     *
      * @param state
      */
-    public void updateCurrentPlayer(GameState state){
+    public void updateCurrentPlayer(GameState state) {
         for (int i = 0; i < leaderboardEntries.size(); i++) {
             LeaderboardEntry e = leaderboardEntries.get(i);
             if (e.username.equals(state.username)) {
                 playerUsername.setText(e.username);
                 playerScore.setText(String.valueOf(e.score));
-                playerRank.setText("#"+ String.valueOf(i + 1));
+                playerRank.setText("#" + String.valueOf(i + 1));
                 break;
             }
         }
@@ -638,11 +710,19 @@ public class QuestionCtrl {
 class EmoteEntry {
 
     public String username;
-    public String type;
+    public ImageView image;
 
-    public EmoteEntry(String username, String type) {
+    public EmoteEntry(String username, ImageView image) {
         this.username = username;
-        this.type = type;
+        this.image = image;
+    }
+
+    public void setImage(ImageView value) {
+        image = value;
+    }
+
+    public ImageView getImage() {
+        return image;
     }
 
 }

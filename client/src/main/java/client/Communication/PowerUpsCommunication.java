@@ -25,14 +25,14 @@ public class PowerUpsCommunication {
      * @throws IOException can get thrown
      * @throws InterruptedException can get thrown
      */
-    public static String sendPowerUps(String message, GameState state) throws IOException, InterruptedException {
+    public static String sendPowerUps(String message, GameState state, String serverString) throws IOException, InterruptedException {
         System.out.println("\nPower ups sent to server: \n" + message);
 
         message = message + "___" + state.playerId + "___" + state.gameId;
 
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/api/powerup/" + message))
+                .uri(URI.create(serverString + "/api/powerup/" + message))
                 .GET()
                 .build();
         try{
