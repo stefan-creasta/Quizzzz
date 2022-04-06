@@ -30,8 +30,6 @@ public class LobbyCtrl implements Initializable {
     private TableView<String> table;
     @FXML
     private TableColumn<String, String> col1;
-    @FXML
-    private TableColumn<String, String> col2;
 
     @Inject
     public LobbyCtrl(MainCtrl mainCtrl) {

@@ -1,27 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" styleClass="main" stylesheets="@../../AddPlayer.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AddPlayerCtrl">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" styleClass="main" stylesheets="@../../AddPlayer.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AddPlayerCtrl">
     <children>
-        <Button layoutX="421.0" layoutY="369.0" mnemonicParsing="false" onAction="#play" prefHeight="49.0" prefWidth="158.0" text="Play" textAlignment="CENTER">
-         <font>
-            <Font size="20.0" />
-         </font></Button>
-        <TextField fx:id="usernameField" layoutX="336.0" layoutY="156.0" prefHeight="36.0" prefWidth="328.0" promptText="Insert username..." styleClass="input" />
-        <Label layoutX="289.0" layoutY="75.0" styleClass="enter-username-label" text="Enter your username:" textAlignment="CENTER">
-         <font>
-            <Font size="45.0" />
-         </font></Label>
-      <TextField fx:id="serverField" layoutX="377.0" layoutY="300.0" prefHeight="53.0" prefWidth="245.0" promptText="Insert server address" />
-      <Label fx:id="addressLabel" layoutX="269.0" layoutY="222.0" styleClass="enter-username-label" text="Enter address of server:" textAlignment="CENTER">
-         <font>
-            <Font size="45.0" />
-         </font>
-      </Label>
+        <GridPane layoutX="300.0" layoutY="147.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <Group GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                    <children>
+                        <Button layoutX="124.0" layoutY="361.0" mnemonicParsing="false" onAction="#play" prefHeight="49.0" prefWidth="158.0" text="Play" textAlignment="CENTER">
+                            <font>
+                                <Font size="20.0" />
+                            </font>
+                        </Button>
+                        <TextField fx:id="usernameField" layoutX="43.0" layoutY="172.0" prefHeight="36.0" prefWidth="328.0" promptText="Insert username..." styleClass="input" />
+                        <Label layoutX="4.0" layoutY="65.0" styleClass="enter-username-label" text="Enter your username:">
+                            <font>
+                                <Font size="45.0" />
+                            </font>
+                        </Label>
+                  <TextField fx:id="serverField" layoutX="39.0" layoutY="272.0" prefHeight="36.0" prefWidth="328.0" promptText="Insert server address..." styleClass="input" />
+                    </children>
+                </Group>
+            </children>
+        </GridPane>
+        <GridPane layoutX="413.0" layoutY="511.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <Button mnemonicParsing="false" onAction="#back" prefHeight="49.0" prefWidth="158.0" text="Back" textAlignment="CENTER" GridPane.halignment="CENTER">
+                    <font>
+                        <Font size="20.0" />
+                    </font>
+                </Button>
+            </children>
+        </GridPane>
     </children>
 </AnchorPane>

@@ -20,9 +20,9 @@ import client.Communication.ServerListener;
 import com.google.inject.Inject;
 import commons.Player;
 import jakarta.ws.rs.WebApplicationException;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
@@ -40,8 +40,6 @@ public class AddPlayerCtrl {
     private TextField usernameField;
     @FXML
     private TextField serverField;
-    @FXML
-    private Label addressLabel;
 
     @Inject
     public AddPlayerCtrl(MainCtrl mainCtrl, ServerListener serverListener, GameCommunication gameCommunication) {
@@ -62,38 +60,34 @@ public class AddPlayerCtrl {
     }
 
     public void play() throws IOException, InterruptedException {
-                // here instead of in the multplayer clause
-                Player newPlayer = getPlayer();
-                //if the game is singleplayer, then the game can start
-                if(mainCtrl.singleplayerGame) {
-
-                    serverString = "http://localhost:8080";
-                    mainCtrl.initiateSingleplayerGame(newPlayer);
-                    mainCtrl.showQuestion();
-                    serverField.setVisible(true);
-                    addressLabel.setVisible(true);
+        // here instead of in the multplayer clause
+        Player newPlayer = getPlayer();
+        //if the game is singleplayer, then the game can start
+        if(mainCtrl.singleplayerGame) {
+            serverString = "http://localhost:8080";
+            mainCtrl.initiateSingleplayerGame(newPlayer);
+            mainCtrl.showQuestion();
+            serverField.setVisible(true);
+        }
+        else {
+            serverString = serverField.getText();
+            if (mainCtrl.checkUsername(newPlayer.username) && !newPlayer.username.equals("") && newPlayer.username != null) {
+                try {
+                    mainCtrl.joinGame(newPlayer.username);
+                } catch (WebApplicationException e) {
+                    var alert = new Alert(Alert.AlertType.ERROR);
+                    alert.initModality(Modality.APPLICATION_MODAL);
+                    alert.setContentText(e.getMessage());
+                    alert.showAndWait();
+                    return;
                 }
-                else {
-                        serverString = serverField.getText();
-                        if (mainCtrl.checkUsername(newPlayer.username) && !newPlayer.username.equals("") && newPlayer.username != null) {
-                            try {
-                                mainCtrl.joinGame(newPlayer.username);
-
-                            } catch (WebApplicationException e) {
-
-                                var alert = new Alert(Alert.AlertType.ERROR);
-                                alert.initModality(Modality.APPLICATION_MODAL);
-                                alert.setContentText(e.getMessage());
-                                alert.showAndWait();
-                                return;
-                            }
-                            mainCtrl.showLobby();
-                        } else {
-                            Alert usernameAlert = new Alert(Alert.AlertType.ERROR, "Username or server input is not correct");
-                            usernameAlert.show();
-                        }
-                    }
+                mainCtrl.showLobby();
+            } else {
+                Alert usernameAlert = new Alert(Alert.AlertType.ERROR, "Username or server input is not correct");
+                usernameAlert.show();
             }
+        }
+    }
 
     private Player getPlayer() {
         var username = usernameField.getText();
@@ -112,7 +106,6 @@ public class AddPlayerCtrl {
                 break;
             case ESCAPE:
                 serverField.setVisible(true);
-                addressLabel.setVisible(true);
                 cancel();
                 break;
             default:
@@ -122,6 +115,9 @@ public class AddPlayerCtrl {
 
     public void invisServerField(){
         serverField.setVisible(false);
-        addressLabel.setVisible(false);
+    }
+
+    public void back(ActionEvent actionEvent) {
+        mainCtrl.showSplashScreen();
     }
 }

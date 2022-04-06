@@ -36,11 +36,6 @@ public class MainCtrl {
 
     private Stage primaryStage;
 
-    private QuoteOverviewCtrl overviewCtrl;
-    private Scene overview;
-
-    private AddQuoteCtrl addCtrl;
-    private Scene add;
 
     public AddPlayerCtrl playerCtrl;
     private Scene player;
@@ -70,8 +65,7 @@ public class MainCtrl {
 
     private String currentUsername;
 
-    public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
-                           Pair<AddQuoteCtrl, Parent> add,
+    public void initialize(Stage primaryStage,
                            Pair<QuestionCtrl, Parent> question,
                            Pair<CountdownTimer, Parent> timer,
                            Pair<LobbyCtrl, Parent> lobbyPair,
@@ -86,12 +80,6 @@ public class MainCtrl {
         this.serverListener = serverListener;
 
         this.primaryStage = primaryStage;
-
-        this.overviewCtrl = overview.getKey();
-        this.overview = new Scene(overview.getValue());
-
-        this.addCtrl = add.getKey();
-        this.add = new Scene(add.getValue());
 
         this.timerCtrl = timer.getKey();
         this.timer = new Scene(timer.getValue());
@@ -159,22 +147,10 @@ public class MainCtrl {
         }
     }
 
-    public void showOverview() {
-        primaryStage.setTitle("Quotes: Overview");
-        primaryStage.setScene(overview);
-        overviewCtrl.refresh();
-    }
-
     public void showLobby() throws IOException, InterruptedException {
         primaryStage.setTitle("Lobby");
         primaryStage.setScene(lobby);
         lobbyCtrl.refresh();
-    }
-
-    public void showAdd() {
-        primaryStage.setTitle("Quotes: Adding Quote");
-        primaryStage.setScene(add);
-        add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
     }
 
     public void showSplashScreen() {
