@@ -23,8 +23,8 @@
       <GridPane layoutX="57.0" layoutY="27.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" />
          </columnConstraints>
          <rowConstraints>
             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
@@ -66,6 +66,17 @@
             </ImageView>
          </children>
       </GridPane>
+      <GridPane layoutX="338.0" layoutY="352.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <TextField fx:id="answerTextBox" maxWidth="300.0" prefHeight="70.0" prefWidth="243.0" promptText="Insert answer" styleClass="input" visible="false" GridPane.halignment="CENTER" />
+         </children>
+      </GridPane>
       <GridPane alignment="CENTER" layoutY="320.0" prefHeight="171.0" prefWidth="577.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0">
          <columnConstraints>
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
@@ -76,18 +87,17 @@
             <RowConstraints maxHeight="69.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Button fx:id="answer1" contentDisplay="CENTER" mnemonicParsing="false" onAction="#Answer1Pressed" stylesheets="@../../Question.css" text="Answer 1 123123" GridPane.rowIndex="2" />
+            <Button fx:id="answer1" contentDisplay="CENTER" mnemonicParsing="false" onAction="#Answer1Pressed" styleClass="selected" stylesheets="@../../Question.css" text="Answer 1" GridPane.rowIndex="2" />
             <Button fx:id="answer2" contentDisplay="CENTER" mnemonicParsing="false" onAction="#Answer2Pressed" stylesheets="@../../Question.css" text="Answer 2" GridPane.rowIndex="1" />
             <Button fx:id="answer3" contentDisplay="CENTER" mnemonicParsing="false" onAction="#Answer3Pressed" stylesheets="@../../Question.css" text="Answer 3" />
             <Group GridPane.halignment="CENTER" GridPane.rowIndex="2" />
          </children>
       </GridPane>
       <Button fx:id="submit" layoutX="752.0" layoutY="391.0" mnemonicParsing="false" onAction="#SubmitPressed" stylesheets="@../../Question.css" text="Submit" AnchorPane.rightAnchor="40.0" />
-      <TextField fx:id="answerTextBox" layoutX="338.0" layoutY="352.0" prefHeight="70.0" prefWidth="243.0" promptText="Insert answer" styleClass="input" visible="false" />
       <TableView fx:id="emotes" layoutX="771.0" layoutY="440.0" prefHeight="201.0" prefWidth="230.0" styleClass="emotes" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <columns>
-          <TableColumn fx:id="emotesUsernameColumn" editable="false" prefWidth="114.0" styleClass="username-column" text="Username" />
-          <TableColumn fx:id="emotesEmoteColumn" editable="false" prefWidth="85.5" styleClass="emote-column" text="Emote" />
+          <TableColumn fx:id="emotesUsernameColumn" editable="false" prefWidth="114.0" resizable="false" sortable="false" styleClass="username-column" text="Username" />
+          <TableColumn fx:id="emotesEmoteColumn" editable="false" prefWidth="85.5" resizable="false" sortable="false" styleClass="emote-column" text="Emote" />
         </columns>
       </TableView>
       <Group fx:id="emoteGroup" layoutX="21.0" layoutY="443.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0">
@@ -135,7 +145,7 @@
             </Group>
          </children>
       </GridPane>
-      <GridPane layoutX="243.0" layoutY="472.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <GridPane layoutX="243.0" layoutY="472.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
          </columnConstraints>

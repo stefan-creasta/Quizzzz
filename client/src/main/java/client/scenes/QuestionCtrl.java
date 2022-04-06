@@ -47,6 +47,8 @@ public class QuestionCtrl {
     @FXML
     private Button answer3;
 
+    private boolean[] selectedCSS = {false, false, false};
+
     @FXML
     private Button emoteAngry;
 
@@ -132,6 +134,9 @@ public class QuestionCtrl {
     @FXML
     private Group emoteGroup;
 
+    @FXML
+    private Button submit;
+
     private Boolean[] pressedEmote = {false, false, false, false, false};
 
     private Timer timer;
@@ -166,6 +171,11 @@ public class QuestionCtrl {
                 timeBar.setVisible(true);
                 questionTime.setVisible(true);
                 scoreLabel.setVisible(false);
+
+                selectedCSS[0] = false;
+                selectedCSS[1] = false;
+                selectedCSS[2] = false;
+
                 //TODO: Update question number based on current question
                 this.questionTitle.setText("Question 10");
                 this.questionText.setText(gameState.question.question);
@@ -190,6 +200,24 @@ public class QuestionCtrl {
                 }));
                 timeline.setCycleCount(10000);
                 timeline.play();
+
+                answer1.getStyleClass().remove("selected");
+                answer2.getStyleClass().remove("selected");
+                answer3.getStyleClass().remove("selected");
+
+
+                emotes.setVisible(true);
+                emoteGroup.setVisible(true);
+
+                if (mainCtrl.singleplayerGame) {
+                    emotes.setVisible(false);
+                    emoteGroup.setVisible(false);
+                }
+
+                answer1.setDisable(false);
+                answer2.setDisable(false);
+                answer3.setDisable(false);
+                submit.setDisable(false);
 
                 break;
             case "halfTimePowerUp":
@@ -221,18 +249,37 @@ public class QuestionCtrl {
     //TODO: Send correct Game ID
     @FXML
     void Answer1Pressed(ActionEvent event) throws IOException, InterruptedException {
+        if (!selectedCSS[0]) {
+            answer1.getStyleClass().add("selected");
+            answer2.getStyleClass().removeAll("selected");
+            answer3.getStyleClass().removeAll("selected");
+            selectedCSS = new boolean[]{true, false, false};
+        }
         selectedAnswer = answer1.getText();
     }
 
     //TODO: Send correct Game ID
     @FXML
     void Answer2Pressed(ActionEvent event) throws IOException, InterruptedException {
+        if (!selectedCSS[1]) {
+            answer2.getStyleClass().add("selected");
+            answer1.getStyleClass().removeAll("selected");
+            answer3.getStyleClass().removeAll("selected");
+            selectedCSS = new boolean[]{false, true, false};
+        }
         selectedAnswer = answer2.getText();
     }
 
     //TODO: Send correct Game ID
     @FXML
     void Answer3Pressed(ActionEvent event) throws IOException, InterruptedException {
+        if (!selectedCSS[2]) {
+            answer3.getStyleClass().add("selected");
+            answer2.getStyleClass().removeAll("selected");
+            answer1.getStyleClass().removeAll("selected");
+            selectedCSS = new boolean[]{false, false, true};
+        }
+
         selectedAnswer = answer3.getText();
     }
 
@@ -242,6 +289,13 @@ public class QuestionCtrl {
      * Sends the answer to the server, together with the gameState
      */
     public void SubmitPressed(ActionEvent actionEvent) throws IOException, InterruptedException {
+
+        answer1.setDisable(true);
+        answer2.setDisable(true);
+        answer3.setDisable(true);
+        submit.setDisable(true);
+
+
         if (answer1.isVisible()) {//if we have an MC question
             AnswerCommunication.sendAnswer(selectedAnswer, gameState, mainCtrl.playerCtrl.serverString);
         } else if (answerTextBox.isVisible()) {//if we have an open question
@@ -259,6 +313,7 @@ public class QuestionCtrl {
      */
     @FXML
     void AngryEmotePressed(ActionEvent event) throws IOException, InterruptedException {
+        System.out.println("Angry emote pressed");
         if (!pressedEmote[0]) {
             Emote emote = new Emote(Emote.Type.Angry, gameState.username, gameState.gameId);
             AnswerCommunication.sendEmote(emote, mainCtrl.playerCtrl.serverString);
@@ -285,6 +340,7 @@ public class QuestionCtrl {
      */
     @FXML
     void SweatEmotePressed(ActionEvent event) throws IOException, InterruptedException {
+        System.out.println("Sweat emote pressed");
         if (!pressedEmote[2]) {
             Emote emote = new Emote(Emote.Type.Sweat, gameState.username, gameState.gameId);
             AnswerCommunication.sendEmote(emote, mainCtrl.playerCtrl.serverString);
@@ -558,13 +614,6 @@ public class QuestionCtrl {
             pressedEmote[i] = false;
         }
 
-        emotes.setVisible(true);
-        emoteGroup.setVisible(true);
-
-        if (mainCtrl.singleplayerGame) {
-            emotes.setVisible(false);
-            emoteGroup.setVisible(false);
-        }
 
     }
 
