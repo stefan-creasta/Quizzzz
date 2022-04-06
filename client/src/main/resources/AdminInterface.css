@@ -55,3 +55,8 @@
 .line {
     -fx-stroke: white;
 }
+
+.error {
+    -fx-border-width: 2;
+    -fx-border-color: red;
+}
