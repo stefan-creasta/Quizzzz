@@ -210,7 +210,6 @@ public class MainCtrl {
     public void showQuestionPause() {
         primaryStage.setTitle("Pause");
         primaryStage.setScene(questionPause);
-        questionPauseCtrl.showAnimation();
     }
 
     public void showAdminInterface() {
