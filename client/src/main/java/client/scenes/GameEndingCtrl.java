@@ -101,6 +101,12 @@ public class GameEndingCtrl {
         mainCtrl.showSplashScreen();
     }
 
+    /**
+     * A user could start a new singleplayer game with the current username
+     * Or join a new lobby with the current name
+     * @param actionEvent
+     */
+
     public void newGame(ActionEvent actionEvent) {
         mainCtrl.exitGame();
         if (mainCtrl.singleplayerGame) {
@@ -113,6 +119,10 @@ public class GameEndingCtrl {
         }
     }
 
+    /**
+     * Displays the leaderboard containing the top 10 players on that specific server
+     */
+
     public void showServerLeaderboard(){
         serverleaderboard.setVisible(true);
         leaderboard.setVisible(false); //current leaderboard
@@ -121,7 +131,11 @@ public class GameEndingCtrl {
         backButton.setVisible(true);
 
     }
-    //after adding the entries to the server, we receive the top 10 sorted entries
+
+    /**
+     * This method retrieves the list of the 10 leaderboard entries sorted by score from the server.
+     * It is called after everyone's entries in the current game has been sent to the server to be sorted.
+     */
     public void updateLeaderboard() {
         try {
             entries = mainCtrl.getServerLeaderboards();
@@ -131,6 +145,10 @@ public class GameEndingCtrl {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Method to return to the game ending screen after accessing the server leaderboard
+     */
     public void goBack(){
         serverleaderboard.setVisible(false);
         worldleaderboard.setVisible(false);
@@ -139,7 +157,11 @@ public class GameEndingCtrl {
         backButton.setVisible(false);
 
     }
-    // recieves the leaderboard from the gamestate and add it to the database on the server
+
+    /**
+     * After the game ends, this method sends the entry for the current player the database to be sorted
+     * @param state
+     */
     public void updateServerLeaderboard(GameState state){
         try {
             for (LeaderboardEntry e:state.leaderboard) {
