@@ -67,8 +67,6 @@ public class ServerListener {
                         continue;
                     }
                     List<GameState> gameState = mapper.readValue(response.body(), typeRef);
-                    System.out.println(response.body());
-                    System.out.println(gameState);
                     Platform.runLater(() -> gameState.forEach(this::handler));
                 } catch (IOException e) {
                     e.printStackTrace();

@@ -577,7 +577,14 @@ public class GameService {
                     System.out.println("DOUBLE POINTS POWER UP TOOK PLACE IN SCORING");
                 }
                 if (p.answer != null) {
-                    double pAnswer = Double.parseDouble(p.answer);
+
+                    double pAnswer = 0;
+                    try {
+                        pAnswer = Double.parseDouble(p.answer);
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     double qAnswer = Double.parseDouble(q.answer);
                     double difference = Math.abs(pAnswer - qAnswer);
                     System.out.println("Player with id " + p.id + "has this answer " + pAnswer + " and the question answer is " + q.answer);
