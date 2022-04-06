@@ -2,20 +2,44 @@
     -fx-background-color: #8b57a0;
 }
 
-.button {
-    -fx-text-fill: black;
-    -fx-padding: 10 50 10 50;
-    -fx-font-size: 22px;
-    -fx-background-radius: 999px;
-    -fx-effect: innershadow( gaussian, rgba( 0, 0, 0, 0.5 ), 5, 0, 0, 2 );
-    -fx-background-color: #f2d4ef
-}
-
-.title {
-    -fx-font-size: 30;
+.label {
     -fx-text-fill: white;
 }
 
+.button {
+    -fx-background-radius: 999px;
+    -fx-effect: innershadow( gaussian, rgba( 0, 0, 0, 0.5 ), 5, 0, 0, 2 );
+    -fx-background-color: #f2d4ef;
+}
+
+.activities .column-header,
+.activities .column-header-background .filler {
+    -fx-background-color: #3b315a;
+}
+
+.activities .label {
+    -fx-text-fill: black;
+}
+
+.activities .column-header .label {
+    -fx-text-fill: white;
+}
+
+.activities, .table-row-cell:odd {
+    -fx-background-color: #f2d4ef;
+}
+
+.activities .table-row-cell:even {
+    -fx-background-color: #f5ebf2;
+}
+
+.activities .table-row-cell:selected {
+    -fx-background-color: #00ff00;
+}
+
+.activities .table-row-cell:selected .text {
+    -fx-fill: black;
+}
 
 .input {
     -fx-text-fill: white;
@@ -26,4 +50,8 @@
     -fx-background-color: #673e8b;
     -fx-border-width: 0.5;
     -fx-border-color: black;
+}
+
+.line {
+    -fx-stroke: white;
 }
