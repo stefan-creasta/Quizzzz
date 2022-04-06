@@ -26,7 +26,7 @@
             <Font size="20.0" />
          </font>
       </Button>
-      <Line endX="589.8929443359375" endY="3.814697265625E-6" layoutX="115.0" layoutY="89.0" startX="-100.0" />
+      <Line styleClass="line" endX="589.8929443359375" endY="3.814697265625E-6" layoutX="115.0" layoutY="89.0" startX="-100.0" />
       <TextField fx:id="searchField" layoutX="208.0" layoutY="90.0" prefHeight="36.0" prefWidth="374.0" promptText="search terms" />
       <Button styleClass="button" layoutX="594.0" layoutY="93.0" mnemonicParsing="false" onAction="#search" prefHeight="18.0" prefWidth="112.0" text="Search" textAlignment="CENTER">
          <font>
@@ -44,7 +44,7 @@
          </font>
       </Label>
       <ComboBox fx:id="urlField" editable="true" layoutX="209.0" layoutY="8.0" onAction="#serverUrlChange" prefHeight="36.0" prefWidth="374.0" promptText="http://localhost:8080" />
-      <Line endX="589.8929443359375" endY="3.814697265625E-6" layoutX="115.0" layoutY="52.0" startX="-100.0" />
+      <Line styleClass="line" endX="589.8929443359375" endY="3.814697265625E-6" layoutX="115.0" layoutY="52.0" startX="-100.0" />
       <TextField fx:id="activityField" layoutX="15.0" layoutY="345.0" prefHeight="36.0" prefWidth="350.0" promptText="Activity" />
       <TextField fx:id="wattsField" layoutX="365.0" layoutY="345.0" prefHeight="36.0" prefWidth="150.0" promptText="Watts/Hour" />
       <TextField fx:id="imagePathField" layoutX="515.0" layoutY="345.0" prefHeight="36.0" prefWidth="190.0" promptText="Image Path" />

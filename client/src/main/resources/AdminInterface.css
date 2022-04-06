@@ -51,3 +51,7 @@
     -fx-border-width: 0.5;
     -fx-border-color: black;
 }
+
+.line {
+    -fx-stroke: white;
+}
