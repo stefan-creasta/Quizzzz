@@ -418,7 +418,7 @@ public class GameService {
                         if (game.currentQuestion + 1 < game.questions.size()) {
                         game.progressGame();
                         pausePhase(game);
-                        Thread.sleep(2000);
+                        Thread.sleep(1000);
                         questionPhase(game);
                     } else {
                         endingPhase(game);
