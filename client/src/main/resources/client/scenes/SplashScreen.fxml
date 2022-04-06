@@ -38,12 +38,12 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
          </rowConstraints>
          <children>
-             <Button mnemonicParsing="false" onAction="#adminPanel" prefHeight="64.0" prefWidth="269.0" text="Admin Panel" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM">
+             <Button mnemonicParsing="false" onAction="#adminPanel" prefHeight="64.0" prefWidth="269.0" text="Admin Panel" textAlignment="CENTER" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM">
                  <font>
                      <Font size="20.0" />
                  </font>
              </Button>
-            <Button fx:id="quitButton" mnemonicParsing="false" onAction="#quit" prefHeight="67.0" prefWidth="157.0" text="Quit" textAlignment="CENTER" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM">
+            <Button fx:id="quitButton" mnemonicParsing="false" onAction="#quit" prefHeight="67.0" prefWidth="157.0" text="Quit" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM">
                <font>
                   <Font size="20.0" />
                </font>

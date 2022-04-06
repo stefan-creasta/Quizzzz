@@ -22,7 +22,7 @@
             <children>
                 <Group GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                     <children>
-                        <Button layoutX="123.0" layoutY="256.0" mnemonicParsing="false" onAction="#play" prefHeight="49.0" prefWidth="158.0" text="Play" textAlignment="CENTER">
+                        <Button layoutX="124.0" layoutY="361.0" mnemonicParsing="false" onAction="#play" prefHeight="49.0" prefWidth="158.0" text="Play" textAlignment="CENTER">
                             <font>
                                 <Font size="20.0" />
                             </font>
@@ -33,12 +33,7 @@
                                 <Font size="45.0" />
                             </font>
                         </Label>
-                        <TextField fx:id="serverField" layoutX="377.0" layoutY="300.0" prefHeight="53.0" prefWidth="245.0" promptText="Insert server address" />
-                        <Label fx:id="addressLabel" layoutX="269.0" layoutY="222.0" styleClass="enter-username-label" text="Enter address of server:" textAlignment="CENTER">
-                            <font>
-                                <Font size="45.0" />
-                            </font>
-                        </Label>
+                  <TextField fx:id="serverField" layoutX="39.0" layoutY="272.0" prefHeight="36.0" prefWidth="328.0" promptText="Insert server address..." styleClass="input" />
                     </children>
                 </Group>
             </children>

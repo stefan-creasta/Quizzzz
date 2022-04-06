@@ -41,8 +41,6 @@ public class AddPlayerCtrl {
     private TextField usernameField;
     @FXML
     private TextField serverField;
-    @FXML
-    private Label addressLabel;
 
     @Inject
     public AddPlayerCtrl(MainCtrl mainCtrl, ServerListener serverListener, GameCommunication gameCommunication) {
@@ -67,21 +65,17 @@ public class AddPlayerCtrl {
         Player newPlayer = getPlayer();
         //if the game is singleplayer, then the game can start
         if(mainCtrl.singleplayerGame) {
-
             serverString = "http://localhost:8080";
             mainCtrl.initiateSingleplayerGame(newPlayer);
             mainCtrl.showQuestion();
             serverField.setVisible(true);
-            addressLabel.setVisible(true);
         }
         else {
             serverString = serverField.getText();
             if (mainCtrl.checkUsername(newPlayer.username) && !newPlayer.username.equals("") && newPlayer.username != null) {
                 try {
                     mainCtrl.joinGame(newPlayer.username);
-
                 } catch (WebApplicationException e) {
-
                     var alert = new Alert(Alert.AlertType.ERROR);
                     alert.initModality(Modality.APPLICATION_MODAL);
                     alert.setContentText(e.getMessage());
@@ -113,7 +107,6 @@ public class AddPlayerCtrl {
                 break;
             case ESCAPE:
                 serverField.setVisible(true);
-                addressLabel.setVisible(true);
                 cancel();
                 break;
             default:
@@ -123,7 +116,6 @@ public class AddPlayerCtrl {
 
     public void invisServerField(){
         serverField.setVisible(false);
-        addressLabel.setVisible(false);
     }
 
     public void back(ActionEvent actionEvent) {

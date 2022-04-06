@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.String?>
+<?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
@@ -12,40 +13,140 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" prefHeight="642.0" prefWidth="1000.0" styleClass="main" stylesheets="@../../Question.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.QuestionCtrl">
+<AnchorPane fx:id="root" prefHeight="642.0" prefWidth="1000.0" styleClass="main" stylesheets="@../../Question.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.QuestionCtrl">
    <children>
-      <Label fx:id="questionTitle" alignment="CENTER" layoutX="57.0" layoutY="56.0" prefWidth="300.0" stylesheets="@../../Question.css" text="Question 1" textAlignment="CENTER">
-         <styleClass>
-            <String fx:value="question-title" />
-            <String fx:value="custom-text" />
-         </styleClass>
-      </Label>
-      <Label fx:id="questionText" alignment="CENTER" layoutX="58.0" layoutY="129.0" prefWidth="300.0" stylesheets="@../../Question.css" text="What is the maximum amount of energy that can be spend by a car in a week. You can assume that the car is running non-stop.:33" textAlignment="CENTER" wrapText="true">
-         <styleClass>
-            <String fx:value="question-description" />
-            <String fx:value="custom-text" />
-         </styleClass>
-      </Label>
-      <Button fx:id="answer1" layoutX="80.0" layoutY="370.0" mnemonicParsing="false" onAction="#Answer1Pressed" stylesheets="@../../Question.css" text="Answer 1" />
-      <Button fx:id="answer2" layoutX="291.0" layoutY="370.0" mnemonicParsing="false" onAction="#Answer2Pressed" stylesheets="@../../Question.css" text="Answer 2" />
-      <Button fx:id="answer3" layoutX="501.0" layoutY="370.0" mnemonicParsing="false" onAction="#Answer3Pressed" stylesheets="@../../Question.css" text="Answer 3" />
-      <Button fx:id="submit" layoutX="756.0" layoutY="370.0" mnemonicParsing="false" onAction="#SubmitPressed" stylesheets="@../../Question.css" text="Submit" />
-      <ImageView fx:id="questionImage" fitHeight="241.0" fitWidth="290.0" layoutX="389.0" layoutY="57.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../images/image 2.png" />
-         </image>
-      </ImageView>
-      <BorderPane layoutX="713.0" layoutY="58.0" prefHeight="247.0" prefWidth="253.0" styleClass="powerup-border" />
-      <Button fx:id="doublePoints" layoutX="724.0" layoutY="77.0" mnemonicParsing="false" onAction="#DoublePointsButtonPressed" prefWidth="230.0" stylesheets="@../../Question.css" text="Double points" />
-      <Button fx:id="eliminateWrongAnswer" layoutX="724.0" layoutY="156.0" mnemonicParsing="false" onAction="#EliminateWrongAnswerButtonPressed" prefWidth="230.0" style="-fx-font-size: 16; -fx-padding: 15;" stylesheets="@../../Question.css" text="Eliminate wrong answer">
-         <font>
-            <Font size="8.0" />
-         </font></Button>
-      <Button fx:id="halfTime" layoutX="724.0" layoutY="235.0" mnemonicParsing="false" onAction="#HalfTimeButtonPressed" prefWidth="230.0" stylesheets="@../../Question.css" text="Half time" />
-      <Label layoutX="711.0" layoutY="27.0" styleClass="leaderboard-text" text="Hold Tab to see Leaderboard" textFill="WHITE" />
-      <SplitPane fx:id="allLeaderboard" dividerPositions="0.8652522935779818" layoutX="300.0" layoutY="121.0" orientation="VERTICAL" prefHeight="379.0" prefWidth="488.0" styleClass="allStats">
+      <GridPane layoutX="57.0" layoutY="27.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Group GridPane.columnIndex="2">
+               <children>
+                  <BorderPane layoutX="2.0" layoutY="31.0" prefHeight="247.0" prefWidth="253.0" styleClass="powerup-border" />
+                  <Button fx:id="doublePoints" layoutX="13.0" layoutY="50.0" mnemonicParsing="false" onAction="#DoublePointsButtonPressed" prefWidth="230.0" stylesheets="@../../Question.css" text="Double points" />
+                  <Button fx:id="eliminateWrongAnswer" layoutX="13.0" layoutY="129.0" mnemonicParsing="false" onAction="#EliminateWrongAnswerButtonPressed" prefWidth="230.0" style="-fx-font-size: 16; -fx-padding: 15;" stylesheets="@../../Question.css" text="Eliminate wrong answer">
+                     <font>
+                        <Font size="8.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="halfTime" layoutX="13.0" layoutY="208.0" mnemonicParsing="false" onAction="#HalfTimeButtonPressed" prefWidth="230.0" stylesheets="@../../Question.css" text="Half time" />
+                  <Label styleClass="leaderboard-text" text="Hold Tab to see Leaderboard" textFill="WHITE" />
+               </children>
+            </Group>
+            <Group>
+               <children>
+                  <Label fx:id="questionTitle" alignment="CENTER" prefWidth="300.0" stylesheets="@../../Question.css" text="Question 1" textAlignment="CENTER">
+                     <styleClass>
+                        <String fx:value="question-title" />
+                        <String fx:value="custom-text" />
+                     </styleClass>
+                  </Label>
+                  <Label fx:id="questionText" alignment="CENTER" layoutX="1.0" layoutY="73.0" prefWidth="300.0" stylesheets="@../../Question.css" text="What is the maximum amount of energy that can be spend by a car in a week. You can assume that the car is running non-stop.:33" textAlignment="CENTER" wrapText="true">
+                     <styleClass>
+                        <String fx:value="question-description" />
+                        <String fx:value="custom-text" />
+                     </styleClass>
+                  </Label>
+               </children>
+            </Group>
+            <ImageView fx:id="questionImage" fitHeight="241.0" fitWidth="290.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
+               <image>
+                  <Image url="@../../images/image 2.png" />
+               </image>
+            </ImageView>
+         </children>
+      </GridPane>
+      <GridPane alignment="CENTER" layoutY="320.0" prefHeight="171.0" prefWidth="577.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0">
+         <columnConstraints>
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="52.07769775390625" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="62.769927978515625" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="69.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Button fx:id="answer1" contentDisplay="CENTER" mnemonicParsing="false" onAction="#Answer1Pressed" stylesheets="@../../Question.css" text="Answer 1 123123" GridPane.rowIndex="2" />
+            <Button fx:id="answer2" contentDisplay="CENTER" mnemonicParsing="false" onAction="#Answer2Pressed" stylesheets="@../../Question.css" text="Answer 2" GridPane.rowIndex="1" />
+            <Button fx:id="answer3" contentDisplay="CENTER" mnemonicParsing="false" onAction="#Answer3Pressed" stylesheets="@../../Question.css" text="Answer 3" />
+            <Group GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+         </children>
+      </GridPane>
+      <Button fx:id="submit" layoutX="752.0" layoutY="391.0" mnemonicParsing="false" onAction="#SubmitPressed" stylesheets="@../../Question.css" text="Submit" AnchorPane.rightAnchor="40.0" />
+      <TextField fx:id="answerTextBox" layoutX="338.0" layoutY="352.0" prefHeight="70.0" prefWidth="243.0" promptText="Insert answer" styleClass="input" visible="false" />
+      <TableView fx:id="emotes" layoutX="771.0" layoutY="440.0" prefHeight="201.0" prefWidth="230.0" styleClass="emotes" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <columns>
+          <TableColumn fx:id="emotesUsernameColumn" editable="false" prefWidth="114.0" styleClass="username-column" text="Username" />
+          <TableColumn fx:id="emotesEmoteColumn" editable="false" prefWidth="85.5" styleClass="emote-column" text="Emote" />
+        </columns>
+      </TableView>
+      <Group layoutX="21.0" layoutY="443.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0">
+         <children>
+            <Button fx:id="emoteAngry" mnemonicParsing="false" onAction="#AngryEmotePressed" prefHeight="38.0" prefWidth="70.0" style="-fx-padding: 0;" text="Angry">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Button>
+            <Button fx:id="emoteLOL" layoutX="75.0" mnemonicParsing="false" onAction="#LOLEmotePressed" prefHeight="38.0" prefWidth="70.0" style="-fx-padding: 0;" text="LOL">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Button>
+            <Button fx:id="emoteSweat" layoutY="58.0" mnemonicParsing="false" onAction="#SweatEmotePressed" prefHeight="38.0" prefWidth="70.0" style="-fx-padding: 0;" text="Sweat">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Button>
+            <Button fx:id="clapEmote" layoutX="74.0" layoutY="58.0" mnemonicParsing="false" onAction="#ClapEmotePressed" prefHeight="38.0" prefWidth="70.0" style="-fx-padding: 0;" text="Clap">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Button>
+            <Button fx:id="emoteWin" layoutX="1.0" layoutY="115.0" mnemonicParsing="false" onAction="#WinEmotePressed" prefHeight="38.0" prefWidth="70.0" style="-fx-padding: 0;" text="Win">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Button>
+         </children>
+      </Group>
+      <GridPane layoutX="250.0" layoutY="510.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="250.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Group GridPane.halignment="CENTER">
+               <children>
+                  <Label fx:id="questionTime" layoutX="118.0" layoutY="63.0" styleClass="time-left" text="Time left: 7 seconds" />
+                  <ProgressBar fx:id="timeBar" prefHeight="38.0" prefWidth="508.0" progress="1.0" />
+               </children>
+            </Group>
+         </children>
+      </GridPane>
+      <GridPane layoutX="243.0" layoutY="472.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Label fx:id="scoreLabel" alignment="CENTER" prefHeight="118.0" prefWidth="521.0" styleClass="scored-points" text="You scored x points" GridPane.halignment="CENTER" />
+         </children>
+      </GridPane>
+      <SplitPane fx:id="allLeaderboard" dividerPositions="0.8652522935779818" layoutX="300.0" layoutY="121.0" orientation="VERTICAL" prefHeight="379.0" prefWidth="488.0" styleClass="allStats" visible="false">
         <items>
             <TableView fx:id="leaderboard" prefHeight="266.0" prefWidth="478.0" styleClass="leaderboard">
               <columns>
@@ -75,40 +176,5 @@
             </AnchorPane>
         </items>
       </SplitPane>
-      <Button fx:id="emoteAngry" layoutX="21.0" layoutY="443.0" mnemonicParsing="false" onAction="#AngryEmotePressed" prefHeight="38.0" prefWidth="70.0" style="-fx-padding: 0;" text="Angry">
-         <font>
-            <Font size="12.0" />
-         </font>
-      </Button>
-      <TableView fx:id="emotes" layoutX="771.0" layoutY="440.0" prefHeight="201.0" prefWidth="230.0" styleClass="emotes">
-        <columns>
-          <TableColumn fx:id="emotesUsernameColumn" editable="false" prefWidth="114.0" styleClass="username-column" text="Username" />
-          <TableColumn fx:id="emotesEmoteColumn" editable="false" prefWidth="85.5" styleClass="emote-column" text="Emote" />
-        </columns>
-      </TableView>
-      <Button fx:id="emoteLOL" layoutX="96.0" layoutY="443.0" mnemonicParsing="false" onAction="#LOLEmotePressed" prefHeight="38.0" prefWidth="70.0" style="-fx-padding: 0;" text="LOL">
-         <font>
-            <Font size="12.0" />
-         </font>
-      </Button>
-      <Button fx:id="emoteSweat" layoutX="21.0" layoutY="501.0" mnemonicParsing="false" onAction="#SweatEmotePressed" prefHeight="38.0" prefWidth="70.0" style="-fx-padding: 0;" text="Sweat">
-         <font>
-            <Font size="12.0" />
-         </font>
-      </Button>
-      <Button fx:id="clapEmote" layoutX="95.0" layoutY="501.0" mnemonicParsing="false" onAction="#ClapEmotePressed" prefHeight="38.0" prefWidth="70.0" style="-fx-padding: 0;" text="Clap">
-         <font>
-            <Font size="12.0" />
-         </font>
-      </Button>
-      <Button fx:id="emoteWin" layoutX="22.0" layoutY="558.0" mnemonicParsing="false" onAction="#WinEmotePressed" prefHeight="38.0" prefWidth="70.0" style="-fx-padding: 0;" text="Win">
-         <font>
-            <Font size="12.0" />
-         </font>
-      </Button>
-      <TextField fx:id="answerTextBox" layoutX="338.0" layoutY="352.0" prefHeight="70.0" prefWidth="243.0" promptText="Insert answer" />
-      <ProgressBar fx:id="timeBar" layoutX="250.0" layoutY="464.0" prefHeight="38.0" prefWidth="508.0" progress="1.0" />
-      <Label fx:id="questionTime" layoutX="372.0" layoutY="527.0" styleClass="time-left" text="Time left: 7 seconds" />
-      <Label fx:id="scoreLabel" layoutX="240.0" layoutY="471.0" prefHeight="118.0" prefWidth="521.0" styleClass="time-left" text="You scored x points" />
    </children>
 </AnchorPane>

@@ -173,6 +173,7 @@ public class QuestionCtrl {
                 }else{
                     answerTextBox.clear();
                     answerTextBox.setVisible(true);
+                    answerTextBox.setDisable(false);
                 }
                 
                 timeline = new Timeline( new KeyFrame(Duration.millis(1), e ->{
@@ -518,6 +519,7 @@ public class QuestionCtrl {
                 answer3.setVisible(false);
                 clearAnswer();
                 answerTextBox.setVisible(true);
+                answerTextBox.setDisable(false);
             }
         }
         catch(Exception exc){
@@ -534,6 +536,7 @@ public class QuestionCtrl {
     public void markAnswer(String correct, String ofplayer, String type) {
         if (type.equals("3")) {
             answerTextBox.setText(correct);
+            answerTextBox.setDisable(true);
         } else {
             for (Button answer : List.of(answer1, answer2, answer3)) {
                 answer.getStyleClass().removeAll("wrong", "right", "default");
