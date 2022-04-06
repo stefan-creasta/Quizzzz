@@ -1,0 +1,12 @@
+commons.LeaderboardEntry@100d0218[
+  date=Tue Apr 05 16:02:10 CEST 2022
+  rank=-1
+  score=1231
+  username=abc
+]
+commons.LeaderboardEntry@3d0352[
+  date=Tue Apr 05 16:02:10 CEST 2022
+  rank=-1
+  score=11231
+  username=abcd
+]

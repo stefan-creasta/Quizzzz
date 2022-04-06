@@ -68,4 +68,5 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
     public String toString() {
         return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
     }
+
 }

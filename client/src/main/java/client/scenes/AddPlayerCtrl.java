@@ -20,6 +20,7 @@ import client.Communication.ServerListener;
 import com.google.inject.Inject;
 import commons.Player;
 import jakarta.ws.rs.WebApplicationException;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
@@ -33,36 +34,47 @@ public class AddPlayerCtrl {
     private final MainCtrl mainCtrl;
     private final ServerListener serverListener;
     private final GameCommunication gameCommunication;
+    public String serverString = "not_initialized";
 
     @FXML
     private TextField usernameField;
+    @FXML
+    private TextField serverField;
 
     @Inject
-    public AddPlayerCtrl( MainCtrl mainCtrl, ServerListener serverListener, GameCommunication gameCommunication) {
+    public AddPlayerCtrl(MainCtrl mainCtrl, ServerListener serverListener, GameCommunication gameCommunication) {
         this.mainCtrl = mainCtrl;
         this.serverListener = serverListener;
         this.gameCommunication = gameCommunication;
     }
 
+    /**
+     * Gets called when a player decides to go back to the main screen by pressing ESCAPE or a button that will lead
+     * there, that is not implemented yet.
+     * @throws IOException can be thrown
+     * @throws InterruptedException can be thrown
+     */
     public void cancel() throws IOException, InterruptedException {
         clearFields();
-        mainCtrl.showLobby();
+        mainCtrl.showSplashScreen();
     }
 
     public void play() throws IOException, InterruptedException {
+        // here instead of in the multplayer clause
         Player newPlayer = getPlayer();
         //if the game is singleplayer, then the game can start
-        if(mainCtrl.singleplayerGame == true) {
+        if(mainCtrl.singleplayerGame) {
+            serverString = "http://localhost:8080";
             mainCtrl.initiateSingleplayerGame(newPlayer);
             mainCtrl.showQuestion();
+            serverField.setVisible(true);
         }
         else {
-            if (mainCtrl.checkUsername(newPlayer.username) == true) {
+            serverString = serverField.getText();
+            if (mainCtrl.checkUsername(newPlayer.username) && !newPlayer.username.equals("") && newPlayer.username != null) {
                 try {
                     mainCtrl.joinGame(newPlayer.username);
-
                 } catch (WebApplicationException e) {
-
                     var alert = new Alert(Alert.AlertType.ERROR);
                     alert.initModality(Modality.APPLICATION_MODAL);
                     alert.setContentText(e.getMessage());
@@ -70,6 +82,9 @@ public class AddPlayerCtrl {
                     return;
                 }
                 mainCtrl.showLobby();
+            } else {
+                Alert usernameAlert = new Alert(Alert.AlertType.ERROR, "Username or server input is not correct");
+                usernameAlert.show();
             }
         }
     }
@@ -90,10 +105,19 @@ public class AddPlayerCtrl {
                 play();
                 break;
             case ESCAPE:
+                serverField.setVisible(true);
                 cancel();
                 break;
             default:
                 break;
         }
+    }
+
+    public void invisServerField(){
+        serverField.setVisible(false);
+    }
+
+    public void back(ActionEvent actionEvent) {
+        mainCtrl.showSplashScreen();
     }
 }

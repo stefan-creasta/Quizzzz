@@ -32,7 +32,7 @@ public class AnswerCommunication {
      * @throws IOException can get thrown
      * @throws InterruptedException can get thrown
      */
-    public static void sendAnswer(String answer, GameState gameState) throws IOException, InterruptedException {
+    public static void sendAnswer(String answer, GameState gameState, String serverString) throws IOException, InterruptedException {
 
         PlayerAnswer ans = new PlayerAnswer(answer, gameState.gameId, gameState.playerId);
 
@@ -43,7 +43,7 @@ public class AnswerCommunication {
         System.out.println("\nAnswer sent to server:\n" + answer);
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/api/answer"))
+                .uri(URI.create(serverString + "/api/answer"))
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
         client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -56,9 +56,9 @@ public class AnswerCommunication {
      * @throws IOException can get thrown
      * @throws InterruptedException can get thrown
      */
-    public static Question getQuestion(long gameId) throws IOException, InterruptedException {
+    public static Question getQuestion(long gameId, String serverString) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/api/game/"+gameId))
+                .uri(URI.create(serverString + "/api/game/"+gameId))
                 .GET()
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -71,7 +71,7 @@ public class AnswerCommunication {
      * @throws IOException
      * @throws InterruptedException
      */
-    public static void sendEmote(Emote emote) throws IOException, InterruptedException {
+    public static void sendEmote(Emote emote, String serverString) throws IOException, InterruptedException {
         var objectMapper = new ObjectMapper();
         String requestBody = objectMapper
                 .writeValueAsString(emote);
@@ -79,7 +79,7 @@ public class AnswerCommunication {
         System.out.println("\nEmote sent to server:\n" + emote.type);
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/api/answer/emote"))
+                .uri(URI.create(serverString + "/api/answer/emote"))
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
         client.send(request, HttpResponse.BodyHandlers.ofString());

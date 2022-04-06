@@ -43,8 +43,6 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
 
-        var overview = FXML.load(QuoteOverviewCtrl.class, "client", "scenes", "QuoteOverview.fxml");
-        var add = FXML.load(AddQuoteCtrl.class, "client", "scenes", "AddQuote.fxml");
         var timer = FXML.load(CountdownTimer.class,"client","scenes","Timer.fxml");
 
         var question = FXML.load(QuestionCtrl.class, "client", "scenes", "Question.fxml");
@@ -60,7 +58,8 @@ public class Main extends Application {
         var questionPause = FXML.load(QuestionPauseCtrl.class, "client", "scenes", "QuestionPause.fxml");
 
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        mainCtrl.initialize(primaryStage, overview, add,  question, timer, lobby, player, adminInterface, gameEnding, gameCommunication, serverListener, splashScreen, questionPause);
+
+        mainCtrl.initialize(primaryStage, question, timer, lobby, player, adminInterface, gameEnding, gameCommunication, serverListener, splashScreen, questionPause);
 
         this.serverListener = serverListener;
     }

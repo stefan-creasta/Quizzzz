@@ -1,0 +1,28 @@
+.main {
+    -fx-background-color: #8b57a0;
+}
+
+.title {
+    -fx-font-size: 50px;
+    -fx-text-fill: white;
+    -fx-font-style: italic;
+    -fx-font-weight: 700;
+    -fx-font-family: Arial;
+}
+
+.subtitle {
+    -fx-font-size: 30px;
+    -fx-text-fill: white;
+    -fx-font-style: italic;
+    -fx-font-family: Arial;
+    -fx-font-weight: 500;
+}
+
+.button {
+    -fx-text-fill: black;
+    -fx-padding: 10;
+    -fx-font-size: 30px;
+    -fx-background-radius: 10px;
+    -fx-effect: innershadow( gaussian, rgba( 0, 0, 0, 0.5 ), 5, 0, 0, 2 );
+    -fx-background-color: #f2d4ef;
+}
