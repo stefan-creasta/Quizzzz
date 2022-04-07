@@ -568,6 +568,10 @@ public class QuestionCtrl {
             button.setGraphic(view);
         }
         emotes.setPlaceholder(new Label(""));
+
+        halfTime.setDisable(false);
+        doublePoints.setDisable(false);
+        eliminateWrongAnswer.setDisable(false);
     }
 
     /**
