@@ -74,28 +74,5 @@ public class LeaderboardHelper {
             return displayedLeaderboard;
         }
     }
-    public List<LeaderboardEntry> prepareLeaderboard(List<LeaderboardEntry> entries) {
-        for (int i = 0; i < entries.size(); i++) {
-            entries.get(i).rank = i + 1;
-        }
-
-        if (topN == -1) {
-            return new LinkedList<>(entries);
-        }
-        else {
-            List<LeaderboardEntry> displayedLeaderboard = new LinkedList<>(
-                    entries.subList(0, Math.min(entries.size(), topN))
-            );
-            LeaderboardEntry localPlayerEntry = entries.stream().findFirst().get();
-
-            if (!displayedLeaderboard.contains(localPlayerEntry)) {
-                if (entries.indexOf(localPlayerEntry) != topN)
-                    //null is displayed as "..."
-                    displayedLeaderboard.add(null);
-                displayedLeaderboard.add(localPlayerEntry);
-            }
-            return displayedLeaderboard;
-        }
-    }
 
 }
