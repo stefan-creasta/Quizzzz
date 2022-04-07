@@ -64,7 +64,7 @@ The server can also import an activity bank at startup if it is configured so.
 ##### From the command line
 ```
 cd [project root]
-.\gradlew build #if you haven't build yet
+.\gradlew build #if you haven't built yet
 java -jar .\server\build\libs\server-0.0.1-SNAPSHOT.jar --activitiesSource=activity-bank
 # or
 java -jar .\server\build\libs\server-0.0.1-SNAPSHOT.jar --server.port=8080 --activitiesSource=activity-bank
