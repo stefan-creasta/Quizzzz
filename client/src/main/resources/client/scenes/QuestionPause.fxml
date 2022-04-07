@@ -2,7 +2,7 @@
 
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="root" prefHeight="642.0" prefWidth="1000.0" styleClass="main" stylesheets="/QuestionPause.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.QuestionPauseCtrl">
+<AnchorPane fx:id="root" prefHeight="700.0" prefWidth="1200.0" styleClass="main" stylesheets="/QuestionPause.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.QuestionPauseCtrl">
    <children>
    </children>
 </AnchorPane>

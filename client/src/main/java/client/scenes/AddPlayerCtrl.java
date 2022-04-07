@@ -120,4 +120,9 @@ public class AddPlayerCtrl {
     public void back(ActionEvent actionEvent) {
         mainCtrl.showSplashScreen();
     }
+
+    public void setServerUrl(String s) {
+        serverString = s;
+        serverField.setText(s);
+    }
 }

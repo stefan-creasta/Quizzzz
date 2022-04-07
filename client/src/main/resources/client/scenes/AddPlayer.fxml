@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" styleClass="main" stylesheets="/AddPlayer.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AddPlayerCtrl">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" styleClass="main" stylesheets="/AddPlayer.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AddPlayerCtrl">
     <children>
         <GridPane layoutX="300.0" layoutY="147.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <columnConstraints>
@@ -22,18 +22,18 @@
             <children>
                 <Group GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                     <children>
-                        <Button layoutX="124.0" layoutY="361.0" mnemonicParsing="false" onAction="#play" prefHeight="49.0" prefWidth="158.0" text="Play" textAlignment="CENTER">
+                        <Button layoutX="135.0" layoutY="367.0" mnemonicParsing="false" onAction="#play" prefHeight="49.0" prefWidth="158.0" text="Play" textAlignment="CENTER">
                             <font>
                                 <Font size="20.0" />
                             </font>
                         </Button>
-                        <TextField fx:id="usernameField" layoutX="43.0" layoutY="172.0" prefHeight="36.0" prefWidth="328.0" promptText="Insert username..." styleClass="input" />
+                        <TextField fx:id="usernameField" layoutX="50.0" layoutY="173.0" prefHeight="36.0" prefWidth="328.0" promptText="Insert username..." styleClass="input" />
                         <Label layoutX="4.0" layoutY="65.0" styleClass="enter-username-label" text="Enter your username:">
                             <font>
                                 <Font size="45.0" />
                             </font>
                         </Label>
-                  <TextField fx:id="serverField" layoutX="39.0" layoutY="272.0" prefHeight="36.0" prefWidth="328.0" promptText="Insert server address..." styleClass="input" />
+                  <TextField fx:id="serverField" layoutX="50.0" layoutY="272.0" prefHeight="36.0" prefWidth="328.0" promptText="Insert server address..." styleClass="input" />
                     </children>
                 </Group>
             </children>

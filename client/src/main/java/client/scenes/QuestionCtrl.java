@@ -180,11 +180,7 @@ public class QuestionCtrl {
         this.gameState = gameState;
         switch (gameState.instruction) {
             case "questionPhase":
-                if(mainCtrl.singleplayerGame){
-                    updateSingleplayerLeaderboards();
-                }else {
-                    updateMultilayerLeaderboards();
-                }
+                updateMultilayerLeaderboards();
                 timeBar.setVisible(true);
                 questionTime.setVisible(true);
                 scoreLabel.setVisible(false);
@@ -202,7 +198,7 @@ public class QuestionCtrl {
                 if(halfUsed){
                     halfTime.setDisable(true);
                 }
-                this.questionTitle.setText("Question " + questionNumber++);
+                this.questionTitle.setText("Question " + (gameState.currentQuestion + 1));
                 this.questionText.setText(gameState.question.question);
 
                 if (!gameState.question.type.equals("3")) {
@@ -237,6 +233,10 @@ public class QuestionCtrl {
                 if (mainCtrl.singleplayerGame) {
                     emotes.setVisible(false);
                     emoteGroup.setVisible(false);
+                    allLeaderboard.setMaxHeight(143);
+                }
+                else {
+                    allLeaderboard.setMaxHeight(380);
                 }
 
                 answer1.setDisable(false);
@@ -266,11 +266,7 @@ public class QuestionCtrl {
                 questionTime.setVisible(false);
                 scoreLabel.setText("You received: " + String.format("%.2f", gameState.thisScored * 10) + " points!");
                 scoreLabel.setVisible(true);
-                if(mainCtrl.singleplayerGame){
-                    updateSingleplayerLeaderboards();
-                }else {
-                    updateMultilayerLeaderboards();
-                }
+                updateMultilayerLeaderboards();
         }
 
 
@@ -568,6 +564,10 @@ public class QuestionCtrl {
             button.setGraphic(view);
         }
         emotes.setPlaceholder(new Label(""));
+
+        halfTime.setDisable(false);
+        doublePoints.setDisable(false);
+        eliminateWrongAnswer.setDisable(false);
     }
 
     /**
@@ -682,9 +682,8 @@ public class QuestionCtrl {
 
             ObservableList<LeaderboardEntry> entries = FXCollections.observableList(leaderboardEntries);
             leaderboard.setItems(entries);
-            updateCurrentPlayer(gameState);
+            //updateCurrentPlayer(gameState);
             allLeaderboard.setVisible(true);
-
         }
     }
 

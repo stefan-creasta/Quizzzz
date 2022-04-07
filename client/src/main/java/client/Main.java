@@ -51,7 +51,7 @@ public class Main extends Application {
 
         var adminInterface = FXML.load(AdminInterfaceCtrl.class, "client", "scenes", "AdminInterface.fxml");
 
-        var serverListener = INJECTOR.getInstance(ServerListener.class);
+                var serverListener = INJECTOR.getInstance(ServerListener.class);
         var gameCommunication = INJECTOR.getInstance(GameCommunication.class);
         var splashScreen = FXML.load(SplashScreenCtrl.class, "client", "scenes", "SplashScreen.fxml");
         var gameEnding = FXML.load(GameEndingCtrl.class, "client", "scenes", "GameEnding.fxml");

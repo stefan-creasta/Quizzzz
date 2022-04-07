@@ -121,6 +121,8 @@ public class MainCtrl {
 
         readServerUrls();
 
+        if (!serverUrls.isEmpty()) playerCtrl.setServerUrl(serverUrls.get(serverUrls.size() - 1));
+
         singlePlayerUtils = new SinglePlayerUtils();
         singlePlayerUtils.readLeaderboardInGame();
 
@@ -162,6 +164,8 @@ public class MainCtrl {
         }
 
         if(flag) {
+            if (!serverUrls.contains(playerCtrl.serverString))
+                saveServerUrl(playerCtrl.serverString);
             return gameCommunication.checkUsername(gameId, username, playerCtrl.serverString);
         }else{
             return false;

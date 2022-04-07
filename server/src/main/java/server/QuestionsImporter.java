@@ -86,7 +86,7 @@ public class QuestionsImporter implements ApplicationRunner {
                     wrongAnswer2 = String.format("%.0f", factors.get((r1+p+1)%12) * consumption_in_wh);
                     imageRelativeURI = URI.create(image_path.replace(" ", "%20"));
                     imageURL = imageURIRoot.resolve(imageRelativeURI).toURL().toString().replace("http://localhost:8080/images/", "images/");
-                    q = new Question(id, title,answer,wrongAnswer1,wrongAnswer2, 1 + "");
+                    q = new Question(id, "How much energy (in kW) does it take: '" + title + "'",answer,wrongAnswer1,wrongAnswer2, 1 + "");
                     q.questionImage = imageURL;
                     break;
                 case 2:// Case for 'What requires more energy?'
@@ -124,7 +124,7 @@ public class QuestionsImporter implements ApplicationRunner {
                     answer = String.format("%.0f", consumption_in_wh);
                     imageRelativeURI = URI.create(image_path.replace(" ", "%20"));
                     imageURL = imageURIRoot.resolve(imageRelativeURI).toURL().toString().replace("http://localhost:8080/images/", "images/");
-                    q = new Question(id, title, answer,"0","0","3");
+                    q = new Question(id, "How much energy (in kW) does it take: '" + title + "'", answer,"0","0","3");
                     q.questionImage = imageURL;
                     break;
             }
