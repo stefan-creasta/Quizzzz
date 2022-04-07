@@ -165,6 +165,8 @@ public class QuestionCtrl {
 
     boolean enableEliminateLater = false;
 
+    boolean enableHalfLater = false;
+
 
     @Inject
     public QuestionCtrl(MainCtrl mainCtrl) {
@@ -184,6 +186,10 @@ public class QuestionCtrl {
                 if(enableEliminateLater==true){//connected with ddisabling eliminateWrongAnswer in an open ended question
                     enableEliminateLater = false;
                     eliminateWrongAnswer.setDisable(false);
+                }
+                if(enableHalfLater==true){
+                    enableHalfLater = false;
+                    halfTime.setDisable(false);
                 }
                 selectedAnswer = null;
                 updateMultilayerLeaderboards();
@@ -269,6 +275,11 @@ public class QuestionCtrl {
 
                 break;
             case "halfTimePowerUp":
+                if(!halfTime.isDisable()){
+                    halfTime.setDisable(true);
+                    enableHalfLater = true;
+                }
+
                 timeline = new Timeline(new KeyFrame(Duration.millis(1), e -> {
                     double timeToDisplay = 10000 - (new Date().getTime() - gameState.timeOfReceival);
                     if (timeToDisplay < 0) {
