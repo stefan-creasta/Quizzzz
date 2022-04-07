@@ -328,7 +328,7 @@ public class QuestionCtrl {
      * Gets called when the submit answer button is pressed
      * Sends the answer to the server, together with the gameState
      */
-    public void SubmitPressed(ActionEvent actionEvent) throws IOException, InterruptedException {
+    public void SubmitPressed(ActionEvent actionEvent) throws IOException, InterruptedException{
         if(answerTextBox.isVisible()&&(answerTextBox.getText()==null||answerTextBox.getText().equals(""))) return;//if open ended and no answer, do not submit
         if((answer1.isVisible()||answer2.isVisible()||answer3.isVisible())&&selectedAnswer==null) return;
 
@@ -506,11 +506,15 @@ public class QuestionCtrl {
     }
 
     @FXML
-    void KeyPressed(KeyEvent event) {
+    void KeyPressed(KeyEvent event) throws IOException, InterruptedException {
         System.out.println(event.getCode() + " was pressed.");
         switch (event.getCode()) {
             case TAB:
                 showLeaderboard();
+                break;
+            case ENTER:
+                SubmitPressed(null);
+                break;
         }
     }
 
@@ -528,7 +532,15 @@ public class QuestionCtrl {
         assert questionText != null : "fx:id=\"questionText\" was not injected: check your FXML file 'Question.fxml'.";
         assert questionTitle != null : "fx:id=\"questionTitle\" was not injected: check your FXML file 'Question.fxml'.";
 
-        root.addEventFilter(KeyEvent.KEY_PRESSED, this::KeyPressed);
+        root.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            try {
+                KeyPressed(event);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
         root.addEventFilter(KeyEvent.KEY_RELEASED, this::KeyReleased);
 
         timer = new Timer(0, 5);
