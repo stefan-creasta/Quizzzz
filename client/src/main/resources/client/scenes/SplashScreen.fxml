@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="700.0" prefWidth="1200.0" styleClass="main" stylesheets="/Splashscreen.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.SplashScreenCtrl">
+<AnchorPane prefHeight="700.0" prefWidth="1200.0" styleClass="main" stylesheets="/Splashscreen.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.SplashScreenCtrl">
    <children>
       <GridPane alignment="CENTER" AnchorPane.bottomAnchor="150.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -43,7 +43,7 @@
                      <Font size="20.0" />
                  </font>
              </Button>
-            <Button fx:id="quitButton" mnemonicParsing="false" onAction="#quit" prefHeight="67.0" prefWidth="157.0" text="Quit" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM">
+            <Button fx:id="quitButton" mnemonicParsing="false" onAction="#exitGame" prefHeight="67.0" prefWidth="157.0" text="Quit" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM">
                <font>
                   <Font size="20.0" />
                </font>
