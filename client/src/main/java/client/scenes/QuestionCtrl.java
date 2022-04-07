@@ -202,7 +202,7 @@ public class QuestionCtrl {
                 if(halfUsed){
                     halfTime.setDisable(true);
                 }
-                this.questionTitle.setText("Question " + questionNumber++);
+                this.questionTitle.setText("Question " + (gameState.currentQuestion + 1));
                 this.questionText.setText(gameState.question.question);
 
                 if (!gameState.question.type.equals("3")) {

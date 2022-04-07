@@ -21,6 +21,8 @@ public class GameState {
     public String playerAnswer;
     public List<LeaderboardEntry> leaderboard;
 
+    public int currentQuestion;
+
     public List<Emote> emotes;
 
     public double timeToAnswer;//time it took them to answer in milliseconds
@@ -44,6 +46,7 @@ public class GameState {
         timeOfReceival = -1;
         timeToAnswer = -1;
         instruction = "noInstruction";
+        this.currentQuestion = game.currentQuestion;
 
         if (player != null) setPlayer(player);
 
