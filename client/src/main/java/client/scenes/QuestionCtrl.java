@@ -183,11 +183,11 @@ public class QuestionCtrl {
         switch (gameState.instruction) {
             case "questionPhase":
                 isSubmitted = false;
-                if(enableEliminateLater==true){//connected with ddisabling eliminateWrongAnswer in an open ended question
+                if(enableEliminateLater){//connected with disabling eliminateWrongAnswer in an open ended question
                     enableEliminateLater = false;
                     eliminateWrongAnswer.setDisable(false);
                 }
-                if(enableHalfLater==true){
+                if(enableHalfLater&& !mainCtrl.singleplayerGame){//connected with disabling halfTime power up in a multiplayer game once its already been used
                     enableHalfLater = false;
                     halfTime.setDisable(false);
                 }
@@ -212,7 +212,11 @@ public class QuestionCtrl {
                 }
                 this.questionTitle.setText("Question " + (gameState.currentQuestion + 1));
                 if(gameState.currentQuestion + 1==1){//first question
-                    halfTime.setDisable(false);
+                    if(mainCtrl.singleplayerGame){
+                        halfTime.setDisable(true);
+                    }else{
+                        halfTime.setDisable(false);
+                    }
                     eliminateWrongAnswer.setDisable(false);
                     doublePoints.setDisable(false);
                 }
@@ -243,6 +247,10 @@ public class QuestionCtrl {
                     if (timeToDisplay < 0) {
                         questionTime.setText("Time left: 0.000 seconds");
                         timeBar.setProgress(0);
+                        submit.setDisable(true);
+                        answer1.setDisable(true);
+                        answer2.setDisable(true);
+                        answer3.setDisable(true);
                     } else {
                         questionTime.setText("Time left: " + String.format("%.3f", timeToDisplay / 1000.0) + " seconds");
                         timeBar.setProgress(timeToDisplay / 10000.0);
@@ -623,9 +631,6 @@ public class QuestionCtrl {
         }
         emotes.setPlaceholder(new Label(""));
 
-        halfTime.setDisable(false);
-        doublePoints.setDisable(false);
-        eliminateWrongAnswer.setDisable(false);
     }
 
     /**
