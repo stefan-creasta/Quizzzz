@@ -436,6 +436,7 @@ public class QuestionCtrl {
      * up is used and all players are alerted.
      */
     public void DoublePointsButtonPressed(ActionEvent event) throws IOException, InterruptedException {
+        if(gameState.stage== GameState.Stage.INTERVAL) return;
         doubleUsed = true;
         doublePoints.setDisable(true);
 
@@ -461,6 +462,7 @@ public class QuestionCtrl {
      * and the wrong answer button is made invisible and inaccessible. Also other players are alerted.
      */
     void EliminateWrongAnswerButtonPressed(ActionEvent event) throws IOException, InterruptedException {
+        if(gameState.stage== GameState.Stage.INTERVAL) return;
         eliminateUsed = true;
         eliminateWrongAnswer.setDisable(true);
         //TODO call function that makes button different shade to indicate it has been used
@@ -498,6 +500,7 @@ public class QuestionCtrl {
      * and the time of all other players is halved.
      */
     void HalfTimeButtonPressed(ActionEvent event) throws IOException, InterruptedException {
+        if(gameState.stage== GameState.Stage.INTERVAL) return;
         halfUsed = true;
         halfTime.setDisable(true);
         //TODO call function that makes button different shade to indicate it has been used
