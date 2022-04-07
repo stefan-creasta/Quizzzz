@@ -198,7 +198,7 @@ public class GameService {
                 List<Player> players = g.players;
                 for(Player p:players){
                     if(p.id!=playerID){//sends it to everyone except the player using the power up
-                        GameState gState = g.getState();
+                        GameState gState = g.getState(p);
                         gState.timeOfReceival = p.timeOfReceival;
                         double toReduce = 0.5;//alter percentages if you want to by changing the double
                         gState.timeOfReceival = gState.timeOfReceival - (10000 - (new Date().getTime() - gState.timeOfReceival))*toReduce;
@@ -626,7 +626,7 @@ public class GameService {
                 System.out.println("Player with id " + p.id + " won that many points - " + toAdd);
             }
             p.answer = null;
-            GameState state = g.getState();
+            GameState state = g.getState(p);
             state.instruction = "score";
             state.thisScored = finalAdd;
             sendToPlayer(p.id, state);
