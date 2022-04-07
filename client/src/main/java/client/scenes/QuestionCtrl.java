@@ -180,11 +180,8 @@ public class QuestionCtrl {
         this.gameState = gameState;
         switch (gameState.instruction) {
             case "questionPhase":
-                if(mainCtrl.singleplayerGame){
-                    updateSingleplayerLeaderboards();
-                }else {
-                    updateMultilayerLeaderboards();
-                }
+                updateMultilayerLeaderboards();
+
                 timeBar.setVisible(true);
                 questionTime.setVisible(true);
                 scoreLabel.setVisible(false);
@@ -266,11 +263,7 @@ public class QuestionCtrl {
                 questionTime.setVisible(false);
                 scoreLabel.setText("You received: " + String.format("%.2f", gameState.thisScored * 10) + " points!");
                 scoreLabel.setVisible(true);
-                if(mainCtrl.singleplayerGame){
-                    updateSingleplayerLeaderboards();
-                }else {
-                    updateMultilayerLeaderboards();
-                }
+                updateMultilayerLeaderboards();
         }
 
 
@@ -686,7 +679,7 @@ public class QuestionCtrl {
 
             ObservableList<LeaderboardEntry> entries = FXCollections.observableList(leaderboardEntries);
             leaderboard.setItems(entries);
-            updateCurrentPlayer(gameState);
+            //updateCurrentPlayer(gameState);
             allLeaderboard.setVisible(true);
 
         }
