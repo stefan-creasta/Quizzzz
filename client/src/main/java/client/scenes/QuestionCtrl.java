@@ -180,6 +180,7 @@ public class QuestionCtrl {
         this.gameState = gameState;
         switch (gameState.instruction) {
             case "questionPhase":
+                selectedAnswer = null;
                 updateMultilayerLeaderboards();
                 timeBar.setVisible(true);
                 questionTime.setVisible(true);
@@ -315,6 +316,8 @@ public class QuestionCtrl {
      * Sends the answer to the server, together with the gameState
      */
     public void SubmitPressed(ActionEvent actionEvent) throws IOException, InterruptedException {
+        if(answerTextBox.isVisible()&&(answerTextBox.getText()==null||answerTextBox.getText().equals(""))) return;//if open ended and no answer, do not submit
+        if((answer1.isVisible()||answer2.isVisible()||answer3.isVisible())&&selectedAnswer==null) return;
 
         answer1.setDisable(true);
         answer2.setDisable(true);
