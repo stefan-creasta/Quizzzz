@@ -75,20 +75,31 @@ public class AddPlayerCtrl {
             }
         }
         else {
-            serverString = serverField.getText();
-            if (mainCtrl.checkUsername(newPlayer.username) && newPlayer.username != null && !newPlayer.username.equals("")) {
-                try {
-                    mainCtrl.joinGame(newPlayer.username);
-                } catch (WebApplicationException e) {
-                    var alert = new Alert(Alert.AlertType.ERROR);
-                    alert.initModality(Modality.APPLICATION_MODAL);
-                    alert.setContentText(e.getMessage());
-                    alert.showAndWait();
-                    return;
+            try {
+                serverString = serverField.getText();
+                if (mainCtrl.checkUsername(newPlayer.username) && newPlayer.username != null && !newPlayer.username.equals("")) {
+                    try {
+                        mainCtrl.joinGame(newPlayer.username);
+                    } catch (WebApplicationException e) {
+                        var alert = new Alert(Alert.AlertType.ERROR);
+                        alert.initModality(Modality.APPLICATION_MODAL);
+                        alert.setContentText(e.getMessage());
+                        alert.showAndWait();
+                        return;
+                    }
+                    mainCtrl.showLobby();
+                } else {
+                    if (newPlayer.username.equals("")) {
+                        Alert usernameAlert = new Alert(Alert.AlertType.ERROR, "Please input a username");
+                        usernameAlert.show();
+                    } else {
+                        Alert usernameAlert = new Alert(Alert.AlertType.ERROR, "Username already taken");
+                        usernameAlert.show();
+                    }
                 }
-                mainCtrl.showLobby();
-            } else {
-                Alert usernameAlert = new Alert(Alert.AlertType.ERROR, "Username or server input is not correct");
+            }
+            catch(IllegalArgumentException e){
+                Alert usernameAlert = new Alert(Alert.AlertType.ERROR, "Server not valid");
                 usernameAlert.show();
             }
         }

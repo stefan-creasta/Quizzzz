@@ -168,7 +168,7 @@ public class MainCtrl {
                 saveServerUrl(playerCtrl.serverString);
             return gameCommunication.checkUsername(gameId, username, playerCtrl.serverString);
         }else{
-            return false;
+            throw new IllegalArgumentException("Server is not valid");
         }
     }
 
