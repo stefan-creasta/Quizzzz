@@ -180,6 +180,11 @@ public class QuestionCtrl {
         this.gameState = gameState;
         switch (gameState.instruction) {
             case "questionPhase":
+                if(mainCtrl.singleplayerGame){
+                    updateSingleplayerLeaderboards();
+                }else {
+                    updateMultilayerLeaderboards();
+                }
                 timeBar.setVisible(true);
                 questionTime.setVisible(true);
                 scoreLabel.setVisible(false);
@@ -261,6 +266,11 @@ public class QuestionCtrl {
                 questionTime.setVisible(false);
                 scoreLabel.setText("You received: " + String.format("%.2f", gameState.thisScored * 10) + " points!");
                 scoreLabel.setVisible(true);
+                if(mainCtrl.singleplayerGame){
+                    updateSingleplayerLeaderboards();
+                }else {
+                    updateMultilayerLeaderboards();
+                }
         }
 
 
@@ -661,7 +671,6 @@ public class QuestionCtrl {
     public void showLeaderboard() {
         // if the current list of player in the lobby is one then the current game is in multiplayer mode
         if (mainCtrl.singleplayerGame == false) {
-            updateMultilayerLeaderboards();
 
             System.out.println("SIZE FOR LEADERBOARD: " + leaderboardEntries.size());
             ObservableList<LeaderboardEntry> entries = FXCollections.observableList(leaderboardEntries);
@@ -670,7 +679,6 @@ public class QuestionCtrl {
         }
         // if the current list of player in the lobby is one then the current game is  in single player mode
         if (mainCtrl.singleplayerGame == true) {
-            updateSingleplayerLeaderboards();
 
             ObservableList<LeaderboardEntry> entries = FXCollections.observableList(leaderboardEntries);
             leaderboard.setItems(entries);
@@ -691,6 +699,7 @@ public class QuestionCtrl {
      * @throws InterruptedException
      */
     public void updateMultilayerLeaderboards() {
+        System.out.println("UPDATE OF LEADERBOARD IS HAPPENING");
 
         try {
             leaderboardEntries = mainCtrl.getMultiplayerLeaderboards();
