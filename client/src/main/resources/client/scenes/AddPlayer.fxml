@@ -22,7 +22,7 @@
             <children>
                 <Group GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                     <children>
-                        <Button layoutX="124.0" layoutY="361.0" mnemonicParsing="false" onAction="#play" prefHeight="49.0" prefWidth="158.0" text="Play" textAlignment="CENTER">
+                        <Button layoutX="126.0" layoutY="365.0" mnemonicParsing="false" onAction="#play" prefHeight="49.0" prefWidth="158.0" text="Play" textAlignment="CENTER">
                             <font>
                                 <Font size="20.0" />
                             </font>
