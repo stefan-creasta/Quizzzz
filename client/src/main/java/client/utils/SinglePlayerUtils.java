@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class SinglePlayerUtils {
-    Scanner data;
+    public Scanner data;
     public List<LeaderboardEntry> entries;
     public final String filename = "leaderboard.txt";
     private static DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
@@ -48,9 +48,12 @@ public class SinglePlayerUtils {
      */
     public List<LeaderboardEntry> readLeaderboardInGame() {
         try {
+            File f = new File(filename);
+            f.createNewFile();
             data = new Scanner(new File(filename));
         } catch (IOException e) {
             e.printStackTrace();
+            return new ArrayList<LeaderboardEntry>() ;
         }
         entries.removeIf(x -> true);
         while (data.hasNextLine()) {
