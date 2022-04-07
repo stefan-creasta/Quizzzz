@@ -77,7 +77,7 @@
             <TextField fx:id="answerTextBox" maxWidth="300.0" prefHeight="70.0" prefWidth="243.0" promptText="Insert answer" styleClass="input" visible="false" GridPane.halignment="CENTER" />
          </children>
       </GridPane>
-      <GridPane fx:id="answerGridpane" alignment="CENTER" layoutY="320.0" prefHeight="171.0" prefWidth="577.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0">
+      <GridPane fx:id="answerGridpane" alignment="CENTER" layoutY="320.0" prefHeight="171.0" prefWidth="577.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0">
          <columnConstraints>
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
          </columnConstraints>
