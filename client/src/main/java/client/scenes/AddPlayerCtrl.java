@@ -119,6 +119,7 @@ public class AddPlayerCtrl {
 
     public void back(ActionEvent actionEvent) {
         mainCtrl.showSplashScreen();
+        serverField.setVisible(true);
     }
 
     public void setServerUrl(String s) {
