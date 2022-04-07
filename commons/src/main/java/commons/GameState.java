@@ -52,7 +52,7 @@ public class GameState {
         this.emotes = game.emotes;
 
         for (Player lobbyPlayer : game.players) {
-            this.leaderboard.add(new LeaderboardEntry(lobbyPlayer.username, (int) lobbyPlayer.score));
+            this.leaderboard.add(new LeaderboardEntry(lobbyPlayer.username, lobbyPlayer.score));
         }
         Collections.sort(this.leaderboard);
     }

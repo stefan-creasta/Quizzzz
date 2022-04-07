@@ -180,6 +180,11 @@ public class QuestionCtrl {
         this.gameState = gameState;
         switch (gameState.instruction) {
             case "questionPhase":
+                if(mainCtrl.singleplayerGame){
+                    updateSingleplayerLeaderboards();
+                }else {
+                    updateMultilayerLeaderboards();
+                }
                 timeBar.setVisible(true);
                 questionTime.setVisible(true);
                 scoreLabel.setVisible(false);
@@ -261,6 +266,11 @@ public class QuestionCtrl {
                 questionTime.setVisible(false);
                 scoreLabel.setText("You received: " + String.format("%.2f", gameState.thisScored * 10) + " points!");
                 scoreLabel.setVisible(true);
+                if(mainCtrl.singleplayerGame){
+                    updateSingleplayerLeaderboards();
+                }else {
+                    updateMultilayerLeaderboards();
+                }
         }
 
 
@@ -318,7 +328,7 @@ public class QuestionCtrl {
         answerTextBox.setDisable(true);
 
 
-        if (answer1.isVisible()) {//if we have an MC question
+        if (answer1.isVisible()||answer2.isVisible()) {//if we have an MC question
             AnswerCommunication.sendAnswer(selectedAnswer, gameState, mainCtrl.playerCtrl.serverString);
         } else if (answerTextBox.isVisible()) {//if we have an open question
             selectedAnswer = answerTextBox.getText();
@@ -528,7 +538,7 @@ public class QuestionCtrl {
             return indexCell;
         });
         leaderboardUsernames.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().username));
-        leaderboardScores.setCellValueFactory(e -> new SimpleStringProperty(Integer.toString(e.getValue().score)));
+        leaderboardScores.setCellValueFactory(e -> new SimpleStringProperty(String.format("%.2f", e.getValue().score)));
         emotesUsernameColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().username));
         emotesEmoteColumn.setCellValueFactory(e -> {
             ImageView image = e.getValue().image;
@@ -661,7 +671,6 @@ public class QuestionCtrl {
     public void showLeaderboard() {
         // if the current list of player in the lobby is one then the current game is in multiplayer mode
         if (mainCtrl.singleplayerGame == false) {
-            updateMultilayerLeaderboards();
 
             System.out.println("SIZE FOR LEADERBOARD: " + leaderboardEntries.size());
             ObservableList<LeaderboardEntry> entries = FXCollections.observableList(leaderboardEntries);
@@ -670,7 +679,6 @@ public class QuestionCtrl {
         }
         // if the current list of player in the lobby is one then the current game is  in single player mode
         if (mainCtrl.singleplayerGame == true) {
-            updateSingleplayerLeaderboards();
 
             ObservableList<LeaderboardEntry> entries = FXCollections.observableList(leaderboardEntries);
             leaderboard.setItems(entries);
@@ -691,6 +699,7 @@ public class QuestionCtrl {
      * @throws InterruptedException
      */
     public void updateMultilayerLeaderboards() {
+        System.out.println("UPDATE OF LEADERBOARD IS HAPPENING");
 
         try {
             leaderboardEntries = mainCtrl.getMultiplayerLeaderboards();

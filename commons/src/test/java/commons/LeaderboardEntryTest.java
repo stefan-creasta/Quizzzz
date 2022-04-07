@@ -10,8 +10,8 @@ class LeaderboardEntryTest {
     void compareToEqual() {
         Date d = new Date();
 
-        LeaderboardEntry l1 = new LeaderboardEntry("abc", 5, d);
-        LeaderboardEntry l2 = new LeaderboardEntry("cbd", 5, d);
+        LeaderboardEntry l1 = new LeaderboardEntry("abc", 5.0, d);
+        LeaderboardEntry l2 = new LeaderboardEntry("cbd", 5.0, d);
 
         assertEquals(0, l1.compareTo(l2));
     }
@@ -20,10 +20,10 @@ class LeaderboardEntryTest {
     void compareToDifferentScores() {
         Date d = new Date();
 
-        LeaderboardEntry l1 = new LeaderboardEntry("abc", 1, d);
-        LeaderboardEntry l2 = new LeaderboardEntry("cbd", 2, d);
+        LeaderboardEntry l1 = new LeaderboardEntry("abc", 1.0, d);
+        LeaderboardEntry l2 = new LeaderboardEntry("cbd", 8.0, d);
 
-        assertEquals(1, l1.compareTo(l2));
+        assertEquals(7, l1.compareTo(l2));
     }
 
     @Test
@@ -31,8 +31,8 @@ class LeaderboardEntryTest {
         Date d1 = new GregorianCalendar(1, 0, 1).getTime();
         Date d2 = new GregorianCalendar(1, 0, 2).getTime();
 
-        LeaderboardEntry l1 = new LeaderboardEntry("abc", 1, d1);
-        LeaderboardEntry l2 = new LeaderboardEntry("cbd", 1, d2);
+        LeaderboardEntry l1 = new LeaderboardEntry("abc", 1.0, d1);
+        LeaderboardEntry l2 = new LeaderboardEntry("cbd", 1.0, d2);
 
         assertEquals(d1.compareTo(d2), l1.compareTo(l2));
     }
@@ -40,9 +40,9 @@ class LeaderboardEntryTest {
     @Test
     void testEquals() {
         Date d = new Date(3, 3, 3);
-        LeaderboardEntry l1 = new LeaderboardEntry("abc", 2, d);
-        LeaderboardEntry l2 = new LeaderboardEntry("cbd", 1, d);
-        LeaderboardEntry l3 = new LeaderboardEntry("abc", 1, d);
+        LeaderboardEntry l1 = new LeaderboardEntry("abc", 2.0, d);
+        LeaderboardEntry l2 = new LeaderboardEntry("cbd", 1.0, d);
+        LeaderboardEntry l3 = new LeaderboardEntry("abc", 1.0, d);
         assertTrue(l1.equals(l1));
         assertFalse(l1.equals(l2));
         assertFalse(l1.equals(l3));
@@ -51,7 +51,7 @@ class LeaderboardEntryTest {
     @Test
     void testHashCode() {
         Date d = new GregorianCalendar(3, 3, 3).getTime();
-        LeaderboardEntry l1 = new LeaderboardEntry("abc", 2, d);
+        LeaderboardEntry l1 = new LeaderboardEntry("abc", 2.0, d);
         l1.hashCode();
     }
 
@@ -59,12 +59,12 @@ class LeaderboardEntryTest {
     @Test
     void testToString() {
         Date d = new GregorianCalendar(3, 3, 3).getTime();
-        LeaderboardEntry l2 = new LeaderboardEntry("abc", 2, d);
+        LeaderboardEntry l2 = new LeaderboardEntry("abc", 2.0, d);
         assertLinesMatch(List.of(
                 "commons.LeaderboardEntry@[0-9a-f]*\\[",
                 "  date=" + d,
                 "  rank=-1",
-                "  score=2",
+                "  score=2.0",
                 "  username=abc",
                 "]"
         ), Arrays.asList(l2.toString().split(System.lineSeparator())));

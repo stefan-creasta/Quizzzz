@@ -18,7 +18,7 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
     @Id
     public String username;
 
-    public int score;
+    public double score;
     public Date date;
 
     @Transient
@@ -28,11 +28,12 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
         this(null, 0);
     }
 
-    public LeaderboardEntry(String un, int s) {
+
+    public LeaderboardEntry(String un, double s) {
         this(un, s, new Date());
     }
 
-    public LeaderboardEntry(String un, int s, Date d) {
+    public LeaderboardEntry(String un, double s, Date d) {
         username = un;
         score = s;
         date = d;
@@ -50,7 +51,7 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
             return this.date.compareTo(other.date);
         }
         else {
-            return other.score - this.score;
+            return (int) (other.score - this.score);
         }
     }
 

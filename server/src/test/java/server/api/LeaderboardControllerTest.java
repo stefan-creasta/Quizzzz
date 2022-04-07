@@ -17,14 +17,14 @@ public class LeaderboardControllerTest {
             new LeaderboardEntry("Tony", 2500, d)
     );
 
-    @Test
-    public void postLeaderboardTest() {
-        controller.postLeaderboard(leaderboardEntries.get(0));
-    }
+//    @Test
+//    public void postLeaderboardTest() {
+//        controller.postLeaderboard(leaderboardEntries.get(0));
+//    }
 
     @Test
     public void getLeaderboardTest() {
-        when(service.getLeaderboard(-1)).thenReturn(leaderboardEntries);
+        when(service.getLeaderboard(10)).thenReturn(leaderboardEntries);
 
         List<LeaderboardEntry> returned = controller.getLeaderboard();
 

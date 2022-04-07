@@ -17,6 +17,7 @@ package client.scenes;
 
 import client.Communication.GameCommunication;
 import client.Communication.ServerListener;
+import client.utils.SinglePlayerUtils;
 import commons.GameState;
 import commons.LeaderboardEntry;
 import commons.Player;
@@ -75,6 +76,8 @@ public class MainCtrl {
 
     public List<String> serverUrls;
 
+    private SinglePlayerUtils singlePlayerUtils;
+
     public void initialize(Stage primaryStage,
                            Pair<QuestionCtrl, Parent> question,
                            Pair<CountdownTimer, Parent> timer,
@@ -108,7 +111,6 @@ public class MainCtrl {
 
         this.gameEndingCtrl = gameEndingPair.getKey();
         this.gameEnding = new Scene(gameEndingPair.getValue());
-
         this.questionPauseCtrl = questionPausePair.getKey();
         this.questionPause = new Scene(questionPausePair.getValue());
 
@@ -118,6 +120,9 @@ public class MainCtrl {
         this.adminInterface = new Scene(adminInterfacePair.getValue());
 
         readServerUrls();
+
+        singlePlayerUtils = new SinglePlayerUtils();
+        singlePlayerUtils.readLeaderboardInGame();
 
         adminInterfacePair.getKey().registerServerUrlList(serverUrls);
         //showPlayer();
@@ -237,19 +242,18 @@ public class MainCtrl {
      * @throws InterruptedException
      */
     public List<LeaderboardEntry> getMultiplayerLeaderboards() throws IOException, InterruptedException{
-        return gameCommunication.getLeaderboardMultiplayer(gameId);
+        return gameCommunication.getLeaderboardMultiplayer(gameId, playerCtrl.serverString);
     }
-
-    /**
-     *
-     * @return the leaderboards containing all the entries for singleplayer mode
-     * @throws IOException
-     * @throws InterruptedException
-     */
     public List<LeaderboardEntry> getSingleplayerLeaderboards() throws IOException, InterruptedException{
-        return gameCommunication.getLeaderboardSingleplayer();
+        return singlePlayerUtils.entries;
     }
-
+    
+    public List<LeaderboardEntry> getServerLeaderboards() throws IOException, InterruptedException{
+        return gameCommunication.getTopLeaderboard(playerCtrl.serverString);
+    }
+    public void updateServerLeaderboard(LeaderboardEntry e) throws IOException, InterruptedException{
+            gameCommunication.addEntry(playerCtrl.serverString,e);
+    }
     /**
      * Sends a request to the server to initiate the game with ID gameId
      */
@@ -318,8 +322,14 @@ public class MainCtrl {
                 showQuestionPause();
                 break;
             case "endingPhase":
+                if (singleplayerGame) singlePlayerUtils.writeLeaderboardEntry(
+                        gameState.leaderboard.stream()
+                                .filter(x -> x.username.equals(currentUsername))
+                                .findFirst().get()
+                );
                 showGameEnding();
                 gameEndingCtrl.handleGameState(gameState);
+                gameEndingCtrl.goBack();
                 break;
             case "answerSubmitted":
                 break;
@@ -383,5 +393,9 @@ public class MainCtrl {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void addSinglePlayerScore(LeaderboardEntry entry) {
+        singlePlayerUtils.writeLeaderboardEntry(entry);
     }
 }

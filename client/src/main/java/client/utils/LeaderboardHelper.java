@@ -40,7 +40,7 @@ public class LeaderboardHelper {
      * @param column the score TableColumn
      */
     public void setScoreColumnCellFactory(TableColumn<LeaderboardEntry, String> column) {
-        column.setCellValueFactory(e -> new SimpleStringProperty(e.getValue() == null ? "" : Integer.toString(e.getValue().score)));
+        column.setCellValueFactory(e -> new SimpleStringProperty(e.getValue() == null ? "" : String.format("%.2f", e.getValue().score)));
     }
 
     /**
@@ -74,4 +74,5 @@ public class LeaderboardHelper {
             return displayedLeaderboard;
         }
     }
+
 }

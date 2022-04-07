@@ -32,7 +32,7 @@ public class Player {
         timeOfReceival = -1;
     }
 
-    public Player(String username, long score) {
+    public Player(String username, double score) {
         this.id = idGenerator++;
         this.username = username;
         this.score = score;

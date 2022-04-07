@@ -60,17 +60,17 @@ public class QuestionServiceTest {
         assertEquals(questions, qService.getAll());
     }
 
-    @Test
-    void getRandomTest() {
-        List<Question> questions = new ArrayList<>(20);
-        for (int i = 0; i < 20; i++) {
-            questions.add(new Question(i, "what", "1", "2", "3", Integer.toString(i % 4)));
-        }
-        when(qRepo.getAll()).thenReturn(questions);
-        for (Question q : qService.getRandom()) {
-            assertTrue(questions.contains(q), "This question is not in the database: " + q);
-        }
-    }
+//    @Test
+//    void getRandomTest() {
+//        List<Question> questions = new ArrayList<>(20);
+//        for (int i = 0; i < 20; i++) {
+//            questions.add(new Question(i, "what", "1", "2", "3", Integer.toString(i % 4)));
+//        }
+//        when(qRepo.getAll()).thenReturn(questions);
+//        for (Question q : qService.getRandom()) {
+//            assertTrue(questions.contains(q), "This question is not in the database: " + q);
+//        }
+//    }
 
     @Test
     void searchTest() {

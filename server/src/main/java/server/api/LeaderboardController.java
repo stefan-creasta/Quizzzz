@@ -1,5 +1,6 @@
 package server.api;
 
+import com.google.gson.Gson;
 import commons.LeaderboardEntry;
 import org.springframework.web.bind.annotation.*;
 import server.service.LeaderboardService;
@@ -17,11 +18,14 @@ public class LeaderboardController {
 
     @GetMapping("")
     public List<LeaderboardEntry> getLeaderboard() {
-        return leaderboardService.getLeaderboard(-1);
+        return leaderboardService.getLeaderboard(10);
     }
 
     @PostMapping("")
-    public void postLeaderboard(@RequestBody LeaderboardEntry item) {
-        leaderboardService.addEntry(item);
+    public void postLeaderboard(@RequestBody String item) {
+        Gson g = new Gson();
+        LeaderboardEntry p = g.fromJson(item, LeaderboardEntry.class);
+        System.out.println(p.score + "DEBUG IS THIS A DOUBLE");//debug
+        leaderboardService.addEntry(p);
     }
 }

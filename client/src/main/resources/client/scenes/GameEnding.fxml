@@ -11,12 +11,22 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" prefHeight="600.0" prefWidth="1000.0" styleClass="main" stylesheets="/Question.css,/AddPlayer.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.GameEndingCtrl">
+<AnchorPane fx:id="root" prefHeight="600.0" prefWidth="1000.0" styleClass="main" stylesheets="/Question.css,/AddPlayer.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.GameEndingCtrl">
    <children>
+<!--<<<<<<< HEAD-->
+
+       <!--      <TableView fx:id="leaderboard" layoutX="493.0" layoutY="94.0" prefHeight="412.0" prefWidth="479.0" styleClass="leaderboard">-->
+<!--        <columns>-->
+<!--          <TableColumn fx:id="leaderboardRanks" editable="false" prefWidth="117.55978393554688" text="Rank" />-->
+<!--            <TableColumn fx:id="leaderboardUsernames" editable="false" minWidth="0.0" prefWidth="207.94021606445312" text="Username" />-->
+<!--            <TableColumn fx:id="leaderboardScores" editable="false" minWidth="0.0" prefWidth="141.01806640625" text="Score" />-->
+<!--        </columns>-->
+<!--      </TableView>-->
+       <!--=======-->
       <GridPane layoutX="27.0" layoutY="94.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0">
          <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="712.799951171875" minWidth="10.0" prefWidth="492.8000122070313" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="447.9999877929687" minWidth="10.0" prefWidth="447.9999877929687" />
          </columnConstraints>
          <rowConstraints>
             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
@@ -24,7 +34,7 @@
          <children>
             <Group scaleX="0.8" scaleY="0.8">
                <children>
-                  <Button fx:id="newGameButton" layoutY="263.0" mnemonicParsing="false" onAction="#newGame" prefHeight="53.0" prefWidth="443.0" text="Play Another Game" textAlignment="CENTER">
+                  <Button fx:id="newGameButton" layoutX="-8.0" layoutY="148.0" mnemonicParsing="false" onAction="#newGame" prefHeight="53.0" prefWidth="443.0" text="Play Another Game" textAlignment="CENTER">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -34,21 +44,21 @@
                         <Font size="45.0" />
                      </font>
                   </Label>
-                  <Button layoutY="198.0" mnemonicParsing="false" onAction="#splashScreen" prefHeight="53.0" prefWidth="443.0" text="Past Singleplayer Scores" textAlignment="CENTER">
+                  <Button fx:id="worldLeaderboardButton" layoutX="-3.0" layoutY="69.0" mnemonicParsing="false" onAction="#showOtherLeaderboard" prefHeight="53.0" prefWidth="443.0" text="World Leaderboard" textAlignment="CENTER">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Button>
-                  <Button layoutY="134.0" mnemonicParsing="false" onAction="#splashScreen" prefHeight="53.0" prefWidth="443.0" text="World Leaderboard" textAlignment="CENTER">
+                  <Button layoutX="-12.0" layoutY="230.0" mnemonicParsing="false" onAction="#splashScreen" prefHeight="53.0" prefWidth="443.0" text="Main Menu" textAlignment="CENTER">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Button>
-                  <Button layoutY="327.0" mnemonicParsing="false" onAction="#splashScreen" prefHeight="53.0" prefWidth="443.0" text="Main Menu" textAlignment="CENTER">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Button>
+                   <Button fx:id="backButton" layoutX="122.0" layoutY="68.0" mnemonicParsing="false" onAction="#goBack" prefHeight="54.0" prefWidth="191.0" text="Back" textAlignment="CENTER">
+                       <font>
+                           <Font size="20.0" />
+                       </font>
+                   </Button>
                </children>
             </Group>
             <TableView fx:id="leaderboard" prefHeight="412.0" prefWidth="479.0" styleClass="leaderboard" GridPane.columnIndex="1">
