@@ -165,6 +165,8 @@ public class QuestionCtrl {
 
     boolean eliminateUsed = false;
 
+    boolean enableEliminateLater = false;
+
 
     @Inject
     public QuestionCtrl(MainCtrl mainCtrl) {
@@ -180,6 +182,10 @@ public class QuestionCtrl {
         this.gameState = gameState;
         switch (gameState.instruction) {
             case "questionPhase":
+                if(enableEliminateLater==true){//connected with ddisabling eliminateWrongAnswer in an open ended question
+                    enableEliminateLater = false;
+                    eliminateWrongAnswer.setDisable(false);
+                }
                 selectedAnswer = null;
                 updateMultilayerLeaderboards();
                 timeBar.setVisible(true);
@@ -202,6 +208,7 @@ public class QuestionCtrl {
                 this.questionTitle.setText("Question " + (gameState.currentQuestion + 1));
                 this.questionText.setText(gameState.question.question);
 
+
                 if (!gameState.question.type.equals("3")) {
                     this.answer1.setText(gameState.question.answer);
                     this.answer2.setText(gameState.question.wrongAnswer1);
@@ -210,6 +217,12 @@ public class QuestionCtrl {
                     answer2.setVisible(true);
                     answer3.setVisible(true);
                 } else {
+                    //disable disable EliminateWrong power up
+                    if(!eliminateWrongAnswer.isDisable()){
+                        eliminateWrongAnswer.setDisable(true);
+                        enableEliminateLater = true;
+                    }
+
                     answerTextBox.clear();
                     answerTextBox.setVisible(true);
                     answerTextBox.setDisable(false);
