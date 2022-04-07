@@ -40,7 +40,7 @@ public class LeaderboardHelper {
      * @param column the score TableColumn
      */
     public void setScoreColumnCellFactory(TableColumn<LeaderboardEntry, String> column) {
-        column.setCellValueFactory(e -> new SimpleStringProperty(e.getValue() == null ? "" : Double.toString(e.getValue().score)));
+        column.setCellValueFactory(e -> new SimpleStringProperty(e.getValue() == null ? "" : String.format("%.2f", e.getValue().score)));
     }
 
     /**
@@ -61,33 +61,9 @@ public class LeaderboardHelper {
             List<LeaderboardEntry> displayedLeaderboard = new LinkedList<>(
                     entries.subList(0, Math.min(entries.size(), topN))
             );
-            displayedLeaderboard.stream().forEach(x -> x.score = Double.parseDouble(String.format("%f.3", x.score)));
             LeaderboardEntry localPlayerEntry = entries.stream().filter(
                     x -> x.username.equals(currentUsername)
             ).findFirst().get();
-
-            if (!displayedLeaderboard.contains(localPlayerEntry)) {
-                if (entries.indexOf(localPlayerEntry) != topN)
-                    //null is displayed as "..."
-                    displayedLeaderboard.add(null);
-                displayedLeaderboard.add(localPlayerEntry);
-            }
-            return displayedLeaderboard;
-        }
-    }
-    public List<LeaderboardEntry> prepareLeaderboard(List<LeaderboardEntry> entries) {
-        for (int i = 0; i < entries.size(); i++) {
-            entries.get(i).rank = i + 1;
-        }
-
-        if (topN == -1) {
-            return new LinkedList<>(entries);
-        }
-        else {
-            List<LeaderboardEntry> displayedLeaderboard = new LinkedList<>(
-                    entries.subList(0, Math.min(entries.size(), topN))
-            );
-            LeaderboardEntry localPlayerEntry = entries.stream().findFirst().get();
 
             if (!displayedLeaderboard.contains(localPlayerEntry)) {
                 if (entries.indexOf(localPlayerEntry) != topN)

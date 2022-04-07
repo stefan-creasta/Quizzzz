@@ -318,6 +318,7 @@ public class MainCtrl {
             case "endingPhase":
                 showGameEnding();
                 gameEndingCtrl.handleGameState(gameState);
+                gameEndingCtrl.goBack();
                 break;
             case "answerSubmitted":
                 break;
