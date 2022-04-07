@@ -229,8 +229,13 @@ public class QuestionCtrl {
 
                 timeline = new Timeline(new KeyFrame(Duration.millis(1), e -> {
                     double timeToDisplay = 10000 - (new Date().getTime() - gameState.timeOfReceival);
-                    questionTime.setText("Time left: " + String.format("%.3f", timeToDisplay / 1000.0) + " seconds");
-                    timeBar.setProgress(timeToDisplay / 10000.0);
+                    if (timeToDisplay < 0) {
+                        questionTime.setText("Time left: 0.000 seconds");
+                        timeBar.setProgress(0);
+                    } else {
+                        questionTime.setText("Time left: " + String.format("%.3f", timeToDisplay / 1000.0) + " seconds");
+                        timeBar.setProgress(timeToDisplay / 10000.0);
+                    }
                 }));
                 timeline.setCycleCount(10000);
                 timeline.play();
