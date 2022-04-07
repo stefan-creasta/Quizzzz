@@ -212,9 +212,9 @@ public class GameCommunication {
      * @param gameId the game's id
      * @return the list of leaderboard entries
      */
-    public List<LeaderboardEntry> getLeaderboardMultiplayer(long gameId) throws IOException, InterruptedException {
+    public List<LeaderboardEntry> getLeaderboardMultiplayer(long gameId, String server) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/api/game/leaderboard/" + gameId))
+                .uri(URI.create(server+"/api/game/leaderboard/" + gameId))
                 .GET()
                 .build();
         var response = client.send(request, HttpResponse.BodyHandlers.ofString());

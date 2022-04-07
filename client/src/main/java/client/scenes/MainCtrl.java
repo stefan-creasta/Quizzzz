@@ -236,7 +236,7 @@ public class MainCtrl {
      * @throws InterruptedException
      */
     public List<LeaderboardEntry> getMultiplayerLeaderboards() throws IOException, InterruptedException{
-        return gameCommunication.getLeaderboardMultiplayer(gameId);
+        return gameCommunication.getLeaderboardMultiplayer(gameId, playerCtrl.serverString);
     }
     public List<LeaderboardEntry> getSingleplayerLeaderboards() throws IOException, InterruptedException{
         return gameCommunication.getLeaderboardSingleplayer();
