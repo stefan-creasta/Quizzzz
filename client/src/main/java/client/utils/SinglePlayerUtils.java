@@ -6,15 +6,20 @@ import commons.LeaderboardEntry;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class SinglePlayerUtils {
     Scanner data;
     public List<LeaderboardEntry> entries;
     public final String filename = "leaderboard.txt";
+    private static DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
 
+    public SinglePlayerUtils() {
+        entries = new ArrayList<>();
+    }
     /**
      * Writes a leaderboard entry to a local text file, the location of which is dubiously placed right inside the client.
      * It should be used to save the leaderboard entry of a single-play-run at the end.
@@ -26,6 +31,8 @@ public class SinglePlayerUtils {
                 FileWriter fw = new FileWriter(filename,true);
                 fw.write(entry.toString()+"\n");
                 fw.close();
+                entries.add(entry);
+                Collections.sort(entries);
             }
                 catch(IOException e){
                     e.printStackTrace();
@@ -45,25 +52,43 @@ public class SinglePlayerUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        entries = new ArrayList<>();
+        entries.removeIf(x -> true);
         while (data.hasNextLine()) {
             String objectName, dateString, username,stuff,scoring,ranks;
-            String[] date;
+            Date date = null;
             String[] scoreLine;
-            Integer score;
+            Double score;
             objectName = data.nextLine();
             dateString = data.nextLine();
             ranks = data.nextLine();
+            boolean healthy = true;
 
-            score = Integer.parseInt(data.nextLine().split("=")[1]);
+            try {
+            score = Double.parseDouble(data.nextLine().split("=")[1]);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                score = 0.0;
+                healthy = false;
+            }
+
             username = data.nextLine().split("=")[1];
+            try {
+                date = dateFormat.parse(dateString.split("=")[1]);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             stuff = data.nextLine();
 
-
-            LeaderboardEntry newEntry = new LeaderboardEntry(username, score);
+            LeaderboardEntry newEntry;
+            if (date == null)
+                newEntry = new LeaderboardEntry(username, score);
+            else
+                newEntry = new LeaderboardEntry(username, score, date);
+            if (healthy)
             entries.add(newEntry);
         }
         data.close();
+        Collections.sort(entries);
         return entries;
     }
 

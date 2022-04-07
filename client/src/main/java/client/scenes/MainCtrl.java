@@ -17,6 +17,7 @@ package client.scenes;
 
 import client.Communication.GameCommunication;
 import client.Communication.ServerListener;
+import client.utils.SinglePlayerUtils;
 import commons.GameState;
 import commons.LeaderboardEntry;
 import commons.Player;
@@ -75,6 +76,8 @@ public class MainCtrl {
 
     public List<String> serverUrls;
 
+    private SinglePlayerUtils singlePlayerUtils;
+
     public void initialize(Stage primaryStage,
                            Pair<QuestionCtrl, Parent> question,
                            Pair<CountdownTimer, Parent> timer,
@@ -117,6 +120,9 @@ public class MainCtrl {
         this.adminInterface = new Scene(adminInterfacePair.getValue());
 
         readServerUrls();
+
+        singlePlayerUtils = new SinglePlayerUtils();
+        singlePlayerUtils.readLeaderboardInGame();
 
         adminInterfacePair.getKey().registerServerUrlList(serverUrls);
         //showPlayer();
@@ -239,7 +245,7 @@ public class MainCtrl {
         return gameCommunication.getLeaderboardMultiplayer(gameId);
     }
     public List<LeaderboardEntry> getSingleplayerLeaderboards() throws IOException, InterruptedException{
-        return gameCommunication.getLeaderboardSingleplayer();
+        return singlePlayerUtils.entries;
     }
     
     public List<LeaderboardEntry> getServerLeaderboards() throws IOException, InterruptedException{
@@ -316,6 +322,11 @@ public class MainCtrl {
                 showQuestionPause();
                 break;
             case "endingPhase":
+                if (singleplayerGame) singlePlayerUtils.writeLeaderboardEntry(
+                        gameState.leaderboard.stream()
+                                .filter(x -> x.username.equals(currentUsername))
+                                .findFirst().get()
+                );
                 showGameEnding();
                 gameEndingCtrl.handleGameState(gameState);
                 gameEndingCtrl.goBack();
@@ -382,5 +393,9 @@ public class MainCtrl {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void addSinglePlayerScore(LeaderboardEntry entry) {
+        singlePlayerUtils.writeLeaderboardEntry(entry);
     }
 }

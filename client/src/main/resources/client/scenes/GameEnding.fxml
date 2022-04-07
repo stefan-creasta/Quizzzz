@@ -44,7 +44,7 @@
                         <Font size="45.0" />
                      </font>
                   </Label>
-                  <Button fx:id="worldLeaderboardButton" layoutX="-3.0" layoutY="69.0" mnemonicParsing="false" onAction="#showServerLeaderboard" prefHeight="53.0" prefWidth="443.0" text="World Leaderboard" textAlignment="CENTER">
+                  <Button fx:id="worldLeaderboardButton" layoutX="-3.0" layoutY="69.0" mnemonicParsing="false" onAction="#showOtherLeaderboard" prefHeight="53.0" prefWidth="443.0" text="World Leaderboard" textAlignment="CENTER">
                      <font>
                         <Font size="20.0" />
                      </font>

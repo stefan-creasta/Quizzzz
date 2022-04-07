@@ -39,6 +39,9 @@ public class GameEndingCtrl {
     private Button backButton;
 
     @FXML
+    private Button worldLeaderboardButton;
+
+    @FXML
     private AnchorPane root;
 
     private LeaderboardHelper leaderboardHelper;
@@ -57,22 +60,20 @@ public class GameEndingCtrl {
         backButton.setVisible(false);
     }
 
-    @FXML
-    Button worldLeaderboardButton;
-
     public void handleGameState(GameState gameState) {
         thisgameentries = gameState.leaderboard;
         if (mainCtrl.singleplayerGame) {
+            worldLeaderboardButton.setText("Past Singleplayer Scores");
             newGameButton.setText("Play as Singleplayer Again");
         }
         else {
+            worldLeaderboardButton.setText("World Leaderboard");
             newGameButton.setText("Play as Multiplayer Again");
         }
         updateServerLeaderboard(gameState);
         leaderboard.setItems(FXCollections.observableList(
             leaderboardHelper.prepareLeaderboard(thisgameentries, mainCtrl.getCurrentUsername()))
         );
-        updateLeaderboard();
         System.out.println(entries);
 
     }
@@ -100,19 +101,42 @@ public class GameEndingCtrl {
         }
     }
 
+    public void showOtherLeaderboard() {
+        if (mainCtrl.singleplayerGame) {
+            showSingleplayerLeaderboard();
+        } else {
+            showServerLeaderboard();
+        }
+    }
+
     /**
      * Displays the leaderboard containing the top 10 players on that specific server
      */
-
     public void showServerLeaderboard(){
         worldLeaderboardButton.setVisible(false);
-
+        updateLeaderboard();
         leaderboard.setItems(FXCollections.observableList(
                 leaderboardHelper.prepareLeaderboard(entries, mainCtrl.getCurrentUsername()))
         );
         leaderboard.setVisible(true); //current leaderboard
         backButton.setVisible(true);
 
+    }
+
+    public void showSingleplayerLeaderboard() {
+        worldLeaderboardButton.setVisible(false);
+        try {
+            entries = mainCtrl.getSingleplayerLeaderboards();
+            leaderboard.setItems(FXCollections.observableList(
+                    leaderboardHelper.prepareLeaderboard(entries, mainCtrl.getCurrentUsername()))
+            );
+            leaderboard.setVisible(true); //current leaderboard
+            backButton.setVisible(true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
