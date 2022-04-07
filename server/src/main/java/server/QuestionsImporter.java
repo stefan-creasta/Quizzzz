@@ -27,7 +27,11 @@ public class QuestionsImporter implements ApplicationRunner {
 
     public static class Activity {
         @JsonIgnore
-        final List<Double> factors = new LinkedList<>(List.of(.25, .33, .4, .5, .66, .75, 1.25, 1.5, 2., 2.5, 3., 4.));
+        final List<Double> factors = new LinkedList<>(List.of(.1, .2, .25, .33, .4, .5, .66, .75, 1.25, 1.5, 2., 2.5, 3., 4., 5., 10.));
+
+        @JsonIgnore
+        final List<Double> factorsSimilar = new LinkedList<>(List.of(.7, .8, .9, 1.1, 1.2, 1.3));
+
         public String id;
         public double consumption_in_wh;
         public String image_path;
@@ -46,7 +50,13 @@ public class QuestionsImporter implements ApplicationRunner {
 
             id = questionIdGenerator;
 
-            Collections.shuffle(factors);
+
+            List<Double> chosenFactors = factors;
+
+            if(new Random().nextInt(2)==1){
+                chosenFactors = factorsSimilar;
+            }
+            Collections.shuffle(chosenFactors);
 
             int qtype = rand.nextInt(4);
             Question q = null;
@@ -82,8 +92,8 @@ public class QuestionsImporter implements ApplicationRunner {
                     answer = String.format("%.0f", consumption_in_wh);
                     int r1 = rand.nextInt(12);
                     int p = rand.nextInt(11);
-                    wrongAnswer1 = String.format("%.0f", factors.get(r1) * consumption_in_wh);
-                    wrongAnswer2 = String.format("%.0f", factors.get((r1+p+1)%12) * consumption_in_wh);
+                    wrongAnswer1 = String.format("%.0f", chosenFactors.get(r1%chosenFactors.size()) * consumption_in_wh);
+                    wrongAnswer2 = String.format("%.0f", chosenFactors.get((r1+p+1)%chosenFactors.size()) * consumption_in_wh);
                     imageRelativeURI = URI.create(image_path.replace(" ", "%20"));
                     imageURL = imageURIRoot.resolve(imageRelativeURI).toURL().toString().replace("http://localhost:8080/images/", "images/");
                     q = new Question(id, "How much energy (in kW) does it take: '" + title + "'",answer,wrongAnswer1,wrongAnswer2, 1 + "");

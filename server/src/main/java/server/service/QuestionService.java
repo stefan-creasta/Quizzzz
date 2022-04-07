@@ -79,12 +79,22 @@ public class QuestionService {
      */
     public Question setMissingAnswers(Question q) {
         if (q.type.equals("1")) {
-            List<Double> factors = new LinkedList<>(List.of(.25, .33, .4, .5, .66, .75, 1.25, 1.5, 2., 2.5, 3., 4.));
-            Collections.shuffle(factors);
+            final List<Double> factors = new LinkedList<>(List.of(.1, .2, .25, .33, .4, .5, .66, .75, 1.25, 1.5, 2., 2.5, 3., 4., 5., 10.));
+            final List<Double> factorsSimilar = new LinkedList<>(List.of(.7, .8, .9, 1.1, 1.2, 1.3));
+
+            List<Double> chosenFactors = factors;
+
+            int randomIndex = new Random().nextInt(2);
+
+            if(randomIndex==1){
+                chosenFactors = factorsSimilar;
+            }
+            Collections.shuffle(chosenFactors);
+
             if (q.wrongAnswer1 == null)
-                q.wrongAnswer1 = String.format("%.0f", factors.get(0) * Double.parseDouble(q.answer));
+                q.wrongAnswer1 = String.format("%.0f", chosenFactors.get(0) * Double.parseDouble(q.answer));
             if (q.wrongAnswer2 == null)
-                q.wrongAnswer2 = String.format("%.0f", factors.get(1) * Double.parseDouble(q.answer));
+                q.wrongAnswer2 = String.format("%.0f", chosenFactors.get(1) * Double.parseDouble(q.answer));
         }
         return q;
     }

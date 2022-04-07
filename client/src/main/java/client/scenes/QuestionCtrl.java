@@ -155,9 +155,7 @@ public class QuestionCtrl {
 
     private Timeline timeline;
 
-    public boolean halfTimeWasUsed = false;
-
-    public int questionNumber = 1;
+    private boolean isSubmitted = false;
 
     boolean doubleUsed = false;
 
@@ -182,6 +180,7 @@ public class QuestionCtrl {
         this.gameState = gameState;
         switch (gameState.instruction) {
             case "questionPhase":
+                isSubmitted = false;
                 if(enableEliminateLater==true){//connected with ddisabling eliminateWrongAnswer in an open ended question
                     enableEliminateLater = false;
                     eliminateWrongAnswer.setDisable(false);
@@ -329,9 +328,11 @@ public class QuestionCtrl {
      * Sends the answer to the server, together with the gameState
      */
     public void SubmitPressed(ActionEvent actionEvent) throws IOException, InterruptedException{
+        if(isSubmitted) return;
         if(answerTextBox.isVisible()&&(answerTextBox.getText()==null||answerTextBox.getText().equals(""))) return;//if open ended and no answer, do not submit
         if((answer1.isVisible()||answer2.isVisible()||answer3.isVisible())&&selectedAnswer==null) return;
 
+        isSubmitted = false;
         answer1.setDisable(true);
         answer2.setDisable(true);
         answer3.setDisable(true);
@@ -513,7 +514,8 @@ public class QuestionCtrl {
                 showLeaderboard();
                 break;
             case ENTER:
-                SubmitPressed(null);
+                if(isSubmitted) return;
+                SubmitPressed(new ActionEvent());
                 break;
         }
     }
