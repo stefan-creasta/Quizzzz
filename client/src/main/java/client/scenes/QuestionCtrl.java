@@ -274,6 +274,10 @@ public class QuestionCtrl {
                     if (timeToDisplay < 0) {
                         questionTime.setText("Time left: 0.000 seconds");
                         timeBar.setProgress(0);
+                        submit.setDisable(true);
+                        answer3.setDisable(true);
+                        answer2.setDisable(true);
+                        answer1.setDisable(true);
                     } else {
                         questionTime.setText("Time left: " + String.format("%.3f", timeToDisplay / 1000.0) + " seconds");
                         timeBar.setProgress(timeToDisplay / 10000.0);
