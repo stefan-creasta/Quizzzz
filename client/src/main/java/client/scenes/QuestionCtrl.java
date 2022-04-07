@@ -528,7 +528,7 @@ public class QuestionCtrl {
             return indexCell;
         });
         leaderboardUsernames.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().username));
-        leaderboardScores.setCellValueFactory(e -> new SimpleStringProperty(Double.toString(e.getValue().score)));
+        leaderboardScores.setCellValueFactory(e -> new SimpleStringProperty(String.format("%.2f", e.getValue().score)));
         emotesUsernameColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().username));
         emotesEmoteColumn.setCellValueFactory(e -> {
             ImageView image = e.getValue().image;

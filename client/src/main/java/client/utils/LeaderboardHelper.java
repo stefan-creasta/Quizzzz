@@ -40,7 +40,7 @@ public class LeaderboardHelper {
      * @param column the score TableColumn
      */
     public void setScoreColumnCellFactory(TableColumn<LeaderboardEntry, String> column) {
-        column.setCellValueFactory(e -> new SimpleStringProperty(e.getValue() == null ? "" : Double.toString(e.getValue().score)));
+        column.setCellValueFactory(e -> new SimpleStringProperty(e.getValue() == null ? "" : String.format("%.2f", e.getValue().score)));
     }
 
     /**
@@ -61,7 +61,6 @@ public class LeaderboardHelper {
             List<LeaderboardEntry> displayedLeaderboard = new LinkedList<>(
                     entries.subList(0, Math.min(entries.size(), topN))
             );
-            displayedLeaderboard.stream().forEach(x -> x.score = Double.parseDouble(String.format("%f.3", x.score)));
             LeaderboardEntry localPlayerEntry = entries.stream().filter(
                     x -> x.username.equals(currentUsername)
             ).findFirst().get();
