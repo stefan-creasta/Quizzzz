@@ -64,14 +64,19 @@ public class AddPlayerCtrl {
         Player newPlayer = getPlayer();
         //if the game is singleplayer, then the game can start
         if(mainCtrl.singleplayerGame) {
-            serverString = "http://localhost:8080";
-            mainCtrl.initiateSingleplayerGame(newPlayer);
-            mainCtrl.showQuestionPause();
-            serverField.setVisible(true);
+            if(!newPlayer.username.equals("")){
+                serverString = "http://localhost:8080";
+                mainCtrl.initiateSingleplayerGame(newPlayer);
+                mainCtrl.showQuestionPause();
+                serverField.setVisible(true);
+            }else{
+                Alert usernameAlertSingle = new Alert(Alert.AlertType.ERROR, "Please input a username");
+                usernameAlertSingle.show();
+            }
         }
         else {
             serverString = serverField.getText();
-            if (mainCtrl.checkUsername(newPlayer.username) && !newPlayer.username.equals("") && newPlayer.username != null) {
+            if (mainCtrl.checkUsername(newPlayer.username) && newPlayer.username != null && !newPlayer.username.equals("")) {
                 try {
                     mainCtrl.joinGame(newPlayer.username);
                 } catch (WebApplicationException e) {
