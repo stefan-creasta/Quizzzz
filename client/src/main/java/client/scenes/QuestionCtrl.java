@@ -181,7 +181,6 @@ public class QuestionCtrl {
         switch (gameState.instruction) {
             case "questionPhase":
                 updateMultilayerLeaderboards();
-
                 timeBar.setVisible(true);
                 questionTime.setVisible(true);
                 scoreLabel.setVisible(false);
@@ -234,6 +233,10 @@ public class QuestionCtrl {
                 if (mainCtrl.singleplayerGame) {
                     emotes.setVisible(false);
                     emoteGroup.setVisible(false);
+                    allLeaderboard.setMaxHeight(143);
+                }
+                else {
+                    allLeaderboard.setMaxHeight(380);
                 }
 
                 answer1.setDisable(false);
@@ -681,7 +684,6 @@ public class QuestionCtrl {
             leaderboard.setItems(entries);
             //updateCurrentPlayer(gameState);
             allLeaderboard.setVisible(true);
-
         }
     }
 
