@@ -205,6 +205,11 @@ public class QuestionCtrl {
                     halfTime.setDisable(true);
                 }
                 this.questionTitle.setText("Question " + (gameState.currentQuestion + 1));
+                if(gameState.currentQuestion + 1==1){//first question
+                    halfTime.setDisable(false);
+                    eliminateWrongAnswer.setDisable(false);
+                    doublePoints.setDisable(false);
+                }
                 this.questionText.setText(gameState.question.question);
 
 
