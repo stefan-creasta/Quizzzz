@@ -155,15 +155,17 @@ public class QuestionCtrl {
 
     private Timeline timeline;
 
-    public boolean halfTimeWasUsed = false;
-
-    public int questionNumber = 1;
+    private boolean isSubmitted = false;
 
     boolean doubleUsed = false;
 
     boolean halfUsed = false;
 
     boolean eliminateUsed = false;
+
+    boolean enableEliminateLater = false;
+
+    boolean enableHalfLater = false;
 
 
     @Inject
@@ -180,6 +182,16 @@ public class QuestionCtrl {
         this.gameState = gameState;
         switch (gameState.instruction) {
             case "questionPhase":
+                isSubmitted = false;
+                if(enableEliminateLater){//connected with disabling eliminateWrongAnswer in an open ended question
+                    enableEliminateLater = false;
+                    eliminateWrongAnswer.setDisable(false);
+                }
+                if(enableHalfLater&& !mainCtrl.singleplayerGame){//connected with disabling halfTime power up in a multiplayer game once its already been used
+                    enableHalfLater = false;
+                    halfTime.setDisable(false);
+                }
+                selectedAnswer = null;
                 updateMultilayerLeaderboards();
                 timeBar.setVisible(true);
                 questionTime.setVisible(true);
@@ -199,7 +211,17 @@ public class QuestionCtrl {
                     halfTime.setDisable(true);
                 }
                 this.questionTitle.setText("Question " + (gameState.currentQuestion + 1));
+                if(gameState.currentQuestion + 1==1){//first question
+                    if(mainCtrl.singleplayerGame){
+                        halfTime.setDisable(true);
+                    }else{
+                        halfTime.setDisable(false);
+                    }
+                    eliminateWrongAnswer.setDisable(false);
+                    doublePoints.setDisable(false);
+                }
                 this.questionText.setText(gameState.question.question);
+
 
                 if (!gameState.question.type.equals("3")) {
                     this.answer1.setText(gameState.question.answer);
@@ -209,6 +231,12 @@ public class QuestionCtrl {
                     answer2.setVisible(true);
                     answer3.setVisible(true);
                 } else {
+                    //disable disable EliminateWrong power up
+                    if(!eliminateWrongAnswer.isDisable()){
+                        eliminateWrongAnswer.setDisable(true);
+                        enableEliminateLater = true;
+                    }
+
                     answerTextBox.clear();
                     answerTextBox.setVisible(true);
                     answerTextBox.setDisable(false);
@@ -216,8 +244,17 @@ public class QuestionCtrl {
 
                 timeline = new Timeline(new KeyFrame(Duration.millis(1), e -> {
                     double timeToDisplay = 10000 - (new Date().getTime() - gameState.timeOfReceival);
-                    questionTime.setText("Time left: " + String.format("%.3f", timeToDisplay / 1000.0) + " seconds");
-                    timeBar.setProgress(timeToDisplay / 10000.0);
+                    if (timeToDisplay < 0) {
+                        questionTime.setText("Time left: 0.000 seconds");
+                        timeBar.setProgress(0);
+                        submit.setDisable(true);
+                        answer1.setDisable(true);
+                        answer2.setDisable(true);
+                        answer3.setDisable(true);
+                    } else {
+                        questionTime.setText("Time left: " + String.format("%.3f", timeToDisplay / 1000.0) + " seconds");
+                        timeBar.setProgress(timeToDisplay / 10000.0);
+                    }
                 }));
                 timeline.setCycleCount(10000);
                 timeline.play();
@@ -246,11 +283,20 @@ public class QuestionCtrl {
 
                 break;
             case "halfTimePowerUp":
+                if(!halfTime.isDisable()){
+                    halfTime.setDisable(true);
+                    enableHalfLater = true;
+                }
+
                 timeline = new Timeline(new KeyFrame(Duration.millis(1), e -> {
                     double timeToDisplay = 10000 - (new Date().getTime() - gameState.timeOfReceival);
                     if (timeToDisplay < 0) {
                         questionTime.setText("Time left: 0.000 seconds");
                         timeBar.setProgress(0);
+                        submit.setDisable(true);
+                        answer3.setDisable(true);
+                        answer2.setDisable(true);
+                        answer1.setDisable(true);
                     } else {
                         questionTime.setText("Time left: " + String.format("%.3f", timeToDisplay / 1000.0) + " seconds");
                         timeBar.setProgress(timeToDisplay / 10000.0);
@@ -314,8 +360,12 @@ public class QuestionCtrl {
      * Gets called when the submit answer button is pressed
      * Sends the answer to the server, together with the gameState
      */
-    public void SubmitPressed(ActionEvent actionEvent) throws IOException, InterruptedException {
+    public void SubmitPressed(ActionEvent actionEvent) throws IOException, InterruptedException{
+        if(isSubmitted) return;
+        if(answerTextBox.isVisible()&&(answerTextBox.getText()==null||answerTextBox.getText().equals(""))) return;//if open ended and no answer, do not submit
+        if((answer1.isVisible()||answer2.isVisible()||answer3.isVisible())&&selectedAnswer==null) return;
 
+        isSubmitted = false;
         answer1.setDisable(true);
         answer2.setDisable(true);
         answer3.setDisable(true);
@@ -409,6 +459,7 @@ public class QuestionCtrl {
      * up is used and all players are alerted.
      */
     public void DoublePointsButtonPressed(ActionEvent event) throws IOException, InterruptedException {
+        if(gameState.stage== GameState.Stage.INTERVAL) return;
         doubleUsed = true;
         doublePoints.setDisable(true);
 
@@ -434,6 +485,7 @@ public class QuestionCtrl {
      * and the wrong answer button is made invisible and inaccessible. Also other players are alerted.
      */
     void EliminateWrongAnswerButtonPressed(ActionEvent event) throws IOException, InterruptedException {
+        if(gameState.stage== GameState.Stage.INTERVAL) return;
         eliminateUsed = true;
         eliminateWrongAnswer.setDisable(true);
         //TODO call function that makes button different shade to indicate it has been used
@@ -471,6 +523,7 @@ public class QuestionCtrl {
      * and the time of all other players is halved.
      */
     void HalfTimeButtonPressed(ActionEvent event) throws IOException, InterruptedException {
+        if(gameState.stage== GameState.Stage.INTERVAL) return;
         halfUsed = true;
         halfTime.setDisable(true);
         //TODO call function that makes button different shade to indicate it has been used
@@ -490,11 +543,16 @@ public class QuestionCtrl {
     }
 
     @FXML
-    void KeyPressed(KeyEvent event) {
+    void KeyPressed(KeyEvent event) throws IOException, InterruptedException {
         System.out.println(event.getCode() + " was pressed.");
         switch (event.getCode()) {
             case TAB:
                 showLeaderboard();
+                break;
+            case ENTER:
+                if(isSubmitted) return;
+                SubmitPressed(new ActionEvent());
+                break;
         }
     }
 
@@ -512,7 +570,15 @@ public class QuestionCtrl {
         assert questionText != null : "fx:id=\"questionText\" was not injected: check your FXML file 'Question.fxml'.";
         assert questionTitle != null : "fx:id=\"questionTitle\" was not injected: check your FXML file 'Question.fxml'.";
 
-        root.addEventFilter(KeyEvent.KEY_PRESSED, this::KeyPressed);
+        root.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            try {
+                KeyPressed(event);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
         root.addEventFilter(KeyEvent.KEY_RELEASED, this::KeyReleased);
 
         timer = new Timer(0, 5);
@@ -565,9 +631,6 @@ public class QuestionCtrl {
         }
         emotes.setPlaceholder(new Label(""));
 
-        halfTime.setDisable(false);
-        doublePoints.setDisable(false);
-        eliminateWrongAnswer.setDisable(false);
     }
 
     /**

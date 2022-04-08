@@ -64,26 +64,42 @@ public class AddPlayerCtrl {
         Player newPlayer = getPlayer();
         //if the game is singleplayer, then the game can start
         if(mainCtrl.singleplayerGame) {
-            serverString = "http://localhost:8080";
-            mainCtrl.initiateSingleplayerGame(newPlayer);
-            mainCtrl.showQuestionPause();
-            serverField.setVisible(true);
+            if(!newPlayer.username.equals("")){
+                serverString = "http://localhost:8080";
+                mainCtrl.initiateSingleplayerGame(newPlayer);
+                mainCtrl.showQuestionPause();
+                serverField.setVisible(true);
+            }else{
+                Alert usernameAlertSingle = new Alert(Alert.AlertType.ERROR, "Please input a username");
+                usernameAlertSingle.show();
+            }
         }
         else {
-            serverString = serverField.getText();
-            if (mainCtrl.checkUsername(newPlayer.username) && !newPlayer.username.equals("") && newPlayer.username != null) {
-                try {
-                    mainCtrl.joinGame(newPlayer.username);
-                } catch (WebApplicationException e) {
-                    var alert = new Alert(Alert.AlertType.ERROR);
-                    alert.initModality(Modality.APPLICATION_MODAL);
-                    alert.setContentText(e.getMessage());
-                    alert.showAndWait();
-                    return;
+            try {
+                serverString = serverField.getText();
+                if (mainCtrl.checkUsername(newPlayer.username) && newPlayer.username != null && !newPlayer.username.equals("")) {
+                    try {
+                        mainCtrl.joinGame(newPlayer.username);
+                    } catch (WebApplicationException e) {
+                        var alert = new Alert(Alert.AlertType.ERROR);
+                        alert.initModality(Modality.APPLICATION_MODAL);
+                        alert.setContentText(e.getMessage());
+                        alert.showAndWait();
+                        return;
+                    }
+                    mainCtrl.showLobby();
+                } else {
+                    if (newPlayer.username.equals("")) {
+                        Alert usernameAlert = new Alert(Alert.AlertType.ERROR, "Please input a username");
+                        usernameAlert.show();
+                    } else {
+                        Alert usernameAlert = new Alert(Alert.AlertType.ERROR, "Username already taken");
+                        usernameAlert.show();
+                    }
                 }
-                mainCtrl.showLobby();
-            } else {
-                Alert usernameAlert = new Alert(Alert.AlertType.ERROR, "Username or server input is not correct");
+            }
+            catch(IllegalArgumentException e){
+                Alert usernameAlert = new Alert(Alert.AlertType.ERROR, "Server not valid");
                 usernameAlert.show();
             }
         }
@@ -119,6 +135,7 @@ public class AddPlayerCtrl {
 
     public void back(ActionEvent actionEvent) {
         mainCtrl.showSplashScreen();
+        serverField.setVisible(true);
     }
 
     public void setServerUrl(String s) {
