@@ -130,6 +130,12 @@
     -fx-text-alignment: center;
 }
 
+.table-view .scroll-bar * {
+    -fx-min-height: 0;
+    -fx-pref-height: 0;
+    -fx-max-height: 0;
+}
+
 .playerStats{
     -fx-border-radius: 6;
     -fx-background-radius: 6;
