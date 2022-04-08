@@ -213,7 +213,7 @@
     -fx-background-color: #f2d4ef;
 }
 
-.in-game-leaderboard {
+.in-game-leaderboard .scroll-bar * {
     -fx-min-height: 0;
     -fx-pref-height: 0;
     -fx-max-height: 0;
