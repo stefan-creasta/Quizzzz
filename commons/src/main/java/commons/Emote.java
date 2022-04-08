@@ -24,4 +24,17 @@ public class Emote {
                 ", gameId=" + gameId +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Emote emote = (Emote) o;
+
+        if (gameId != emote.gameId) return false;
+        if (type != emote.type) return false;
+        return username.equals(emote.username);
+
+    }
 }
