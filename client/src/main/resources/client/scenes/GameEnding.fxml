@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" prefHeight="700.0" prefWidth="1200.0" styleClass="main" stylesheets="/Question.css,/AddPlayer.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.GameEndingCtrl">
+<AnchorPane fx:id="root" prefHeight="700.0" prefWidth="1200.0" styleClass="main" stylesheets="/Question.css,/AddPlayer.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.GameEndingCtrl">
    <children>
 <!--<<<<<<< HEAD-->
 
@@ -34,22 +34,22 @@
          <children>
             <Group scaleX="0.8" scaleY="0.8">
                <children>
-                  <Button fx:id="newGameButton" layoutX="-8.0" layoutY="148.0" mnemonicParsing="false" onAction="#newGame" prefHeight="53.0" prefWidth="443.0" text="Play Another Game" textAlignment="CENTER">
+                  <Button fx:id="newGameButton" layoutX="-14.0" layoutY="141.0" mnemonicParsing="false" onAction="#newGame" prefHeight="53.0" prefWidth="443.0" text="Play Another Game" textAlignment="CENTER">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Button>
-                  <Label layoutX="110.0" styleClass="enter-username-label" text="Game Over">
+                  <Label layoutX="106.0" styleClass="enter-username-label" text="Game Over">
                      <font>
                         <Font size="45.0" />
                      </font>
                   </Label>
-                  <Button fx:id="worldLeaderboardButton" layoutX="-3.0" layoutY="69.0" mnemonicParsing="false" onAction="#showOtherLeaderboard" prefHeight="53.0" prefWidth="443.0" text="World Leaderboard" textAlignment="CENTER">
+                  <Button fx:id="worldLeaderboardButton" layoutX="-14.0" layoutY="68.0" mnemonicParsing="false" onAction="#showOtherLeaderboard" prefHeight="53.0" prefWidth="443.0" text="World Leaderboard" textAlignment="CENTER">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Button>
-                  <Button layoutX="-12.0" layoutY="230.0" mnemonicParsing="false" onAction="#splashScreen" prefHeight="53.0" prefWidth="443.0" text="Main Menu" textAlignment="CENTER">
+                  <Button layoutX="-14.0" layoutY="211.0" mnemonicParsing="false" onAction="#splashScreen" prefHeight="53.0" prefWidth="443.0" text="Main Menu" textAlignment="CENTER">
                      <font>
                         <Font size="20.0" />
                      </font>
