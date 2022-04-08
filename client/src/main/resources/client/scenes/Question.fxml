@@ -77,14 +77,14 @@
             <TextField fx:id="answerTextBox" maxWidth="300.0" prefHeight="70.0" prefWidth="243.0" promptText="Insert answer" styleClass="input" visible="false" GridPane.halignment="CENTER" />
          </children>
       </GridPane>
-      <GridPane fx:id="answerGridpane" alignment="CENTER" layoutY="320.0" prefHeight="171.0" prefWidth="577.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0">
+      <GridPane fx:id="answerGridpane" alignment="CENTER" layoutY="320.0" prefHeight="188.0" prefWidth="1140.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0">
          <columnConstraints>
-            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" />
          </columnConstraints>
          <rowConstraints>
-            <RowConstraints maxHeight="52.07769775390625" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="62.769927978515625" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="69.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+            <RowConstraints fillHeight="false" maxHeight="62.0" minHeight="10.0" prefHeight="62.0" valignment="CENTER" />
+            <RowConstraints maxHeight="62.0" minHeight="10.0" prefHeight="62.0" valignment="CENTER" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="62.0" minHeight="10.0" prefHeight="62.0" valignment="CENTER" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
             <Button fx:id="answer1" contentDisplay="CENTER" mnemonicParsing="false" onAction="#Answer1Pressed" styleClass="selected" text="Answer 1" GridPane.rowIndex="2" />
