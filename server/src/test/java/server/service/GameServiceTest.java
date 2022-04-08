@@ -4,6 +4,7 @@ import commons.Game;
 import commons.GameState;
 import commons.Player;
 import commons.Question;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import server.api.GameController;
 
@@ -16,6 +17,26 @@ import static org.mockito.Mockito.when;
 
 public class GameServiceTest {
 
+    QuestionService questionService;
+    LongPollingService longPollingService;
+    GameService gameService;
+    long gameId;
+    GameState state;
+    Game currentGame;
+    Player player;
+    @BeforeEach
+            void setup() {
+        questionService = mock(QuestionService.class);
+        longPollingService = mock(LongPollingService.class);
+        when(questionService.getRandom()).thenReturn(List.of(
+                new Question(0, "question", "answer", "wrong1", "wrong2", "1")
+        ));
+        gameService = new GameService(questionService, longPollingService);
+        gameId = gameService.createGame();
+        state = gameService.joinGame(gameId, "ben");
+        currentGame = gameService.getId(gameId);
+        player = currentGame.players.get(0);
+    }
     @Test
     public void realWorldTest() {
         QuestionService questionService = mock(QuestionService.class);
@@ -38,22 +59,13 @@ public class GameServiceTest {
         assertEquals(gameId, state.gameId);
     }
     @Test
-    public void testHalfTimePowerUpFail(){
-        GameService gameService = mock(GameService.class);
-        assertEquals(null,gameService.halfTimePowerUp(-1,-1));
+    public void testHalfTimePowerUp(){
+        assertEquals("halfTimePowerUp___success___",gameService.halfTimePowerUp(player.id, gameId));
 
     }
     @Test
-    public void testEliminatePowerUpFail(){
-        GameService gameService = mock(GameService.class);
-        assertEquals(null,gameService.halfTimePowerUp(-1,-1));
-
-
-    }
-    @Test
-    public void testDoublePointsFail(){
-        GameService gameService = mock(GameService.class);
-        assertEquals(null,gameService.halfTimePowerUp(-1,-1));
+    public void testDoublePoints(){
+        assertEquals("doublePointsPowerUp___success",gameService.doublePointsPowerUp(player.id, gameId));
 
 
     }
