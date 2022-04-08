@@ -143,8 +143,6 @@ public class QuestionCtrl {
 
     private Boolean[] pressedEmote = {false, false, false, false, false};
 
-    private Timer timer;
-
     private GameState gameState;
 
     private String selectedAnswer;
@@ -318,7 +316,7 @@ public class QuestionCtrl {
 
     }
 
-    //TODO: Send correct Game ID
+
     @FXML
     void Answer1Pressed(ActionEvent event) throws IOException, InterruptedException {
         if (!selectedCSS[0]) {
@@ -330,7 +328,7 @@ public class QuestionCtrl {
         selectedAnswer = answer1.getText();
     }
 
-    //TODO: Send correct Game ID
+
     @FXML
     void Answer2Pressed(ActionEvent event) throws IOException, InterruptedException {
         if (!selectedCSS[1]) {
@@ -342,7 +340,7 @@ public class QuestionCtrl {
         selectedAnswer = answer2.getText();
     }
 
-    //TODO: Send correct Game ID
+
     @FXML
     void Answer3Pressed(ActionEvent event) throws IOException, InterruptedException {
         if (!selectedCSS[2]) {
@@ -380,7 +378,7 @@ public class QuestionCtrl {
             selectedAnswer = answerTextBox.getText();
             AnswerCommunication.sendAnswer(selectedAnswer, gameState, mainCtrl.playerCtrl.serverString);
         } else {
-            throw new IllegalArgumentException("we messed up the submitPressed function logic :(");
+            throw new IllegalArgumentException("submitPressed logic does not work properly");
         }
 
     }
@@ -488,7 +486,6 @@ public class QuestionCtrl {
         if(gameState.stage== GameState.Stage.INTERVAL) return;
         eliminateUsed = true;
         eliminateWrongAnswer.setDisable(true);
-        //TODO call function that makes button different shade to indicate it has been used
         String result = PowerUpsCommunication.sendPowerUps("eliminateWrongAnswerPowerUp", gameState, mainCtrl.playerCtrl.serverString);
 
         try {
@@ -526,7 +523,6 @@ public class QuestionCtrl {
         if(gameState.stage== GameState.Stage.INTERVAL) return;
         halfUsed = true;
         halfTime.setDisable(true);
-        //TODO call function that makes button different shade to indicate it has been used
         String result = PowerUpsCommunication.sendPowerUps("halfTimePowerUp", gameState, mainCtrl.playerCtrl.serverString);
         try {
             if (result.split("___")[1].equals("success")) {
@@ -580,8 +576,6 @@ public class QuestionCtrl {
             }
         });
         root.addEventFilter(KeyEvent.KEY_RELEASED, this::KeyReleased);
-
-        timer = new Timer(0, 5);
 
         leaderboardRanks.setCellFactory(e -> {
             TableCell<LeaderboardEntry, String> indexCell = new TableCell<>();
