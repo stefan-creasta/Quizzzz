@@ -272,7 +272,7 @@ public class GameService {
      * @return the GameState to initially render the lobby or game screen
      * @throws IllegalArgumentException if the gameId is invalid.
      */
-    public GameState joinGame(long gameId, String username) throws IllegalArgumentException {
+    public GameState joinGame(long gameId, String username){
         System.out.println("Username for player: " + username);
         Player player = new Player(username, 0);
         Game game = gameRepository.getId(gameId);
