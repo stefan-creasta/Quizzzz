@@ -185,11 +185,13 @@ public class MainCtrl {
     public void chooseSingleplayer() {
         setupSingleplayerGame();
         playerCtrl.invisServerField();
+        playerCtrl.setUsername();
         showPlayer();
     }
     public void chooseMultiplayer() {
 //        setupMultiplayerGame();
         singleplayerGame = false;
+        playerCtrl.setUsername();
         showPlayer();
     }
     public void showPlayer() {
