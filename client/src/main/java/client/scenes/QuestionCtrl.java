@@ -267,7 +267,7 @@ public class QuestionCtrl {
                 if (mainCtrl.singleplayerGame) {
                     emotes.setVisible(false);
                     emoteGroup.setVisible(false);
-                    allLeaderboard.setMaxHeight(143);
+                    allLeaderboard.setMaxHeight(165);
                 }
                 else {
                     allLeaderboard.setMaxHeight(380);

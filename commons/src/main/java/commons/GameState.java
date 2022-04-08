@@ -3,6 +3,7 @@ package commons;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class GameState {
     public enum Stage {LOBBY, QUESTION, INTERVAL};
@@ -92,4 +93,13 @@ public class GameState {
                 ", emotes=" + emotes +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GameState gameState = (GameState) o;
+        return isError == gameState.isError && timerSyncLong == gameState.timerSyncLong && duration == gameState.duration && gameId == gameState.gameId && playerId == gameState.playerId && currentQuestion == gameState.currentQuestion && Double.compare(gameState.timeToAnswer, timeToAnswer) == 0 && Double.compare(gameState.timeOfReceival, timeOfReceival) == 0 && Double.compare(gameState.thisScored, thisScored) == 0 && stage == gameState.stage && Objects.equals(question, gameState.question) && Objects.equals(message, gameState.message) && Objects.equals(instruction, gameState.instruction) && Objects.equals(username, gameState.username) && Objects.equals(playerAnswer, gameState.playerAnswer) && Objects.equals(leaderboard, gameState.leaderboard) && Objects.equals(emotes, gameState.emotes);
+    }
+
 }

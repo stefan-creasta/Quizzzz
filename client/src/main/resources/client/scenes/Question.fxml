@@ -33,7 +33,7 @@
             <Group GridPane.columnIndex="2">
                <children>
                   <BorderPane layoutX="2.0" layoutY="31.0" prefHeight="247.0" prefWidth="253.0" styleClass="powerup-border" />
-                  <Button fx:id="doublePoints" layoutX="13.0" layoutY="50.0" mnemonicParsing="false" onAction="#DoublePointsButtonPressed" prefWidth="230.0" text="Double points" />
+                  <Button fx:id="doublePoints" layoutX="13.0" layoutY="50.0" mnemonicParsing="false" onAction="#DoublePointsButtonPressed" prefWidth="230.0" style="-fx-font-size: 20; -fx-padding: 15;" text="Double points" />
                   <Button fx:id="eliminateWrongAnswer" layoutX="13.0" layoutY="129.0" mnemonicParsing="false" onAction="#EliminateWrongAnswerButtonPressed" prefWidth="230.0" style="-fx-font-size: 16; -fx-padding: 15;" text="Eliminate wrong answer">
                      <font>
                         <Font size="8.0" />
