@@ -85,34 +85,6 @@ public class QuestionServiceTest {
 
     @Test
     void patchQuestionNonexistentIdTest() {
-        /*
-        Question unchanged = new Question(69L, "correct", "0", "1", "2", "1");
-        Question changed = new Question(70L, "wrong", "0", "1", "2", "1");
-        when(qRepo.getId(eq(69L))).thenReturn(unchanged);
-        when(qRepo.getId(eq(70L))).thenReturn(changed);
-        when(qRepo.existsById(eq(69L))).thenReturn(true);
-        when(qRepo.existsById(eq(70L))).thenReturn(true);
-        when(qRepo.existsById(eq(71L))).thenReturn(false);
-
-        Question wrongPatch = new Question(71L, null, null, null, null, null);
-        assertNull(qService.patchQuestion(wrongPatch));
-        Question blankPatch = new Question(69L, null, null, null, null, null);
-        assertEquals(unchanged, qService.patchQuestion(blankPatch));
-        Question changePatch = new Question(70L, "correct", null, null, null, "3");
-        assertEquals(
-                new Question(70L, "correct", "0", "1", "2", "3"),
-                qService.patchQuestion(changePatch)
-        );
-        Question answerPatch = new Question(70L, null, "100000000000000000000000000", null, null, null);
-        Question answerPatched = qService.patchQuestion(answerPatch);
-        assertEquals("correct", answerPatched.question);
-        assertEquals("100000000000000000000000000", answerPatched.answer);
-        long ratio =
-        assertTrue(Math.abs())
-
-         */
-
-
         Question wrongPatch = new Question(71L, null, null, null, null, null);
         when(qRepo.existsById(eq(71L))).thenReturn(false);
         assertNull(qService.patchQuestion(wrongPatch));
@@ -144,8 +116,8 @@ public class QuestionServiceTest {
         double answer = 1e25;
         double ratio1 = Double.parseDouble(answerPatched.wrongAnswer1) / answer;
         double ratio2 = Double.parseDouble(answerPatched.wrongAnswer2) / answer;
-        assertTrue(0.2 <= ratio1 && ratio1 < 5., answerPatched.wrongAnswer1 + " is not in the required range");
-        assertTrue(0.2 <= ratio2 && ratio2 < 5., answerPatched.wrongAnswer2 + " is not in the required range");
+        assertTrue(0.05 <= ratio1 && ratio1 < 11., answerPatched.wrongAnswer1 + " is not in the required range");
+        assertTrue(0.05 <= ratio2 && ratio2 < 11., answerPatched.wrongAnswer2 + " is not in the required range");
     }
 
     @Test
