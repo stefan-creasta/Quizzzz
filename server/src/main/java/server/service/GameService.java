@@ -409,8 +409,6 @@ public class GameService {
             sendToPlayer(player.id, state);
         }
 
-        //switch to interval phase 30 seconds later so we make sure all player timers have run out.
-        //TODO: have a flexible delay in case everyone's timer is shortened.
         new Thread(() -> {
             try {
                 Thread.sleep(10_000);

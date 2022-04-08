@@ -84,12 +84,12 @@
 }
 
 .scored-points {
-    -fx-text-fill: white;
+    -fx-text-fill: black;
     -fx-padding: 10 20 10 20;
     -fx-font-size: 40px;
     -fx-border-radius: 30px;
     -fx-background-radius: 30px;
-    -fx-background-color: #673e8b;
+    -fx-background-color: #f2d4ef;
     -fx-border-width: 0.5;
     -fx-border-color: black;
 }
@@ -128,6 +128,14 @@
 
 .leaderboard .rank-column {
     -fx-text-alignment: center;
+}
+
+.table-view .scroll-bar *{
+    -fx-min-height: 0;
+    -fx-pref-height: 0;
+    -fx-max-height: 0;
+
+
 }
 
 .playerStats{
@@ -203,4 +211,14 @@
     -fx-padding: 0;
     -fx-background-insets: 0;
     -fx-background-color: #f2d4ef;
+}
+
+.in-game-leaderboard .scroll-bar * {
+    -fx-min-height: 0;
+    -fx-pref-height: 0;
+    -fx-max-height: 0;
+
+    -fx-min-width: 0;
+    -fx-pref-width: 0;
+    -fx-max-width: 0;
 }
