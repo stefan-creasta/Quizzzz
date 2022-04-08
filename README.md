@@ -14,7 +14,7 @@ Add your own name (do not add the names for others!) to the section below.
 | ![](https://secure.gravatar.com/avatar/4b5f3392146b1d1d4fd6f72160491492?s=50&d=identicon) | Nguyen Duy Anh Quan | NguyenDuyAnhQuan@student.tudelft.nl |
 | ![](https://secure.gravatar.com/avatar/d7f782ec04f7eeea0f5b3d0fc2344554?s=800&d=identicon)| Stefan Creasta      | Creasta@student.tudelft.nl          |
 | ![](https://secure.gravatar.com/avatar/e7f1f03a262adfea4a79b04419a980cd?s=800&d=identicon)| Alex Pacurar        | A.V.Pacurar-1@student.tudelft.nl    |
-| ![](https://en.protothema.gr/wp-content/uploads/2020/11/griz88.jpg)| Anton Kalpakchiev   | A.D.Kalpakchiev@student.tudelft.nl  |
+| ![](https://secure.gravatar.com/avatar/d8acca759ee2e58d0defad94780d05ac?s=800&d=identicon)| Anton Kalpakchiev   | A.D.Kalpakchiev@student.tudelft.nl  |
 | ![](https://eu.ui-avatars.com/api/?name=JB&amp;length=4&amp;size=50&amp;color=DDD&amp;background=389fff&amp;font-size=0.325)| Jort Boon           | J.J.Boon@student.tudelft.nl         |
 
 <!-- Instructions (remove once assignment has been completed -->
@@ -78,6 +78,10 @@ exists, one needs to add `--activitiesSource=activity-bank` as a command line ar
 ![](readme-server-run-import.png)
 
 ### Starting the Client
+WARNING: If you want to play single player you also need to start the server on localhost on port 8080.
+See the Starting the Server section for instructions to do so.
+Since the player would like to play in single player offline, but our single player game
+works connected to the server, we made starting a local server a requirement for single player.
 
 The client needs to be run from IntelliJ IDEA (preferably at least version 2021.2.3)
 
