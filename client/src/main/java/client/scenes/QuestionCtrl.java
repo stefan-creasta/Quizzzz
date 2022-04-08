@@ -3,7 +3,6 @@ package client.scenes;
 import client.Communication.AnswerCommunication;
 import client.Communication.ImageCommunication;
 import client.Communication.PowerUpsCommunication;
-import commons.Timer;
 import commons.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
