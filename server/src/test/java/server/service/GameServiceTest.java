@@ -1,11 +1,9 @@
 package server.service;
 
-import commons.Game;
-import commons.GameState;
-import commons.Player;
-import commons.Question;
+import commons.*;
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
+import org.springframework.web.context.request.async.DeferredResult;
 import server.api.GameController;
 
 import java.util.List;
@@ -23,9 +21,9 @@ public class GameServiceTest {
     Game currentGame;
     Player player;
     @BeforeEach
-            void setup() {
+    void setup() {
         questionService = mock(QuestionService.class);
-        longPollingService = mock(LongPollingService.class);
+        longPollingService = new LongPollingService();
         when(questionService.getRandom()).thenReturn(List.of(
                 new Question(0, "question", "answer", "wrong1", "wrong2", "1")
         ));
@@ -96,31 +94,148 @@ public class GameServiceTest {
 
     @Test
     public void getIdTest(){
+        long id = gameService.createSingleplayerGame();
+        Game game = gameService.getId(id);
+        assertNotNull(game);
+
         assertThrows(IllegalArgumentException.class, () -> {
-            gameService.getId(2);
+            gameService.getId(123456789);
         });
     }
 
     @Test
     public void createGameTest(){
-        System.out.println(gameService.createGame());
-        assertTrue(1 == gameService.createGame());
-        assertTrue(1 == gameService.createGame());
+        assertEquals(gameService.createGame(), gameService.createGame());
     }
 
     @Test
     public void createSingleplayerGameTest(){
-        assertTrue(0 == gameService.createGame());
-        assertTrue(0 == gameService.createGame());
+        assertEquals(gameService.createGame(), gameService.createGame());
     }
 
     @Test
-    public void joinGameTest(){
-        
+    public void initiateGameTest() {
+        long id = gameService.createGame();
+
+        gameService.initiateGame(id);
+
+        Game game = gameService.getId(id);
+
+        assertEquals(GameState.Stage.QUESTION, game.stage);
+        assertTrue(game.started);
+        assertEquals(0, game.currentQuestion);
     }
 
+    @Test
+    public void initiateSingleplayerGameTest() {
+        long id = gameService.createGame();
 
+        gameService.initiateGame(id);
 
+        Game game = gameService.getId(id);
 
+        assertEquals(GameState.Stage.QUESTION, game.stage);
+        assertTrue(game.started);
+        assertEquals(0, game.currentQuestion);
+    }
 
+    @Test
+    public void JoinGameTest() {
+        long id = gameService.createGame();
+
+        GameState state = gameService.joinGame(id, "Napoleon Bonaparte");
+
+        assertEquals("Napoleon Bonaparte", state.username);
+        assertEquals(0, state.thisScored);
+        assertNull(state.playerAnswer);
+    }
+
+    @Test
+    public void JoinSingleplayerGameTest() {
+        long id = gameService.createSingleplayerGame();
+
+        GameState state = gameService.joinSingleplayerGame(id, "Napoleon Bonaparte");
+
+        assertEquals("Napoleon Bonaparte", state.username);
+        assertEquals(0, state.thisScored);
+        assertNull(state.playerAnswer);
+    }
+
+    @Test
+    public void GetPlayersTest() {
+        long id = gameService.createSingleplayerGame();
+
+        gameService.joinSingleplayerGame(id, "Wendy Carlos");
+
+        List<String> players = gameService.getPlayers(id);
+        assertEquals(1, players.size());
+        assertTrue(players.contains("Wendy Carlos"));
+    }
+
+    @Test
+    public void getLeaderboard() {
+        long id = gameService.createSingleplayerGame();
+
+        gameService.joinSingleplayerGame(id, "Andy Zaidman");
+
+        List<LeaderboardEntry> leaderboard = gameService.getLeaderboard(id);
+
+        assertEquals(1, leaderboard.size());
+        assertEquals(1, leaderboard.stream().filter(x -> x.username.equals("Andy Zaidman")).count());
+    }
+
+    @Test
+    public void checkUsernameTest() {
+        long id = gameService.createGame();
+
+        assertTrue(gameService.checkUsername(id, "Christiaan Huygens"));
+
+        gameService.joinGame(id, "Christiaan Huygens");
+
+        assertFalse(gameService.checkUsername(id, "Christiaan Huygens"));
+    }
+
+    @Test
+    public void existsByIdTest() {
+        long id = gameService.createSingleplayerGame();
+
+        assertTrue(gameService.existsById(id));
+        assertFalse(gameService.existsById(123456789));
+    }
+
+    @Test
+    public void halfTimePowerUpTest() {
+        long gid = gameService.createGame();
+        Game game = gameService.getId(gid);
+
+        GameState s1 = gameService.joinGame(gid, "Fire Boy");
+        GameState s2 = gameService.joinGame(gid, "Water Girl");
+        Player p1 = game.players.stream()
+                .filter(x -> x.username.equals("Fire Boy"))
+                        .findFirst().get();
+        Player p2 = game.players.stream()
+                .filter(x -> x.username.equals("Water Girl"))
+                .findFirst().get();
+
+        DeferredResult<List<GameState>> dr1 = new DeferredResult<>();
+        DeferredResult<List<GameState>> dr2 = new DeferredResult<>();
+
+        gameService.halfTimePowerUp(p1.id, gid);
+
+        longPollingService.registerPlayerConnection(p1.id, dr1);
+        longPollingService.registerPlayerConnection(p2.id, dr2);
+
+        gameService.initiateGame(gid);
+
+        assertTrue(dr1.hasResult());
+        assertTrue(dr2.hasResult());
+
+        var l1 = (List<GameState>) dr1.getResult();
+        var l2 = (List<GameState>) dr2.getResult();
+        s1 = l1.get(l1.size() - 1);
+        s2 = l2.get(l2.size() - 1);
+
+        assertNotEquals("halfTimePowerUp", s1.instruction);
+        assertEquals("halfTimePowerUp", s2.instruction);
+    }
 }
