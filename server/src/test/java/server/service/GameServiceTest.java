@@ -5,14 +5,17 @@ import commons.GameState;
 import commons.Player;
 import commons.Question;
 import org.junit.jupiter.api.Test;
+import server.api.GameController;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class GameServiceTest {
+
     @Test
     public void realWorldTest() {
         QuestionService questionService = mock(QuestionService.class);
@@ -34,4 +37,35 @@ public class GameServiceTest {
 
         assertEquals(gameId, state.gameId);
     }
+    @Test
+    public void testHalfTimePowerUpFail(){
+        GameService gameService = mock(GameService.class);
+        assertEquals(null,gameService.halfTimePowerUp(-1,-1));
+
+    }
+    @Test
+    public void testEliminatePowerUpFail(){
+        GameService gameService = mock(GameService.class);
+        assertEquals(null,gameService.halfTimePowerUp(-1,-1));
+
+
+    }
+    @Test
+    public void testDoublePointsFail(){
+        GameService gameService = mock(GameService.class);
+        assertEquals(null,gameService.halfTimePowerUp(-1,-1));
+
+
+    }
+    @Test
+    public void getGameTest(){
+        GameService gameService = mock(GameService.class);
+        GameController gameController = new GameController(gameService);
+        assertNull(gameService.getId(1L));
+
+    }
+
+
+
+
 }
