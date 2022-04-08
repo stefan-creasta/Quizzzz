@@ -27,7 +27,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class AddPlayerCtrl {
 
@@ -48,14 +51,19 @@ public class AddPlayerCtrl {
         this.gameCommunication = gameCommunication;
     }
 
+    public void setUsername() {
+        if (usernameField.getText().isBlank()) {
+            usernameField.setText(readUsernameFromFile());
+        }
+    }
+
     /**
      * Gets called when a player decides to go back to the main screen by pressing ESCAPE or a button that will lead
      * there, that is not implemented yet.
      * @throws IOException can be thrown
      * @throws InterruptedException can be thrown
      */
-    public void cancel() throws IOException, InterruptedException {
-        clearFields();
+    public void cancel() {
         mainCtrl.showSplashScreen();
     }
 
@@ -65,6 +73,7 @@ public class AddPlayerCtrl {
         //if the game is singleplayer, then the game can start
         if(mainCtrl.singleplayerGame) {
             if(!newPlayer.username.equals("")){
+                writeUsernameToFile(newPlayer.username);
                 serverString = "http://localhost:8080";
                 mainCtrl.initiateSingleplayerGame(newPlayer);
                 mainCtrl.showQuestionPause();
@@ -78,6 +87,7 @@ public class AddPlayerCtrl {
             try {
                 serverString = serverField.getText();
                 if (mainCtrl.checkUsername(newPlayer.username) && newPlayer.username != null && !newPlayer.username.equals("")) {
+                    writeUsernameToFile(newPlayer.username);
                     try {
                         mainCtrl.joinGame(newPlayer.username);
                     } catch (WebApplicationException e) {
@@ -89,6 +99,7 @@ public class AddPlayerCtrl {
                     }
                     mainCtrl.showLobby();
                 } else {
+                    clearUsernameField();
                     if (newPlayer.username.equals("")) {
                         Alert usernameAlert = new Alert(Alert.AlertType.ERROR, "Please input a username");
                         usernameAlert.show();
@@ -107,11 +118,10 @@ public class AddPlayerCtrl {
 
     private Player getPlayer() {
         var username = usernameField.getText();
-        clearFields();
         return new Player(username, 0);
     }
 
-    private void clearFields() {
+    private void clearUsernameField() {
         usernameField.clear();
     }
 
@@ -141,5 +151,27 @@ public class AddPlayerCtrl {
     public void setServerUrl(String s) {
         serverString = s;
         serverField.setText(s);
+    }
+
+    public String readUsernameFromFile() {
+        String s = "";
+        try {
+            new File("username.txt").createNewFile();
+            s = Files.readString(Path.of("username.txt"));
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        return s;
+    }
+
+    public boolean writeUsernameToFile(String s) {
+        try {
+            Files.writeString(Path.of("username.txt"), s);
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
