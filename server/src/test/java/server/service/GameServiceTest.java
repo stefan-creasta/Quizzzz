@@ -103,8 +103,9 @@ public class GameServiceTest {
 
     @Test
     public void createGameTest(){
-        assertTrue(0 == gameService.createGame());
-        assertTrue(0 == gameService.createGame());
+        System.out.println(gameService.createGame());
+        assertTrue(1 == gameService.createGame());
+        assertTrue(1 == gameService.createGame());
     }
 
     @Test
