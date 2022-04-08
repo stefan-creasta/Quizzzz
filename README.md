@@ -78,6 +78,10 @@ exists, one needs to add `--activitiesSource=activity-bank` as a command line ar
 ![](readme-server-run-import.png)
 
 ### Starting the Client
+WARNING: If you want to play single player you also need to start the server on localhost on port 8080.
+See the Starting the Server section for instructions to do so.
+Since the player would like to play in single player offline, but our single player game
+works connected to the server, we made starting a local server a requirement for single player.
 
 The client needs to be run from IntelliJ IDEA (preferably at least version 2021.2.3)
 
