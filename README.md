@@ -6,17 +6,6 @@ Add your own name (do not add the names for others!) to the section below.
 
 ## Description of project
 
-## Group members
-
-| Profile Picture | Name                | Email                               |
-|---|---------------------|-------------------------------------|
-|![](https://gitlab.ewi.tudelft.nl/uploads/-/system/user/avatar/4765/avatar.png?width=50)| Mert Bora İnevi     | M.B.Inevi@student.tudelft.nl        |
-| ![](https://secure.gravatar.com/avatar/4b5f3392146b1d1d4fd6f72160491492?s=50&d=identicon) | Nguyen Duy Anh Quan | NguyenDuyAnhQuan@student.tudelft.nl |
-| ![](https://secure.gravatar.com/avatar/d7f782ec04f7eeea0f5b3d0fc2344554?s=800&d=identicon)| Stefan Creasta      | Creasta@student.tudelft.nl          |
-| ![](https://secure.gravatar.com/avatar/e7f1f03a262adfea4a79b04419a980cd?s=800&d=identicon)| Alex Pacurar        | A.V.Pacurar-1@student.tudelft.nl    |
-| ![](https://secure.gravatar.com/avatar/d8acca759ee2e58d0defad94780d05ac?s=800&d=identicon)| Anton Kalpakchiev   | A.D.Kalpakchiev@student.tudelft.nl  |
-| ![](https://eu.ui-avatars.com/api/?name=JB&amp;length=4&amp;size=50&amp;color=DDD&amp;background=389fff&amp;font-size=0.325)| Jort Boon           | J.J.Boon@student.tudelft.nl         |
-
 <!-- Instructions (remove once assignment has been completed -->
 <!-- - Add (only!) your own name to the table above (use Markdown formatting) -->
 <!-- - Mention your *student* email address -->
@@ -118,5 +107,3 @@ After installing, find the location of its main executable. For example on Windo
 right click and choose "open file location" and keep doing this to shortcuts until you arrive the actual EXE file.
 
 Copy the executable file's path, go back to IntelliJ, go to `File>Settings...>Language and Frameworks>JavaFX`, and paste the path into Path to SceneBuilder.
-
-## Copyright / License (opt.)
